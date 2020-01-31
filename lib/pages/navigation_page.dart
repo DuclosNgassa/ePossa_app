@@ -34,7 +34,7 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(3, 9, 23, 1),
+      backgroundColor: Color.fromRGBO(102, 0, 204, 50),
       body: Container(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),

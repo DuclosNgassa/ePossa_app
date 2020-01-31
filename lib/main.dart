@@ -99,7 +99,8 @@ class _StartScreenState extends State<StartScreen>
     final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(3, 9, 23, 1),
+      backgroundColor: Color.fromRGBO(102, 0, 204, 50),
+//      backgroundColor: Color.fromRGBO(3, 9, 23, 1),
       body: Container(
         width: double.infinity,
         child: Stack(

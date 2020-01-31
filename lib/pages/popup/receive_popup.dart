@@ -13,7 +13,7 @@ class ReceivePopup extends StatefulWidget {
 class _ReceivePopupState extends State<ReceivePopup> {
   String barcode = '';
   Uint8List barCode = Uint8List(200);
-
+  static const String stars = "***";
   @override
   void initState() {
     super.initState();
@@ -48,10 +48,10 @@ class _ReceivePopupState extends State<ReceivePopup> {
                       borderRadius: BorderRadius.circular(50),
                       color: Colors.blue[800]),
                   child: RawMaterialButton(
-                    onPressed: () => _generateBarCode(),
+                    onPressed: () => _generateBarCodeWithAmount(5000),
                     child: Center(
                       child: Text(
-                        "Generate Barcode",
+                        "Generate Barcode with amount",
                         style: TextStyle(
                           color: Colors.white.withOpacity(.7),
                         ),
@@ -62,13 +62,27 @@ class _ReceivePopupState extends State<ReceivePopup> {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FadeAnimation(
+              1.8,
+              Center(
+                child: Text("Faites scanner votre QR-Code afin de recevoir votre argent."),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
   Future _generateBarCode() async {
-    Uint8List result = await scanner.generateBarCode('Ich bin ein generierter barcode');
+    Uint8List result = await scanner.generateBarCode(stars + '65767879067' + stars);
+    this.setState(() => this.barCode = result);
+  }
+
+  Future _generateBarCodeWithAmount(int amount) async {
+    Uint8List result = await scanner.generateBarCode(stars + '65767879067' + stars + amount.toString() + stars);
     this.setState(() => this.barCode = result);
   }
 }

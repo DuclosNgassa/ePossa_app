@@ -12,6 +12,7 @@ class PaymentPopup extends StatefulWidget {
 class _PaymentPopupState extends State<PaymentPopup> {
   String barcode = '';
   Uint8List bytes = Uint8List(200);
+  static const String stars = "***";
 
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
@@ -51,10 +52,10 @@ class _PaymentPopupState extends State<PaymentPopup> {
                           border: InputBorder.none,
                           hintStyle:
                               TextStyle(color: Colors.grey.withOpacity(.8)),
-                          hintText: "Phone number"),
+                          hintText: "Phone number of recipient"),
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Please enter Phone number';
+                          return 'Please enter Phone number of recipient';
                         }
                         return null;
                       },
@@ -71,7 +72,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
                           hintText: "Montant"),
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Please enter the amount';
+                          return 'Please enter the amount to transfer';
                         }
                         return null;
                       },
@@ -122,7 +123,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
                   padding: EdgeInsets.all(15),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
-                      color: Colors.blue[800]),
+                      color: Colors.deepPurple),
                   child: RawMaterialButton(
                     onPressed: () => _scanPhoto(),
                     child: Center(
@@ -174,7 +175,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
     String barcode = await scanner.scan();
     setState((){
       this.barcode = barcode;
-      phoneNumberController.text = barcode;
+      phoneNumberController.text = _getPhoneNumberFromQRCode(barcode);
     });
   }
 
@@ -182,7 +183,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
     String barcode = await scanner.scanPhoto();
     setState((){
       this.barcode = barcode;
-      phoneNumberController.text = barcode;
+      phoneNumberController.text = _getPhoneNumberFromQRCode(barcode);
     });
   }
 
@@ -193,4 +194,23 @@ class _PaymentPopupState extends State<PaymentPopup> {
           .showSnackBar(SnackBar(content: Text('Processing Data')));
     }
   }
+
+  String _getPhoneNumberFromQRCode(String qrCode){
+    List<String> phoneNumbers = qrCode.split(stars);
+    if(phoneNumbers.isEmpty){
+      return "";
+    }
+
+    return phoneNumbers[1];
+  }
+
+  int _getAmountFromQRCode(String qrCode){
+    List<String> amounts = qrCode.split(stars);
+    if(amounts.isEmpty || amounts.length < 2){
+      return 0;
+    }
+
+    return int.parse(amounts[2]);
+  }
+
 }
