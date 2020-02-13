@@ -1,11 +1,11 @@
 import 'package:epossa_app/animations/fade_animation.dart';
-import 'package:epossa_app/pages/signin_page.dart';
+import 'package:epossa_app/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'navigation_page.dart';
 
-class LoginPage extends StatelessWidget {
+class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,12 +26,12 @@ class LoginPage extends StatelessWidget {
                   SizedBox(
                     height: 30,
                   ),
-                  _buildLoginInput(),
+                  _buildSignInInput(),
                   SizedBox(
                     height: 40,
                   ),
-                  _buildLogin(context),
                   _buildSignIn(context),
+                  _buildLogin(context),
                   SizedBox(
                     height: 10,
                   ),
@@ -49,14 +49,14 @@ class LoginPage extends StatelessWidget {
     return FadeAnimation(
       1.2,
       Text(
-        "Login",
+        "Enregistrement",
         style: TextStyle(
             color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
       ),
     );
   }
 
-  Widget _buildLoginInput() {
+  Widget _buildSignInInput() {
     return FadeAnimation(
       1.5,
       Container(
@@ -65,6 +65,26 @@ class LoginPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(10), color: Colors.white),
         child: Column(
           children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.grey[300]))),
+              child: TextField(
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
+                    hintText: "Nom"),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.grey[300]))),
+              child: TextField(
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
+                    hintText: "Email"),
+              ),
+            ),
             Container(
               decoration: BoxDecoration(
                   border: Border(bottom: BorderSide(color: Colors.grey[300]))),
@@ -89,7 +109,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _buildLogin(BuildContext context) {
+  Widget _buildSignIn(BuildContext context) {
     return FadeAnimation(
       1.8,
       Container(
@@ -99,14 +119,14 @@ class LoginPage extends StatelessWidget {
         width: double.infinity,
         child: RaisedButton(
           elevation: 5.0,
-          onPressed: () => _login(context),
+          onPressed: () => _SignIn(context),
           padding: EdgeInsets.all(15),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
           color: Colors.white,
           child: Text(
-            "LOGIN",
+            "SignIn",
             style: TextStyle(
                 color: Color(0xFF527DAA),
                 fontSize: 18.0,
@@ -118,23 +138,22 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-
-  Widget _buildSignIn(BuildContext context) {
+  Widget _buildLogin(BuildContext context) {
     return FadeAnimation(
       2.1,
       GestureDetector(
-        onTap: () => _signIn(context),
+        onTap: () => _login(context),
         child: RichText(
           text: TextSpan(children: [
             TextSpan(
-              text: 'Pas encore de compte? ',
+              text: 'Deja enregistré? ',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 18.0,
                   fontWeight: FontWeight.w400),
             ),
             TextSpan(
-              text: 'Créez un compte',
+              text: 'Connectez vous',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 18.0,
@@ -166,17 +185,17 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  _login(BuildContext context) {
+  _SignIn(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => NavigationPage()),
     );
   }
 
-  _signIn(BuildContext context) {
-    Navigator.push(
+  _login(BuildContext context) {
+    Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => SignInPage()),
+      MaterialPageRoute(builder: (context) => LoginPage()),
     );
   }
 }
