@@ -5,7 +5,6 @@ import 'package:epossa_app/pages/popup.dart';
 import 'package:epossa_app/pages/popup/payment_popup.dart';
 import 'package:epossa_app/pages/popup/receive_popup.dart';
 import 'package:epossa_app/pages/popup_content.dart';
-import 'package:epossa_app/pages/transfer_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boom_menu/flutter_boom_menu.dart';
 
@@ -20,7 +19,6 @@ class _NavigationPageState extends State<NavigationPage> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white);
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    TransferPage(),
     HistoryPage(),
     AccountPage(),
   ];
@@ -49,12 +47,6 @@ class _NavigationPageState extends State<NavigationPage> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.monetization_on,
-            ),
-            title: Text('Transfer'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.dehaze,
             ),
             title: Text('History'),
           ),
@@ -120,6 +112,7 @@ class _NavigationPageState extends State<NavigationPage> {
         child: PopupContent(
           content: Scaffold(
             appBar: AppBar(
+              backgroundColor: Colors.blue[800],
               title: Text(title),
               leading: new Builder(builder: (context) {
                 return IconButton(

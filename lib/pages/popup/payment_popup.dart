@@ -20,12 +20,30 @@ class _PaymentPopupState extends State<PaymentPopup> {
   // Note: This is a GlobalKey<FormState>,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
-  TextEditingController phoneNumberController = new TextEditingController();
-  TextEditingController amountController = new TextEditingController();
+  TextEditingController _phoneNumberController = new TextEditingController();
+  TextEditingController _amountController = new TextEditingController();
+  TextEditingController _descriptionController = new TextEditingController();
+  FocusNode _phoneFocusNode;
+  FocusNode _amountFocusNode;
+  FocusNode _descriptionFocusNode;
 
   @override
   void initState() {
     super.initState();
+    _phoneFocusNode = new FocusNode();
+    _amountFocusNode = new FocusNode();
+    _descriptionFocusNode = new FocusNode();
+  }
+
+  @override
+  void dispose() {
+    //Clean up the controller when the widget is disposed
+    _phoneNumberController.dispose();
+    _amountController.dispose();
+    _phoneFocusNode.dispose();
+    _amountFocusNode.dispose();
+    _descriptionFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -35,65 +53,129 @@ class _PaymentPopupState extends State<PaymentPopup> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          FadeAnimation(
-            1.5,
-            Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(color: Colors.grey[300]))),
-                    child: TextFormField(
-                      controller: phoneNumberController,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintStyle:
-                              TextStyle(color: Colors.grey.withOpacity(.8)),
-                          hintText: "Phone number of recipient"),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter Phone number of recipient';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    child: TextFormField(
-                      controller: amountController,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintStyle:
-                              TextStyle(color: Colors.grey.withOpacity(.8)),
-                          hintText: "Montant"),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter the amount to transfer';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          _buildInputForm(),
           SizedBox(
             height: 40,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FadeAnimation(
-              1.8,
-              Center(
-                child: Container(
+          _buildScanButtons(),
+          _buildTransferButton(),
+          SizedBox(height: 20),
+          _buildFooterMessage(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInputForm() {
+    return FadeAnimation(
+      1.5,
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Form(
+          key: _formKey,
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromRGBO(143, 148, 251, .3),
+                    blurRadius: 20.0,
+                    offset: Offset(0, 10),
+                  )
+                ],
+                color: Colors.white),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                      border:
+                          Border(bottom: BorderSide(color: Colors.grey[300]))),
+                  child: TextFormField(
+                    controller: _phoneNumberController,
+                    keyboardType: TextInputType.phone,
+                    textInputAction: TextInputAction.next,
+                    focusNode: _phoneFocusNode,
+                    onFieldSubmitted: (term) {
+                      _fieldFocusChange(_phoneFocusNode, _amountFocusNode);
+                    },
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.phone_iphone),
+                        hintStyle:
+                            TextStyle(color: Colors.grey.withOpacity(.8)),
+                        hintText: "Phone number of recipient"),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter Phone number of recipient';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Container(
+                  child: TextFormField(
+                    controller: _amountController,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
+                    focusNode: _amountFocusNode,
+                    onFieldSubmitted: (term) {
+                      _fieldFocusChange(
+                          _amountFocusNode, _descriptionFocusNode);
+                    },
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.attach_money),
+                        hintStyle:
+                            TextStyle(color: Colors.grey.withOpacity(.8)),
+                        hintText: "Montant"),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter the amount to transfer';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Container(
+                  child: TextFormField(
+                    controller: _descriptionController,
+                    textInputAction: TextInputAction.newline,
+                    keyboardType: TextInputType.multiline,
+                    focusNode: _descriptionFocusNode,
+                    onFieldSubmitted: (term) {
+                      _descriptionFocusNode.unfocus();
+                      //_submitForm();
+                    },
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.insert_comment),
+                        hintStyle:
+                            TextStyle(color: Colors.grey.withOpacity(.8)),
+                        hintText: "Description"),
+                    maxLines: 5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScanButtons() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
+      child: FadeAnimation(
+        1.8,
+        Center(
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
                   //width: 120,
                   height: 50,
-                  padding: EdgeInsets.all(15),
+                  padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       color: Colors.blue[800]),
@@ -109,18 +191,10 @@ class _PaymentPopupState extends State<PaymentPopup> {
                     ),
                   ),
                 ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FadeAnimation(
-              2,
-              Center(
-                child: Container(
+                Container(
                   //width: 120,
                   height: 50,
-                  padding: EdgeInsets.all(15),
+                  padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       color: Colors.deepPurple),
@@ -128,7 +202,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
                     onPressed: () => _scanPhoto(),
                     child: Center(
                       child: Text(
-                        "Scan Photo",
+                        "QR-Code from gallery",
                         style: TextStyle(
                           color: Colors.white.withOpacity(.7),
                         ),
@@ -136,54 +210,68 @@ class _PaymentPopupState extends State<PaymentPopup> {
                     ),
                   ),
                 ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FadeAnimation(
-              2,
-              Center(
-                child: Container(
-                  //width: 120,
-                  height: 50,
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Colors.green[800]),
-                  child: RawMaterialButton(
-                    onPressed: () => _submit(),
-                    child: Center(
-                      child: Text(
-                        "Valider",
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(.7),
-                        ),
-                      ),
-                    ),
+              ]),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTransferButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: FadeAnimation(
+        2,
+        Center(
+          child: Container(
+            //width: 120,
+            height: 50,
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.green[800]),
+            child: RawMaterialButton(
+              onPressed: () => _submit(),
+              child: Center(
+                child: Text(
+                  "Transferer",
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(.7),
                   ),
                 ),
               ),
             ),
           ),
-        ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFooterMessage() {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: FadeAnimation(
+        2.3,
+        Center(
+          child: Text(
+              "Scannez le QR-Code du bénéficiare pour faire un transfert."),
+        ),
       ),
     );
   }
 
   Future _scan() async {
     String barcode = await scanner.scan();
-    setState((){
+    setState(() {
       this.barcode = barcode;
-      phoneNumberController.text = _getPhoneNumberFromQRCode(barcode);
+      _phoneNumberController.text = _getPhoneNumberFromQRCode(barcode);
     });
   }
 
   Future _scanPhoto() async {
     String barcode = await scanner.scanPhoto();
-    setState((){
+    setState(() {
       this.barcode = barcode;
-      phoneNumberController.text = _getPhoneNumberFromQRCode(barcode);
+      _phoneNumberController.text = _getPhoneNumberFromQRCode(barcode);
     });
   }
 
@@ -195,22 +283,27 @@ class _PaymentPopupState extends State<PaymentPopup> {
     }
   }
 
-  String _getPhoneNumberFromQRCode(String qrCode){
+  String _getPhoneNumberFromQRCode(String qrCode) {
     List<String> phoneNumbers = qrCode.split(stars);
-    if(phoneNumbers.isEmpty){
+    if (phoneNumbers.isEmpty) {
       return "";
     }
 
     return phoneNumbers[1];
   }
 
-  int _getAmountFromQRCode(String qrCode){
+  int _getAmountFromQRCode(String qrCode) {
     List<String> amounts = qrCode.split(stars);
-    if(amounts.isEmpty || amounts.length < 2){
+    if (amounts.isEmpty || amounts.length < 2) {
       return 0;
     }
 
     return int.parse(amounts[2]);
+  }
+
+  _fieldFocusChange(FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
   }
 
 }

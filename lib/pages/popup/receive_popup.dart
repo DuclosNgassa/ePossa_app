@@ -11,13 +11,24 @@ class ReceivePopup extends StatefulWidget {
 }
 
 class _ReceivePopupState extends State<ReceivePopup> {
+  final _formKey = GlobalKey<FormState>();
+  final String stars = "***";
+  final amountController = TextEditingController();
+
   String barcode = '';
   Uint8List barCode = Uint8List(200);
-  static const String stars = "***";
+
   @override
   void initState() {
     super.initState();
-    _generateBarCode();
+    _generateQRCode();
+  }
+
+  @override
+  void dispose() {
+    //Clean up the controller when the widget is disposed
+    amountController.dispose();
+    super.dispose();
   }
 
   @override
@@ -27,62 +38,150 @@ class _ReceivePopupState extends State<ReceivePopup> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          FadeAnimation(
-            1.5,
-            SizedBox(
-              width: 200,
-              height: 200,
-              child: Image.memory(barCode),
-            ),
+          _displayQRCode(),
+          SizedBox(
+            height: 40,
           ),
-          SizedBox(height: 40,),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FadeAnimation(
-              1.8,
-              Center(
-                child: Container(
-                  height: 50,
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Colors.blue[800]),
-                  child: RawMaterialButton(
-                    onPressed: () => _generateBarCodeWithAmount(5000),
-                    child: Center(
-                      child: Text(
-                        "Generate Barcode with amount",
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(.7),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+          _builAmountInput(),
+          SizedBox(
+            height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FadeAnimation(
-              1.8,
-              Center(
-                child: Text("Faites scanner votre QR-Code afin de recevoir votre argent."),
-              ),
-            ),
-          ),
+          _buildQRCodeButtons(),
+          _buildFooterMessage(),
         ],
       ),
     );
   }
 
-  Future _generateBarCode() async {
-    Uint8List result = await scanner.generateBarCode(stars + '65767879067' + stars);
+  Widget _displayQRCode() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: FadeAnimation(
+        1.2,
+        SizedBox(
+          width: 200,
+          height: 200,
+          child: Image.memory(barCode),
+        ),
+      ),
+    );
+  }
+
+  Widget _builAmountInput() {
+    return FadeAnimation(
+      1.5,
+      Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Container(
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromRGBO(143, 148, 251, .3),
+                    blurRadius: 20.0,
+                    offset: Offset(0, 10),
+                  )
+                ],
+                color: Colors.white),
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.grey[300]))),
+              child: TextFormField(
+                controller: amountController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    prefixIcon: Icon(Icons.attach_money),
+                    hintStyle: TextStyle(
+                      color: Colors.grey.withOpacity(.8),
+                    ),
+                    hintText: "Amount"),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQRCodeButtons() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+      child: FadeAnimation(
+        1.8,
+        Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                height: 50,
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.blue[800]),
+                child: RawMaterialButton(
+                  onPressed: () => _generateQRCodeWithAmount(
+                      int.parse(amountController.text)),
+                  child: Center(
+                    child: Text(
+                      "QR-Code with amount",
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(.7),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                height: 50,
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.blue[800]),
+                child: RawMaterialButton(
+                  onPressed: () => _generateQRCode(),
+                  child: Center(
+                    child: Text(
+                      "QR-Code",
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(.7),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFooterMessage() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15),
+      child: FadeAnimation(
+        2.1,
+        Center(
+          child: Text(
+              "Faites scanner votre QR-Code afin de recevoir votre argent."),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _generateQRCode() async {
+    Uint8List result =
+        await scanner.generateBarCode(stars + '65767879067' + stars);
     this.setState(() => this.barCode = result);
   }
 
-  Future _generateBarCodeWithAmount(int amount) async {
-    Uint8List result = await scanner.generateBarCode(stars + '65767879067' + stars + amount.toString() + stars);
+  Future<void> _generateQRCodeWithAmount(int amount) async {
+    Uint8List result = await scanner.generateBarCode(
+        stars + '65767879067' + stars + amount.toString() + stars);
     this.setState(() => this.barCode = result);
   }
 }
