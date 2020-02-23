@@ -1,5 +1,6 @@
-import 'package:epossa_app/model/transfer.dart';
 import 'dart:async';
+
+import 'package:epossa_app/model/transfer.dart';
 
 class TransferService{
 
@@ -13,7 +14,7 @@ class TransferService{
           phone_number_receiver: '0023767655567' + i.toString(),
           phone_number_sender: '002376544590098' + i.toString(),
           amount: 1000 + i,
-          description: 'Chausurehvhgvghvhjvjvvhvkvhvhjvjvhvhvhvk jvkjvvkjvhj' + i.toString());
+          description: 'Chausurehvhgvghvhjvjvvhvkvhvhjvjvhvhvhvk jvkjvvkjvhj hgvhvghvhjvjv g ghvjhgvghvhgv  hvhvhvkhvvvzfuozuofu' + i.toString());
 
       transferList.add(transfer);
     }

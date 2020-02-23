@@ -178,15 +178,20 @@ class _PaymentPopupState extends State<PaymentPopup> {
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
-                      color: Colors.blue[800]),
+                    gradient: LinearGradient(colors: [
+                      Color.fromRGBO(143, 148, 251, 1),
+                      Color.fromRGBO(143, 148, 251, 6),
+                    ]),),
                   child: RawMaterialButton(
                     onPressed: () => _scan(),
                     child: Center(
                       child: Text(
                         "Scan QR-Code",
                         style: TextStyle(
-                          color: Colors.white.withOpacity(.7),
-                        ),
+                            color: Colors.white,
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'OpenSans'),
                       ),
                     ),
                   ),
@@ -197,15 +202,20 @@ class _PaymentPopupState extends State<PaymentPopup> {
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
-                      color: Colors.deepPurple),
+                    gradient: LinearGradient(colors: [
+                      Color.fromRGBO(143, 148, 251, 1),
+                      Color.fromRGBO(143, 148, 251, 6),
+                    ]),),
                   child: RawMaterialButton(
                     onPressed: () => _scanPhoto(),
                     child: Center(
                       child: Text(
                         "QR-Code from gallery",
                         style: TextStyle(
-                          color: Colors.white.withOpacity(.7),
-                        ),
+                            color: Colors.white,
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'OpenSans'),
                       ),
                     ),
                   ),
@@ -228,15 +238,17 @@ class _PaymentPopupState extends State<PaymentPopup> {
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.green[800]),
+                color: Color.fromRGBO(51, 51, 153, 1),),
             child: RawMaterialButton(
               onPressed: () => _submit(),
               child: Center(
                 child: Text(
                   "Transferer",
                   style: TextStyle(
-                    color: Colors.white.withOpacity(.7),
-                  ),
+                      color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'OpenSans'),
                 ),
               ),
             ),

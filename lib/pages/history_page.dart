@@ -15,7 +15,9 @@ class _HistoryPageState extends State<HistoryPage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   List<Transfer> transferList = new List();
+  List<bool> transferListExpanded = new List();
   List<Transfer> receivedList = new List();
+  List<bool> receivedListExpanded = new List();
 
   TransferService _transferService = new TransferService();
 
@@ -79,7 +81,7 @@ class _HistoryPageState extends State<HistoryPage>
     return FadeAnimation(
       1.9,
       Container(
-        height: 470.0,
+        height: 420.0,
         child: TabBarView(
           controller: _tabController,
           children: <Widget>[
@@ -95,39 +97,52 @@ class _HistoryPageState extends State<HistoryPage>
     return ListView.builder(
         itemCount: receives.length,
         itemBuilder: (BuildContext context, int index) {
-          return ExpansionTile(
-            key: PageStorageKey<String>(
-                receives.elementAt(index).phone_number_receiver),
-            leading: new Text(DateConverter.convertToString(
-                receives.elementAt(index).created_at, context)),
-            title: Container(
-              width: double.infinity,
-              child: new Text(
-                receives.elementAt(index).amount.toString() + " FCFA",
-                style:
-                    TextStyle(fontSize: (isReceiveExpanded != true) ? 18 : 22),
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.white),
+              child: ExpansionTile(
+                key: PageStorageKey<String>(
+                    receives.elementAt(index).phone_number_receiver),
+                leading: new Text(DateConverter.convertToString(
+                    receives.elementAt(index).created_at, context)),
+                title: Container(
+                  child: new Text(
+                    receives.elementAt(index).amount.toString() + " FCFA",
+                    style: TextStyle(
+                        fontSize:
+                            (receivedListExpanded.elementAt(index) == false)
+                                ? 18
+                                : 22),
+                  ),
+                ),
+                children: <Widget>[
+                  Container(
+                    child: new TransferCard(
+                      transfer: receives.elementAt(index),
+                      isReceiver: true,
+                    ),
+                  ),
+                ],
+                trailing: (receivedListExpanded.elementAt(index) == false)
+                    ? Icon(
+                        Icons.arrow_drop_down,
+                        size: 32,
+                        color: Color.fromRGBO(112, 139, 245, 55),
+                      )
+                    : Icon(
+                        Icons.arrow_drop_up,
+                        size: 32,
+                        color: Color.fromRGBO(112, 139, 245, 55),
+                      ),
+                onExpansionChanged: (value) {
+                  setState(() {
+                    receivedListExpanded[index] = value;
+                  });
+                },
               ),
             ),
-            children: <Widget>[
-              Container(
-                child: new TransferCard(
-                  transfer: receives.elementAt(index),
-                  isReceiver: true,
-                ),
-              ),
-            ],
-            trailing: (isReceiveExpanded == true)
-                ? Icon(
-                    Icons.arrow_drop_down,
-                    size: 32,
-                    color: Colors.white,
-                  )
-                : Icon(Icons.arrow_drop_up, size: 32, color: Colors.white),
-            onExpansionChanged: (value) {
-              setState(() {
-                isReceiveExpanded = value;
-              });
-            },
           );
         });
   }
@@ -136,32 +151,47 @@ class _HistoryPageState extends State<HistoryPage>
     return ListView.builder(
         itemCount: transfers.length,
         itemBuilder: (BuildContext context, int index) {
-          return ExpansionTile(
-            leading: new Text(
-              DateConverter.convertToString(
-                  transfers.elementAt(index).created_at, context),
-            ),
-            title: new Text(
-                transfers.elementAt(index).amount.toString() + " FCFA",style:
-            TextStyle(fontSize: (isSendExpanded != true) ? 18 : 22)),
-            children: <Widget>[
-              new TransferCard(
-                transfer: transfers.elementAt(index),
-                isReceiver: false,
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.white),
+              child: ExpansionTile(
+                leading: new Text(
+                  DateConverter.convertToString(
+                      transfers.elementAt(index).created_at, context),
+                ),
+                title: new Text(
+                  transfers.elementAt(index).amount.toString() + " FCFA",
+                  style: TextStyle(
+                      fontSize: (transferListExpanded.elementAt(index) == false)
+                          ? 18
+                          : 22),
+                ),
+                children: <Widget>[
+                  new TransferCard(
+                    transfer: transfers.elementAt(index),
+                    isReceiver: false,
+                  ),
+                ],
+                trailing: (transferListExpanded.elementAt(index) == false)
+                    ? Icon(
+                        Icons.arrow_drop_down,
+                        size: 32,
+                        color: Color.fromRGBO(112, 139, 245, 55),
+                      )
+                    : Icon(
+                        Icons.arrow_drop_up,
+                        size: 32,
+                        color: Color.fromRGBO(112, 139, 245, 55),
+                      ),
+                onExpansionChanged: (value) {
+                  setState(() {
+                    transferListExpanded[index] = value;
+                  });
+                },
               ),
-            ],
-            trailing: (isSendExpanded == true)
-                ? Icon(
-                    Icons.arrow_drop_down,
-                    size: 32,
-                    color: Colors.white,
-                  )
-                : Icon(Icons.arrow_drop_up, size: 32, color: Colors.white),
-            onExpansionChanged: (value) {
-              setState(() {
-                isSendExpanded = value;
-              });
-            },
+            ),
           );
         });
   }
@@ -267,13 +297,21 @@ class _HistoryPageState extends State<HistoryPage>
 
     transferList = _transferService.sortDescending(transferItems);
 
+    for (int i = 0; i < transferItems.length; i++) {
+      transferListExpanded.add(false);
+    }
+
     return transferList;
   }
 
   Future<List<Transfer>> _loadReceived() async {
-    List<Transfer> transferItems = await _transferService.fetchReceived();
+    List<Transfer> receivedItems = await _transferService.fetchReceived();
 
-    receivedList = _transferService.sortDescending(transferItems);
+    receivedList = _transferService.sortDescending(receivedItems);
+
+    for (int i = 0; i < receivedItems.length; i++) {
+      receivedListExpanded.add(false);
+    }
 
     return receivedList;
   }

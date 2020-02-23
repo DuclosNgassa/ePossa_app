@@ -27,7 +27,7 @@ class _TransferCardState extends State<TransferCard> {
       color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w600);
 
   static final regularTextStyle = baseTextStyle.copyWith(
-      color: const Color(0xffb6b2df),
+      color: Colors.black87,
       fontSize: 16,
       fontWeight: FontWeight.w400);
 
@@ -35,109 +35,123 @@ class _TransferCardState extends State<TransferCard> {
 
   @override
   Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Center(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            height: isSendingAndDescriptionNotEmpty() ? 380 : 250,
+            //margin: new EdgeInsets.fromLTRB(76.0, 16.0, 16.0, 16.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromRGBO(143, 148, 251, .3),
+                  blurRadius: 20.0,
+                  offset: Offset(0.0, 10.0),
+                )
+              ],
+              color: Color.fromRGBO(128, 212, 255, .3),
+
+              //color: new Color(0xFF333366),
+            ),
+            child: _buildCard(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCard() {
     String _receiverTitle = 'Bénéficiaire';
     String _receiver = widget.transfer.phone_number_receiver;
 
     String _senderTitle = 'Expéditeur';
     String _sender = widget.transfer.phone_number_sender;
 
-    return Center(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8.0),
-        height: isSendingAndDescriptionNotEmpty() ? 300 : 250,
-        margin: new EdgeInsets.fromLTRB(76.0, 16.0, 16.0, 16.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Color.fromRGBO(143, 148, 251, .3),
-              blurRadius: 20.0,
-              offset: Offset(0.0, 10.0),
-            )
-          ],
-          color: new Color(0xFF333366),
+    return new Column(
+      children: <Widget>[
+        SizedBox(
+          height: 4.0,
         ),
-        child: new Column(
+        new Text(
+          'Montant',
+          style: headerTextStyle,
+        ),
+        new Text(
+          widget.transfer.amount.toString() + ' FCFA',
+          style: subHeaderTextStyle,
+        ),
+        new Container(
+          margin: new EdgeInsets.symmetric(vertical: 8.0),
+          height: 2.0,
+          width: 100.0,
+          color: new Color(0xff00c6ff),
+        ),
+        SizedBox(
+          height: 10.0,
+        ),
+        new Text(
+          widget.isReceiver ? _senderTitle : _receiverTitle,
+          style: headerTextStyle,
+        ),
+        SizedBox(height: 5),
+        new Text(
+          widget.isReceiver ? _sender : _receiver,
+          style: subHeaderTextStyle,
+        ),
+        new Container(
+          margin: new EdgeInsets.symmetric(vertical: 8.0),
+          height: 2.0,
+          width: 100.0,
+          color: new Color(0xff00c6ff),
+        ),
+        new Text(
+          'Date de Transfert',
+          style: headerTextStyle,
+        ),
+        SizedBox(height: 5),
+        new Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            new Icon(Icons.calendar_today),
             SizedBox(
-              height: 4.0,
+              width: 10,
             ),
             new Text(
-              'Montant: ' + widget.transfer.amount.toString() + ' FCFA',
-              style: headerTextStyle,
-            ),
-            new Container(
-              margin: new EdgeInsets.symmetric(vertical: 8.0),
-              height: 2.0,
-              width: 100.0,
-              color: new Color(0xff00c6ff),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            new Text(
-              widget.isReceiver ? _senderTitle : _receiverTitle,
-              style: headerTextStyle,
-            ),
-            SizedBox(height: 5),
-            new Text(
-              widget.isReceiver ? _sender : _receiver,
+              DateConverter.convertToString(
+                  widget.transfer.created_at, context),
               style: subHeaderTextStyle,
             ),
-            new Container(
-              margin: new EdgeInsets.symmetric(vertical: 8.0),
-              height: 2.0,
-              width: 100.0,
-              color: new Color(0xff00c6ff),
-            ),
-            new Text(
-              'Date de Transfert',
-              style: headerTextStyle,
-            ),
-            SizedBox(height: 5),
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new Icon(Icons.calendar_today),
-                SizedBox(
-                  width: 10,
-                ),
-                new Text(
-                  DateConverter.convertToString(
-                      widget.transfer.created_at, context),
-                  style: subHeaderTextStyle,
-                ),
-              ],
-            ),
-            isSendingAndDescriptionNotEmpty()
-                ? new Container(
-                    margin: new EdgeInsets.symmetric(vertical: 8.0),
-                    height: 2.0,
-                    width: 100.0,
-                    color: new Color(0xff00c6ff),
-                  )
-                : new Container(
-                    height: 0,
-                    width: 0,
-                  ),
-            isSendingAndDescriptionNotEmpty()
-                ? Text(
-                    'Description',
-                    style: headerTextStyle,
-                  )
-                : Container(
-                    width: 0,
-                    height: 0,
-                  ),
-            isSendingAndDescriptionNotEmpty()
-                ? buildDesscription()
-                : Container(
-                    width: 0,
-                    height: 0,
-                  ),
           ],
         ),
-      ),
+        isSendingAndDescriptionNotEmpty()
+            ? new Container(
+                margin: new EdgeInsets.symmetric(vertical: 8.0),
+                height: 2.0,
+                width: 100.0,
+                color: new Color(0xff00c6ff),
+              )
+            : new Container(
+                height: 0,
+                width: 0,
+              ),
+        isSendingAndDescriptionNotEmpty()
+            ? Text(
+                'Description',
+                style: headerTextStyle,
+              )
+            : Container(
+                width: 0,
+                height: 0,
+              ),
+        isSendingAndDescriptionNotEmpty()
+            ? buildDesscription()
+            : Container(
+                width: 0,
+                height: 0,
+              ),
+      ],
     );
   }
 

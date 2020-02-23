@@ -1,4 +1,9 @@
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/pages/popup/change_name_popup.dart';
+import 'package:epossa_app/pages/popup/change_password_popup.dart';
+import 'package:epossa_app/pages/popup/change_phonenumber_popup.dart';
+import 'package:epossa_app/pages/popup/finance_popup.dart';
+import 'package:epossa_app/pages/popup/popup_helper.dart';
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatefulWidget {
@@ -23,6 +28,106 @@ class _AccountPageState extends State<AccountPage> {
                   color: Colors.white,
                   fontSize: 40,
                   fontWeight: FontWeight.bold),
+            ),
+          ),
+          FadeAnimation(
+            1.3,
+            SizedBox(
+              height: 50.0,
+            ),
+          ),
+          buildListConfig(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildListConfig() {
+    return Container(
+      height: 300,
+      child: ListView(
+        children: <Widget>[
+          FadeAnimation(
+            1.6,
+            ListTile(
+              onTap: () => PopupHelper.showPopup(context, FinancePopup(), 'Mes finances'),
+              leading: Icon(
+                Icons.attach_money,
+                color: Colors.white,
+              ),
+              title: Text(
+                "Mes finances",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          SizedBox(height: 10,),
+          FadeAnimation(
+            1.6,
+            ListTile(
+              onTap: () => PopupHelper.showPopup(context, ChangeNamePopup(), 'Changement de nom'),
+              leading: Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              title: Text(
+                "Change Name",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          SizedBox(height: 10,),
+          FadeAnimation(
+            1.9,
+            ListTile(
+              onTap: () => PopupHelper.showPopup(context, ChangePhonenumberPopup(), 'Changement de numéro de téléphone'),
+              leading: Icon(
+                Icons.phone_iphone,
+                color: Colors.white,
+              ),
+              title: Text(
+                "Change Phonenumber",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          SizedBox(height: 10,),
+          FadeAnimation(
+            2.2,
+            ListTile(
+              onTap: () => PopupHelper.showPopup(context, ChangePasswordPopup(), 'Changement de mot de passe'),
+              leading: Icon(
+                Icons.lock,
+                color: Colors.white,
+              ),
+              title: Text(
+                "Change Password",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+              ),
             ),
           ),
         ],

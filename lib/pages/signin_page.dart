@@ -182,11 +182,23 @@ class SignInPage extends StatelessWidget {
             Container(
               child: TextField(
                 obscureText: true,
+                keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     prefixIcon: Icon(Icons.lock),
                     hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
                     hintText: "Password"),
+              ),
+            ),
+            Container(
+              child: TextField(
+                obscureText: true,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    prefixIcon: Icon(Icons.lock),
+                    hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
+                    hintText: "Confirm Password"),
               ),
             ),
           ],

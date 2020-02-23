@@ -73,7 +73,7 @@ class _ReceivePopupState extends State<ReceivePopup> {
       Form(
         key: _formKey,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Container(
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
@@ -121,7 +121,7 @@ class _ReceivePopupState extends State<ReceivePopup> {
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.blue[800]),
+                    color: Color.fromRGBO(51, 51, 153, 1)),
                 child: RawMaterialButton(
                   onPressed: () => _generateQRCodeWithAmount(
                       int.parse(amountController.text)),
@@ -129,8 +129,10 @@ class _ReceivePopupState extends State<ReceivePopup> {
                     child: Text(
                       "QR-Code with amount",
                       style: TextStyle(
-                        color: Colors.white.withOpacity(.7),
-                      ),
+                          color: Colors.white,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'OpenSans'),
                     ),
                   ),
                 ),
@@ -140,15 +142,17 @@ class _ReceivePopupState extends State<ReceivePopup> {
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.blue[800]),
+                    color: Color.fromRGBO(51, 51, 153, 1)),
                 child: RawMaterialButton(
                   onPressed: () => _generateQRCode(),
                   child: Center(
                     child: Text(
                       "QR-Code",
                       style: TextStyle(
-                        color: Colors.white.withOpacity(.7),
-                      ),
+                          color: Colors.white,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'OpenSans'),
                     ),
                   ),
                 ),
