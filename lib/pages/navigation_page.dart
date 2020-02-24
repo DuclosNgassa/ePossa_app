@@ -1,3 +1,4 @@
+import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/pages/account_page.dart';
 import 'package:epossa_app/pages/history_page.dart';
 import 'package:epossa_app/pages/home_page.dart';
@@ -36,24 +37,30 @@ class _NavigationPageState extends State<NavigationPage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
             ),
-            title: Text('Home'),
+            title: Text(
+              AppLocalizations.of(context).translate('home'),
+            ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.monetization_on,
             ),
-            title: Text('History'),
+            title: Text(
+              AppLocalizations.of(context).translate('history'),
+            ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.account_circle,
             ),
-            title: Text('My Account'),
+            title: Text(
+              AppLocalizations.of(context).translate('my_account'),
+            ),
           ),
         ],
         type: BottomNavigationBarType.shifting,
@@ -62,7 +69,6 @@ class _NavigationPageState extends State<NavigationPage> {
         unselectedItemColor: Color.fromRGBO(112, 139, 245, 1),
         onTap: _onItemTapped,
       ),
-
       floatingActionButton: BoomMenu(
         animatedIcon: AnimatedIcons.menu_close,
         animatedIconTheme: IconThemeData(size: 22.0),
@@ -75,27 +81,30 @@ class _NavigationPageState extends State<NavigationPage> {
         children: [
           MenuItem(
             child: Icon(Icons.account_balance_wallet, color: Colors.white),
-            title: 'Payer',
+            title: AppLocalizations.of(context).translate('pay'),
             titleColor: Colors.white,
-            subtitle: "Achetez un service",
+            subtitle: AppLocalizations.of(context).translate('pay_service'),
             subTitleColor: Colors.white,
             backgroundColor: Colors.cyan,
-            onTap: () =>
-                PopupHelper.showPopup(context, PaymentPopup(), 'Payement de services'),
+            onTap: () => PopupHelper.showPopup(
+              context,
+              PaymentPopup(),
+              AppLocalizations.of(context).translate('pay_service'),
+            ),
           ),
           MenuItem(
             child: Icon(Icons.exit_to_app, color: Colors.white),
-            title: 'Vendre',
+            title: AppLocalizations.of(context).translate('sale'),
             titleColor: Colors.white,
-            subtitle: "Monetisez vos services",
+            subtitle: AppLocalizations.of(context)
+                .translate('monetize_your_services'),
             subTitleColor: Colors.white,
             backgroundColor: Colors.purple,
-            onTap: () =>
-                PopupHelper.showPopup(context, ReceivePopup(), 'Reception de fonds'),
+            onTap: () => PopupHelper.showPopup(context, ReceivePopup(),
+                AppLocalizations.of(context).translate('receipt_of_funds')),
           ),
         ],
       ),
     );
   }
-
 }

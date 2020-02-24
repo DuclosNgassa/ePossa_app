@@ -1,4 +1,5 @@
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class ChangePhonenumberPopup extends StatefulWidget {
@@ -74,7 +75,7 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
                 Container(
                   decoration: BoxDecoration(
                       border:
-                          Border(bottom: BorderSide(color: Colors.grey[300]))),
+                          Border(bottom: BorderSide(color: Colors.grey[300]),),),
                   child: TextFormField(
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
@@ -88,10 +89,10 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
                         prefixIcon: Icon(Icons.phone_iphone),
                         hintStyle:
                             TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: "Phone number"),
+                        hintText: AppLocalizations.of(context).translate('phonenumber')),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Please enter your Phone number';
+                        return AppLocalizations.of(context).translate('new_phonenumber_please');
                       }
                       return null;
                     },
@@ -122,7 +123,7 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
               onPressed: () => _save(),
               child: Center(
                 child: Text(
-                  "Save",
+                  AppLocalizations.of(context).translate('save'),
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.0,
@@ -143,8 +144,7 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
       child: FadeAnimation(
         2.3,
         Center(
-          child: Text(
-              "Entrez votre nouveau numero de téléphone."),
+          child: Text(AppLocalizations.of(context).translate('new_phonenumber'),),
         ),
       ),
     );

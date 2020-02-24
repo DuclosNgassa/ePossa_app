@@ -1,4 +1,5 @@
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class ChangeNamePopup extends StatefulWidget {
@@ -88,10 +89,10 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
                         prefixIcon: Icon(Icons.person),
                         hintStyle:
                             TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: "Name"),
+                        hintText: AppLocalizations.of(context).translate('name')),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Please enter your name';
+                        return AppLocalizations.of(context).translate('name_please');
                       }
                       return null;
                     },
@@ -122,7 +123,7 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
               onPressed: () => _save(),
               child: Center(
                 child: Text(
-                  "Save",
+                  AppLocalizations.of(context).translate('save'),
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.0,
@@ -143,8 +144,7 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
       child: FadeAnimation(
         2.3,
         Center(
-          child: Text(
-              "Entrez votre nouveau nom."),
+          child: Text(AppLocalizations.of(context).translate('new_name'),),
         ),
       ),
     );

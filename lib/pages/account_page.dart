@@ -1,4 +1,5 @@
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/user.dart';
 import 'package:epossa_app/pages/popup/change_name_popup.dart';
 import 'package:epossa_app/pages/popup/change_password_popup.dart';
@@ -45,7 +46,7 @@ class _AccountPageState extends State<AccountPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Account",
+              AppLocalizations.of(context).translate('my_account'),
               style: TextStyle(
                   color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
             ),
@@ -75,13 +76,13 @@ class _AccountPageState extends State<AccountPage> {
             1.6,
             ListTile(
               onTap: () => PopupHelper.showPopup(
-                  context, FinancePopup(), 'Mes finances'),
+                  context, FinancePopup(), AppLocalizations.of(context).translate('my_finance'),),
               leading: Icon(
                 Icons.attach_money,
                 color: Colors.white,
               ),
               title: Text(
-                "Mes finances",
+                AppLocalizations.of(context).translate('my_finance'),
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -99,13 +100,13 @@ class _AccountPageState extends State<AccountPage> {
             1.6,
             ListTile(
               onTap: () => PopupHelper.showPopup(
-                  context, ChangeNamePopup(), 'Changement de nom'),
+                  context, ChangeNamePopup(), AppLocalizations.of(context).translate('change_name'),),
               leading: Icon(
                 Icons.person,
                 color: Colors.white,
               ),
               title: Text(
-                "Change Name",
+                AppLocalizations.of(context).translate('change_name'),
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -125,13 +126,13 @@ class _AccountPageState extends State<AccountPage> {
               onTap: () => PopupHelper.showPopup(
                   context,
                   ChangePhonenumberPopup(),
-                  'Changement de numéro de téléphone'),
+                  AppLocalizations.of(context).translate('change_phonenumber'),),
               leading: Icon(
                 Icons.phone_iphone,
                 color: Colors.white,
               ),
               title: Text(
-                "Change Phonenumber",
+                AppLocalizations.of(context).translate('change_phonenumber'),
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -149,13 +150,13 @@ class _AccountPageState extends State<AccountPage> {
             2.2,
             ListTile(
               onTap: () => PopupHelper.showPopup(
-                  context, ChangePasswordPopup(), 'Changement de mot de passe'),
+                  context, ChangePasswordPopup(), AppLocalizations.of(context).translate('change_password'),),
               leading: Icon(
                 Icons.lock,
                 color: Colors.white,
               ),
               title: Text(
-                "Change Password",
+                AppLocalizations.of(context).translate('change_password'),
                 style: TextStyle(
                   color: Colors.white,
                 ),

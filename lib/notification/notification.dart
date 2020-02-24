@@ -1,3 +1,4 @@
+import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,11 +32,11 @@ class MyNotification {
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text("Non"),
+              child: Text(AppLocalizations.of(context).translate('no')),
               onPressed: onPressedNEIN,
             ),
             FlatButton(
-              child: Text("Oui"),
+              child: Text(AppLocalizations.of(context).translate('yes')),
               onPressed: onPressedJA,
             ),
           ],

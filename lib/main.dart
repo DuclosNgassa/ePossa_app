@@ -1,10 +1,19 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'localization/app_localizations.dart';
 import 'pages/login_page.dart';
 
-void main() => runApp(MyApp());
+void main(){
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
+    runApp(MyApp());
+  });
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -12,6 +21,27 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      supportedLocales: [
+        const Locale('fr', 'EN'), // French
+        const Locale('en', 'US'), // English
+        // ... other locales the app supports
+      ],
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      localeResolutionCallback: (locale, supportedLocales){
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode &&
+              supportedLocale.countryCode == locale.countryCode) {
+            return supportedLocale;
+          }
+        }
+        // If the locale of the device is not supported, use the first one from the list. In this case English
+        return supportedLocales.first;
+      },
       home: StartScreen(),
     );
   }
@@ -170,7 +200,7 @@ class _StartScreenState extends State<StartScreen>
                   FadeAnimation(
                     1.3,
                     Text(
-                      "Experimentez un mobile money sure et rapide comme vous ne verrez nullpart ailleurs.",
+                      AppLocalizations.of(context).translate('slash_message'),
                       style: TextStyle(
                           color: Colors.white.withOpacity(.7), height: 1.4),
                     ),

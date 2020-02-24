@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
@@ -99,14 +100,16 @@ class _PaymentPopupState extends State<PaymentPopup> {
                       _fieldFocusChange(_phoneFocusNode, _amountFocusNode);
                     },
                     decoration: InputDecoration(
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.phone_iphone),
-                        hintStyle:
-                            TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: "Phone number of recipient"),
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.phone_iphone),
+                      hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
+                      hintText: AppLocalizations.of(context)
+                          .translate('receiver_phonenumber'),
+                    ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Please enter Phone number of recipient';
+                        return AppLocalizations.of(context)
+                            .translate('receiver_phonenumber_please');
                       }
                       return null;
                     },
@@ -123,14 +126,16 @@ class _PaymentPopupState extends State<PaymentPopup> {
                           _amountFocusNode, _descriptionFocusNode);
                     },
                     decoration: InputDecoration(
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.attach_money),
-                        hintStyle:
-                            TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: "Montant"),
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.attach_money),
+                      hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
+                      hintText:
+                          AppLocalizations.of(context).translate('amount'),
+                    ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Please enter the amount to transfer';
+                        return AppLocalizations.of(context)
+                            .translate('transfer_amount_please');
                       }
                       return null;
                     },
@@ -147,11 +152,12 @@ class _PaymentPopupState extends State<PaymentPopup> {
                       //_submitForm();
                     },
                     decoration: InputDecoration(
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.insert_comment),
-                        hintStyle:
-                            TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: "Description"),
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.insert_comment),
+                      hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
+                      hintText:
+                          AppLocalizations.of(context).translate('description'),
+                    ),
                     maxLines: 5,
                   ),
                 ),
@@ -177,16 +183,17 @@ class _PaymentPopupState extends State<PaymentPopup> {
                   height: 50,
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(10),
                     gradient: LinearGradient(colors: [
                       Color.fromRGBO(143, 148, 251, 1),
                       Color.fromRGBO(143, 148, 251, 6),
-                    ]),),
+                    ]),
+                  ),
                   child: RawMaterialButton(
                     onPressed: () => _scan(),
                     child: Center(
                       child: Text(
-                        "Scan QR-Code",
+                        AppLocalizations.of(context).translate('scan_qr_code'),
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 14.0,
@@ -201,16 +208,18 @@ class _PaymentPopupState extends State<PaymentPopup> {
                   height: 50,
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(10),
                     gradient: LinearGradient(colors: [
                       Color.fromRGBO(143, 148, 251, 1),
                       Color.fromRGBO(143, 148, 251, 6),
-                    ]),),
+                    ]),
+                  ),
                   child: RawMaterialButton(
                     onPressed: () => _scanPhoto(),
                     child: Center(
                       child: Text(
-                        "QR-Code from gallery",
+                        AppLocalizations.of(context)
+                            .translate('scan_qr_code_gallery'),
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 14.0,
@@ -237,13 +246,14 @@ class _PaymentPopupState extends State<PaymentPopup> {
             height: 50,
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Color.fromRGBO(51, 51, 153, 1),),
+              borderRadius: BorderRadius.circular(10),
+              color: Color.fromRGBO(51, 51, 153, 1),
+            ),
             child: RawMaterialButton(
               onPressed: () => _submit(),
               child: Center(
                 child: Text(
-                  "Transferer",
+                  AppLocalizations.of(context).translate('transfer'),
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.0,
@@ -265,7 +275,8 @@ class _PaymentPopupState extends State<PaymentPopup> {
         2.3,
         Center(
           child: Text(
-              "Scannez le QR-Code du bénéficiare pour faire un transfert."),
+            AppLocalizations.of(context).translate('scan_for_transfer'),
+          ),
         ),
       ),
     );
@@ -290,8 +301,11 @@ class _PaymentPopupState extends State<PaymentPopup> {
   Future _submit() async {
     if (_formKey.currentState.validate()) {
       // If the form is valid, display a Snackbar.
-      Scaffold.of(context)
-          .showSnackBar(SnackBar(content: Text('Processing Data')));
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Processing Data'),
+        ),
+      );
     }
   }
 
@@ -317,5 +331,4 @@ class _PaymentPopupState extends State<PaymentPopup> {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
   }
-
 }

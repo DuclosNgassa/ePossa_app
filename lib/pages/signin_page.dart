@@ -1,4 +1,5 @@
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,12 +24,12 @@ class SignInPage extends StatelessWidget {
                 //crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  _buildBackground(),
+                  _buildBackground(context),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30),
                     child: Column(
                       children: <Widget>[
-                        _buildSigninInput(),
+                        _buildSigninInput(context),
                         SizedBox(
                           height: 30,
                         ),
@@ -56,7 +57,7 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  Container _buildBackground() {
+  Container _buildBackground(BuildContext context) {
     return Container(
       height: 320,
       decoration: BoxDecoration(
@@ -114,7 +115,7 @@ class SignInPage extends StatelessWidget {
           Positioned(
             child: Container(
               margin: EdgeInsets.only(top: 50),
-              child: _buildFormTitle(),
+              child: _buildFormTitle(context),
             ),
           ),
         ],
@@ -122,12 +123,12 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  Widget _buildFormTitle() {
+  Widget _buildFormTitle(BuildContext context) {
     return FadeAnimation(
       1.9,
       Center(
         child: Text(
-          "Enregistrement",
+          AppLocalizations.of(context).translate("signin"),
           style: TextStyle(
               color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
         ),
@@ -135,7 +136,7 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSigninInput() {
+  Widget _buildSigninInput(BuildContext context) {
     return FadeAnimation(
       2.2,
       Container(
@@ -162,7 +163,7 @@ class SignInPage extends StatelessWidget {
                     hintStyle: TextStyle(
                       color: Colors.grey.withOpacity(.8),
                     ),
-                    hintText: "Name"),
+                    hintText: AppLocalizations.of(context).translate("name"),),
               ),
             ),
             Container(
@@ -176,7 +177,7 @@ class SignInPage extends StatelessWidget {
                     hintStyle: TextStyle(
                       color: Colors.grey.withOpacity(.8),
                     ),
-                    hintText: "Phone number"),
+                    hintText: AppLocalizations.of(context).translate("phonenumber"),),
               ),
             ),
             Container(
@@ -187,7 +188,7 @@ class SignInPage extends StatelessWidget {
                     border: InputBorder.none,
                     prefixIcon: Icon(Icons.lock),
                     hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
-                    hintText: "Password"),
+                    hintText: AppLocalizations.of(context).translate("password"),),
               ),
             ),
             Container(
@@ -198,7 +199,7 @@ class SignInPage extends StatelessWidget {
                     border: InputBorder.none,
                     prefixIcon: Icon(Icons.lock),
                     hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
-                    hintText: "Confirm Password"),
+                    hintText: AppLocalizations.of(context).translate("password_repeat"),),
               ),
             ),
           ],
@@ -223,7 +224,7 @@ class SignInPage extends StatelessWidget {
               ])),
           child: Center(
             child: Text(
-              "SIGN IN",
+              AppLocalizations.of(context).translate("signin").toUpperCase(),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 18.0,
@@ -244,14 +245,14 @@ class SignInPage extends StatelessWidget {
         child: RichText(
           text: TextSpan(children: [
             TextSpan(
-              text: 'Deja enregistré? ',
+              text: AppLocalizations.of(context).translate("already_registered"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
                   fontSize: 18.0,
                   fontWeight: FontWeight.w400),
             ),
             TextSpan(
-              text: 'Connectez vous',
+              text: AppLocalizations.of(context).translate("to_login"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
                   fontSize: 18.0,
@@ -285,7 +286,7 @@ class SignInPage extends StatelessWidget {
         child: RichText(
           text: TextSpan(children: [
             TextSpan(
-              text: 'Mot de passe oublié? ',
+              text: AppLocalizations.of(context).translate("forgot_password"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
                   fontSize: 18.0,

@@ -1,6 +1,7 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/converter/date_converter.dart';
 import 'package:epossa_app/custom_widget/transfer_card.dart';
+import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/transfer.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/services/transfer_service.dart';
@@ -52,7 +53,7 @@ class _HistoryPageState extends State<HistoryPage>
     return FadeAnimation(
       1.3,
       Text(
-        "History",
+        AppLocalizations.of(context).translate('history'),
         style: TextStyle(
             color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
       ),
@@ -67,10 +68,10 @@ class _HistoryPageState extends State<HistoryPage>
         controller: _tabController,
         tabs: <Widget>[
           Tab(
-            text: 'Reception',
+            text: AppLocalizations.of(context).translate('receiving'),
           ),
           Tab(
-            text: 'Envoi',
+            text: AppLocalizations.of(context).translate('sending'),
           ),
         ],
       )),
@@ -211,7 +212,7 @@ class _HistoryPageState extends State<HistoryPage>
                   vertical: 20,
                 ),
                 child: Text(
-                  "Vous n\´avez pas encore de transactions ",
+                  AppLocalizations.of(context).translate('no_transaction'),
                 ),
               ),
             );
@@ -219,8 +220,9 @@ class _HistoryPageState extends State<HistoryPage>
         } else if (snapshot.hasError) {
           MyNotification.showInfoFlushbar(
               context,
-              'Erreur',
-              'Erreur lors du chargement des transactions',
+              AppLocalizations.of(context).translate('error'),
+              AppLocalizations.of(context)
+                  .translate('error_loading_transactions'),
               Icon(
                 Icons.info_outline,
                 size: 28,
@@ -236,7 +238,9 @@ class _HistoryPageState extends State<HistoryPage>
               Image.asset(
                 "assets/gif/loading.gif",
               ),
-              Text("Chargement ..."),
+              Text(
+                AppLocalizations.of(context).translate('loading'),
+              ),
             ],
           ),
         );
@@ -259,7 +263,8 @@ class _HistoryPageState extends State<HistoryPage>
                   vertical: 20,
                 ),
                 child: Text(
-                  "Vous n\´avez pas encore de recu de transferts ",
+                  AppLocalizations.of(context)
+                      .translate('no_received_transaction'),
                 ),
               ),
             );
@@ -267,8 +272,9 @@ class _HistoryPageState extends State<HistoryPage>
         } else if (snapshot.hasError) {
           MyNotification.showInfoFlushbar(
               context,
-              'Erreur',
-              'Erreur lors du chargement des transactions',
+              AppLocalizations.of(context).translate('error'),
+              AppLocalizations.of(context)
+                  .translate('error_loading_transactions'),
               Icon(
                 Icons.info_outline,
                 size: 28,
@@ -284,7 +290,9 @@ class _HistoryPageState extends State<HistoryPage>
               Image.asset(
                 "assets/gif/loading.gif",
               ),
-              Text("Chargement ..."),
+              Text(
+                AppLocalizations.of(context).translate('loading'),
+              ),
             ],
           ),
         );

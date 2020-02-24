@@ -1,4 +1,5 @@
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/pages/signin_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +30,7 @@ class LoginPage extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 30),
                       child: Column(
                         children: <Widget>[
-                          _buildLoginInput(),
+                          _buildLoginInput(context),
                           SizedBox(
                             height: 30,
                           ),
@@ -137,7 +138,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _buildLoginInput() {
+  Widget _buildLoginInput(BuildContext context) {
     return FadeAnimation(
       2.2,
       Container(
@@ -165,7 +166,7 @@ class LoginPage extends StatelessWidget {
                     hintStyle: TextStyle(
                       color: Colors.grey.withOpacity(.8),
                     ),
-                    hintText: "Phone number"),
+                    hintText: AppLocalizations.of(context).translate("phonenumber"),),
               ),
             ),
             Container(
@@ -175,7 +176,7 @@ class LoginPage extends StatelessWidget {
                     border: InputBorder.none,
                     prefixIcon: Icon(Icons.lock),
                     hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
-                    hintText: "Password"),
+                    hintText: AppLocalizations.of(context).translate("password"),),
               ),
             ),
           ],
@@ -200,7 +201,7 @@ class LoginPage extends StatelessWidget {
               ])),
           child: Center(
             child: Text(
-              "LOGIN",
+              AppLocalizations.of(context).translate("login").toUpperCase(),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 18.0,
@@ -221,14 +222,14 @@ class LoginPage extends StatelessWidget {
         child: RichText(
           text: TextSpan(children: [
             TextSpan(
-              text: 'Pas encore de compte? ',
+              text: AppLocalizations.of(context).translate("no_account"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
                   fontSize: 18.0,
                   fontWeight: FontWeight.w400),
             ),
             TextSpan(
-              text: 'Créez un compte',
+              text: AppLocalizations.of(context).translate("create_account"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
                   fontSize: 18.0,
@@ -248,7 +249,7 @@ class LoginPage extends StatelessWidget {
         child: RichText(
           text: TextSpan(children: [
             TextSpan(
-              text: 'Mot de passe oublié? ',
+              text: AppLocalizations.of(context).translate("forgot_password"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
                   fontSize: 18.0,

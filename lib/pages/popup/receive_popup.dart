@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
@@ -98,7 +99,7 @@ class _ReceivePopupState extends State<ReceivePopup> {
                     hintStyle: TextStyle(
                       color: Colors.grey.withOpacity(.8),
                     ),
-                    hintText: "Amount"),
+                    hintText: AppLocalizations.of(context).translate('amount'),),
               ),
             ),
           ),
@@ -127,7 +128,7 @@ class _ReceivePopupState extends State<ReceivePopup> {
                       int.parse(amountController.text)),
                   child: Center(
                     child: Text(
-                      "QR-Code with amount",
+                      AppLocalizations.of(context).translate('qr_code_with_amount'),
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 14.0,
@@ -147,7 +148,7 @@ class _ReceivePopupState extends State<ReceivePopup> {
                   onPressed: () => _generateQRCode(),
                   child: Center(
                     child: Text(
-                      "QR-Code",
+                      AppLocalizations.of(context).translate('qr_code'),
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 14.0,
@@ -171,7 +172,7 @@ class _ReceivePopupState extends State<ReceivePopup> {
         2.1,
         Center(
           child: Text(
-              "Faites scanner votre QR-Code afin de recevoir votre argent."),
+              AppLocalizations.of(context).translate('scan_qrcode_to_receive_money'),),
         ),
       ),
     );

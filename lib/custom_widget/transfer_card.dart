@@ -1,4 +1,5 @@
 import 'package:epossa_app/converter/date_converter.dart';
+import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/transfer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,10 +64,10 @@ class _TransferCardState extends State<TransferCard> {
   }
 
   Widget _buildCard() {
-    String _receiverTitle = 'Bénéficiaire';
+    String _receiverTitle = AppLocalizations.of(context).translate('receiver');
     String _receiver = widget.transfer.phone_number_receiver;
 
-    String _senderTitle = 'Expéditeur';
+    String _senderTitle = AppLocalizations.of(context).translate('sender');;
     String _sender = widget.transfer.phone_number_sender;
 
     return new Column(
@@ -75,7 +76,7 @@ class _TransferCardState extends State<TransferCard> {
           height: 4.0,
         ),
         new Text(
-          'Montant',
+          AppLocalizations.of(context).translate('amount'),
           style: headerTextStyle,
         ),
         new Text(
@@ -107,7 +108,7 @@ class _TransferCardState extends State<TransferCard> {
           color: new Color(0xff00c6ff),
         ),
         new Text(
-          'Date de Transfert',
+          AppLocalizations.of(context).translate('transfer_date'),
           style: headerTextStyle,
         ),
         SizedBox(height: 5),
@@ -138,7 +139,7 @@ class _TransferCardState extends State<TransferCard> {
               ),
         isSendingAndDescriptionNotEmpty()
             ? Text(
-                'Description',
+          AppLocalizations.of(context).translate('description'),
                 style: headerTextStyle,
               )
             : Container(

@@ -26,7 +26,9 @@ class PopupHelper{
                   onPressed: () {
                     try {
                       Navigator.pop(context); //close the popup
-                    } catch (e) {}
+                    } catch (e) {
+                      print(e.toString());
+                    }
                   },
                 );
               }),

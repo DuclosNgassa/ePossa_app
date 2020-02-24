@@ -1,4 +1,5 @@
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 import '../../password_helper.dart';
@@ -101,10 +102,10 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                         prefixIcon: Icon(Icons.person),
                         hintStyle:
                             TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: "Old Password"),
+                        hintText: AppLocalizations.of(context).translate('old_password')),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Please enter your old Password';
+                        return AppLocalizations.of(context).translate('old_password_please');
                       }
                       return null;
                     },
@@ -129,10 +130,10 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                         prefixIcon: Icon(Icons.lock),
                         hintStyle:
                             TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: "New Password"),
+                        hintText: AppLocalizations.of(context).translate('new_password'),),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Please enter your new Password';
+                        return AppLocalizations.of(context).translate('new_password');
                       }
                       return null;
                     },
@@ -156,10 +157,10 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                         prefixIcon: Icon(Icons.lock),
                         hintStyle:
                             TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: "Confirm New Password"),
+                        hintText: AppLocalizations.of(context).translate('confirm_new_password'),),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Please enter your new Password again';
+                        return AppLocalizations.of(context).translate('new_password_again');
                       }
                       return null;
                     },
@@ -191,7 +192,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
               onPressed: () => _save(),
               child: Center(
                 child: Text(
-                  "Save",
+                  AppLocalizations.of(context).translate('save'),
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.0,
@@ -212,7 +213,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
       child: FadeAnimation(
         2.3,
         Center(
-          child: Text("Entrez votre nouveau mot de passe."),
+          child: Text(AppLocalizations.of(context).translate('new_password_please'),),
         ),
       ),
     );
@@ -226,7 +227,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
   String _checkPassword() {
     if (!PasswordHelper.checkEqualPassword(
         _newPassword1Controller.text, _newPassword2Controller.text)) {
-      return 'Password1 and password 2 are different. Please correct them.';
+      return AppLocalizations.of(context).translate('password_different');
     }
     return null;
   }

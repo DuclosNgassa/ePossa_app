@@ -1,4 +1,5 @@
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class FinancePopup extends StatefulWidget {
@@ -59,11 +60,11 @@ class _FinancePopupState extends State<FinancePopup> {
           height: 4.0,
         ),
         new Text(
-          'Total montant recu',
+          AppLocalizations.of(context).translate('total_received_amount'),
           style: headerTextStyle,
         ),
         new Text(
-          "55000" + ' FCFA',
+          '55000' + ' FCFA',
           style: subHeaderTextStyle,
         ),
         new Container(
@@ -76,11 +77,11 @@ class _FinancePopupState extends State<FinancePopup> {
           height: 10.0,
         ),
         new Text(
-          'Total montant envoyé',
+          AppLocalizations.of(context).translate('total_sent_amount'),
           style: headerTextStyle,
         ),
         new Text(
-          "25000" + ' FCFA',
+          '25000' + ' FCFA',
           style: subHeaderTextStyle,
         ),
         new Container(
@@ -93,11 +94,11 @@ class _FinancePopupState extends State<FinancePopup> {
           height: 10.0,
         ),
         new Text(
-          'Differance',
+          AppLocalizations.of(context).translate('difference'),
           style: headerTextStyle,
         ),
         new Text(
-          "30000" + ' FCFA',
+          '30000' + ' FCFA',
           style: subHeaderTextStyle,
         ),
       ],
@@ -110,7 +111,9 @@ class _FinancePopupState extends State<FinancePopup> {
       child: FadeAnimation(
         1.6,
         Center(
-          child: Text("Etat de mes finances"),
+          child: Text(
+            AppLocalizations.of(context).translate('my_finance_status'),
+          ),
         ),
       ),
     );
