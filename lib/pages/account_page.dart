@@ -1,4 +1,5 @@
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/model/user.dart';
 import 'package:epossa_app/pages/popup/change_name_popup.dart';
 import 'package:epossa_app/pages/popup/change_password_popup.dart';
 import 'package:epossa_app/pages/popup/change_phonenumber_popup.dart';
@@ -22,13 +23,7 @@ class _AccountPageState extends State<AccountPage> {
         children: <Widget>[
           FadeAnimation(
             1.3,
-            Text(
-              "Account",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold),
-            ),
+            _buildHeader(),
           ),
           FadeAnimation(
             1.3,
@@ -36,13 +31,42 @@ class _AccountPageState extends State<AccountPage> {
               height: 50.0,
             ),
           ),
-          buildListConfig(),
+          _buildListConfig(),
         ],
       ),
     );
   }
 
-  Widget buildListConfig() {
+  Widget _buildHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "Account",
+              style: TextStyle(
+                  color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        SizedBox(height: 50,),
+        Text(
+          _getUser().name,
+          style: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          _getUser().phone_number,
+          style: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildListConfig() {
     return Container(
       height: 300,
       child: ListView(
@@ -50,7 +74,8 @@ class _AccountPageState extends State<AccountPage> {
           FadeAnimation(
             1.6,
             ListTile(
-              onTap: () => PopupHelper.showPopup(context, FinancePopup(), 'Mes finances'),
+              onTap: () => PopupHelper.showPopup(
+                  context, FinancePopup(), 'Mes finances'),
               leading: Icon(
                 Icons.attach_money,
                 color: Colors.white,
@@ -67,11 +92,14 @@ class _AccountPageState extends State<AccountPage> {
               ),
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           FadeAnimation(
             1.6,
             ListTile(
-              onTap: () => PopupHelper.showPopup(context, ChangeNamePopup(), 'Changement de nom'),
+              onTap: () => PopupHelper.showPopup(
+                  context, ChangeNamePopup(), 'Changement de nom'),
               leading: Icon(
                 Icons.person,
                 color: Colors.white,
@@ -88,11 +116,16 @@ class _AccountPageState extends State<AccountPage> {
               ),
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           FadeAnimation(
             1.9,
             ListTile(
-              onTap: () => PopupHelper.showPopup(context, ChangePhonenumberPopup(), 'Changement de numéro de téléphone'),
+              onTap: () => PopupHelper.showPopup(
+                  context,
+                  ChangePhonenumberPopup(),
+                  'Changement de numéro de téléphone'),
               leading: Icon(
                 Icons.phone_iphone,
                 color: Colors.white,
@@ -109,11 +142,14 @@ class _AccountPageState extends State<AccountPage> {
               ),
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           FadeAnimation(
             2.2,
             ListTile(
-              onTap: () => PopupHelper.showPopup(context, ChangePasswordPopup(), 'Changement de mot de passe'),
+              onTap: () => PopupHelper.showPopup(
+                  context, ChangePasswordPopup(), 'Changement de mot de passe'),
               leading: Icon(
                 Icons.lock,
                 color: Colors.white,
@@ -133,5 +169,14 @@ class _AccountPageState extends State<AccountPage> {
         ],
       ),
     );
+  }
+
+  User _getUser() {
+    User user = new User();
+    user.phone_number = "00237 67 45 34 98";
+    user.name = "Max Mustermann";
+    user.balance = 37250;
+
+    return user;
   }
 }
