@@ -89,8 +89,10 @@ class _PaymentPopupState extends State<PaymentPopup> {
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
-                      border:
-                          Border(bottom: BorderSide(color: Colors.grey[300]))),
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey[300]),
+                    ),
+                  ),
                   child: TextFormField(
                     controller: _phoneNumberController,
                     keyboardType: TextInputType.phone,
@@ -116,6 +118,11 @@ class _PaymentPopupState extends State<PaymentPopup> {
                   ),
                 ),
                 Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey[300]),
+                    ),
+                  ),
                   child: TextFormField(
                     controller: _amountController,
                     keyboardType: TextInputType.number,

@@ -1,6 +1,7 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/pages/signin_page.dart';
+import 'package:epossa_app/util/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,6 +10,7 @@ import 'navigation_page.dart';
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Colors.white,
       //backgroundColor: Color.fromRGBO(102, 0, 204, 50),
@@ -17,35 +19,35 @@ class LoginPage extends StatelessWidget {
         value: SystemUiOverlayStyle.light,
         child: Center(
           child: Container(
+            height: SizeConfig.screenHeight,
+            width: SizeConfig.screenWidth,
             //padding: EdgeInsets.all(30),
             child: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
               child: SingleChildScrollView(
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   //crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    _buildBackground(),
+                    _buildBackground(context),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 30),
+                      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeVertical * 5),
                       child: Column(
                         children: <Widget>[
                           _buildLoginInput(context),
                           SizedBox(
-                            height: 30,
+                            height: SizeConfig.blockSizeVertical * 2,
                           ),
                           _buildLoginButton(context),
                           SizedBox(
-                            height: 30,
+                            height: SizeConfig.blockSizeVertical * 2,
                           ),
                           _buildSignInButton(context),
                           SizedBox(
-                            height: 20,
+                            height: SizeConfig.blockSizeVertical * 3,
                           ),
                           _buildPasswordForgottenButton(context),
-                          SizedBox(
-                            height: 50,
-                          ),
                         ],
                       ),
                     ),
@@ -59,9 +61,9 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBackground() {
+  Widget _buildBackground(BuildContext context) {
     return Container(
-      height: 360,
+      height: SizeConfig.screenHeight * 0.5,
       decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage('assets/images/background.png'),
@@ -69,9 +71,9 @@ class LoginPage extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Positioned(
-            left: 30,
-            width: 80,
-            height: 200,
+            left: SizeConfig.blockSizeHorizontal * 6,
+            width: SizeConfig.blockSizeHorizontal * 20,
+            height: SizeConfig.blockSizeVertical * 35,
             child: FadeAnimation(
               1,
               Container(
@@ -84,9 +86,9 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           Positioned(
-            left: 140,
-            width: 80,
-            height: 150,
+            left: SizeConfig.blockSizeHorizontal * 35,
+            width: SizeConfig.blockSizeHorizontal * 25,
+            height: SizeConfig.blockSizeVertical * 22,
             child: FadeAnimation(
               1.3,
               Container(
@@ -99,10 +101,10 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           Positioned(
-            right: 40,
-            top: 40,
-            width: 80,
-            height: 150,
+            right: SizeConfig.blockSizeHorizontal * 10,
+            top: SizeConfig.blockSizeVertical * 5,
+            width: SizeConfig.blockSizeHorizontal * 25,
+            height: SizeConfig.blockSizeVertical * 22,
             child: FadeAnimation(
               1.6,
               Container(
@@ -116,8 +118,8 @@ class LoginPage extends StatelessWidget {
           ),
           Positioned(
             child: Container(
-              margin: EdgeInsets.only(top: 50),
-              child: _buildFormTitle(),
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 10),
+              child: _buildFormTitle(context),
             ),
           ),
         ],
@@ -125,12 +127,11 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _buildFormTitle() {
+  Widget _buildFormTitle(BuildContext context) {
     return FadeAnimation(
       1.9,
       Center(
-        child: Text(
-          "Login",
+        child: Text(AppLocalizations.of(context).translate("login"),
           style: TextStyle(
               color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
         ),
@@ -192,7 +193,7 @@ class LoginPage extends StatelessWidget {
         onTap: () => _login(context),
         child: Container(
           //width: 120,
-          height: 50,
+          height: SizeConfig.blockSizeVertical * 8,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               gradient: LinearGradient(colors: [

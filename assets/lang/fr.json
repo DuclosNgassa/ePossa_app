@@ -52,7 +52,7 @@
   "home": "Accueil",
   "login": "Connection",
   "to_login": "Connectez vous",
-  "no_account": "Pas encore de compte?",
+  "no_account": "Pas encore de compte? ",
   "create_account": "Créez un compte",
   "forgot_password": "Mot de passe oublié?",
   "pay": "Payer",
@@ -61,6 +61,6 @@
   "monetize_your_services": "Monetisez vos services",
   "receipt_of_funds": "Receipt of funds",
   "signin": "Enregistrement",
-  "already_registered": "Already registered?",
+  "already_registered": "Already registered? ",
   "slash_message": "Experimentez un mobile money sure et rapide comme vous ne verrez nullpart ailleurs"
 }

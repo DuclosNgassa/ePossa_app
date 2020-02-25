@@ -88,8 +88,6 @@ class _ReceivePopupState extends State<ReceivePopup> {
                 ],
                 color: Colors.white),
             child: Container(
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey[300]))),
               child: TextFormField(
                 controller: amountController,
                 keyboardType: TextInputType.number,

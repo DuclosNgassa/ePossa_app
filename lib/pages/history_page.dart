@@ -5,6 +5,7 @@ import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/transfer.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/services/transfer_service.dart';
+import 'package:epossa_app/util/size_config.dart';
 import 'package:flutter/material.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -35,8 +36,9 @@ class _HistoryPageState extends State<HistoryPage>
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Container(
-      padding: EdgeInsets.all(30),
+      padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5,right: SizeConfig.blockSizeHorizontal * 5, top: SizeConfig.blockSizeVertical *5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -82,7 +84,7 @@ class _HistoryPageState extends State<HistoryPage>
     return FadeAnimation(
       1.9,
       Container(
-        height: 420.0,
+        height: SizeConfig.screenHeight * 0.69,
         child: TabBarView(
           controller: _tabController,
           children: <Widget>[
@@ -99,7 +101,7 @@ class _HistoryPageState extends State<HistoryPage>
         itemCount: receives.length,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
+            padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10), color: Colors.white),
@@ -153,7 +155,7 @@ class _HistoryPageState extends State<HistoryPage>
         itemCount: transfers.length,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
+            padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10), color: Colors.white),
@@ -208,8 +210,8 @@ class _HistoryPageState extends State<HistoryPage>
             return new Center(
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 20,
+                  horizontal: SizeConfig.blockSizeHorizontal * 4,
+                  vertical: SizeConfig.blockSizeVertical * 4,
                 ),
                 child: Text(
                   AppLocalizations.of(context).translate('no_transaction'),
@@ -259,8 +261,8 @@ class _HistoryPageState extends State<HistoryPage>
             return new Center(
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 20,
+                  horizontal: SizeConfig.blockSizeHorizontal * 4,
+                  vertical: SizeConfig.blockSizeVertical * 4,
                 ),
                 child: Text(
                   AppLocalizations.of(context)

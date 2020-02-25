@@ -1,6 +1,7 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/pages/login_page.dart';
+import 'package:epossa_app/util/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,6 +10,7 @@ import 'navigation_page.dart';
 class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Colors.white,
       //backgroundColor: Color.fromRGBO(102, 0, 204, 50),
@@ -16,6 +18,8 @@ class SignInPage extends StatelessWidget {
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Container(
+          height: SizeConfig.screenHeight,
+          width: SizeConfig.screenWidth,
           //padding: EdgeInsets.all(30),
           child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
@@ -26,25 +30,22 @@ class SignInPage extends StatelessWidget {
                 children: <Widget>[
                   _buildBackground(context),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeVertical * 5),
                     child: Column(
                       children: <Widget>[
                         _buildSigninInput(context),
                         SizedBox(
-                          height: 30,
+                          height: SizeConfig.blockSizeVertical * 2,
                         ),
                         _buildSigninButton(context),
                         SizedBox(
-                          height: 30,
+                          height: SizeConfig.blockSizeVertical * 2,
                         ),
                         _buildLoginButton(context),
                         SizedBox(
-                          height: 20,
+                          height: SizeConfig.blockSizeVertical * 2,
                         ),
                         _buildPasswordForgottenButton(context),
-                        SizedBox(
-                          height: 50,
-                        ),
                       ],
                     ),
                   ),
@@ -59,7 +60,7 @@ class SignInPage extends StatelessWidget {
 
   Container _buildBackground(BuildContext context) {
     return Container(
-      height: 320,
+      height: SizeConfig.screenHeight * 0.4,
       decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage('assets/images/background.png'),
@@ -67,9 +68,9 @@ class SignInPage extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Positioned(
-            left: 30,
-            width: 80,
-            height: 160,
+            left: SizeConfig.blockSizeHorizontal * 6,
+            width: SizeConfig.blockSizeHorizontal * 20,
+            height: SizeConfig.blockSizeVertical * 35,
             child: FadeAnimation(
               1,
               Container(
@@ -82,9 +83,9 @@ class SignInPage extends StatelessWidget {
             ),
           ),
           Positioned(
-            left: 140,
-            width: 80,
-            height: 110,
+            left: SizeConfig.blockSizeHorizontal * 35,
+            width: SizeConfig.blockSizeHorizontal * 25,
+            height: SizeConfig.blockSizeVertical * 22,
             child: FadeAnimation(
               1.3,
               Container(
@@ -97,10 +98,10 @@ class SignInPage extends StatelessWidget {
             ),
           ),
           Positioned(
-            right: 40,
-            top: 40,
-            width: 80,
-            height: 110,
+            right: SizeConfig.blockSizeHorizontal * 10,
+            top: SizeConfig.blockSizeVertical * 5,
+            width: SizeConfig.blockSizeHorizontal * 25,
+            height: SizeConfig.blockSizeVertical * 22,
             child: FadeAnimation(
               1.6,
               Container(
@@ -114,7 +115,7 @@ class SignInPage extends StatelessWidget {
           ),
           Positioned(
             child: Container(
-              margin: EdgeInsets.only(top: 50),
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 10),
               child: _buildFormTitle(context),
             ),
           ),
@@ -155,7 +156,7 @@ class SignInPage extends StatelessWidget {
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey[300]))),
+                  border: Border(bottom: BorderSide(color: Colors.grey[300]),),),
               child: TextField(
                 decoration: InputDecoration(
                     border: InputBorder.none,
@@ -168,7 +169,7 @@ class SignInPage extends StatelessWidget {
             ),
             Container(
               decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey[300]))),
+                  border: Border(bottom: BorderSide(color: Colors.grey[300]),),),
               child: TextField(
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
@@ -181,6 +182,8 @@ class SignInPage extends StatelessWidget {
               ),
             ),
             Container(
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: Colors.grey[300]),),),
               child: TextField(
                 obscureText: true,
                 keyboardType: TextInputType.text,
@@ -215,7 +218,7 @@ class SignInPage extends StatelessWidget {
         onTap: () => _signIn(context),
         child: Container(
           //width: 120,
-          height: 50,
+          height: SizeConfig.blockSizeVertical * 8,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               gradient: LinearGradient(colors: [
