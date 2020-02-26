@@ -1,5 +1,6 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
+import 'package:epossa_app/util/size_config.dart';
 import 'package:flutter/material.dart';
 
 import '../../password_helper.dart';
@@ -46,6 +47,8 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -53,10 +56,10 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
         children: <Widget>[
           _buildInputForm(),
           SizedBox(
-            height: 40,
+            height: SizeConfig.blockSizeVertical * 8,
           ),
           _buildSaveButtons(),
-          SizedBox(height: 20),
+          SizedBox(height: SizeConfig.blockSizeVertical * 5,),
           _buildFooterMessage(),
         ],
       ),
@@ -67,7 +70,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
     return FadeAnimation(
       1.5,
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5,),
         child: Form(
           key: _formKey,
           child: Container(
@@ -176,14 +179,12 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
 
   Widget _buildSaveButtons() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
       child: FadeAnimation(
         2,
         Center(
           child: Container(
-            //width: 120,
-            height: 50,
-            padding: EdgeInsets.all(15),
+            height:  SizeConfig.blockSizeVertical * 8,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Color.fromRGBO(51, 51, 153, 1),
@@ -209,7 +210,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
 
   Widget _buildFooterMessage() {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5, vertical:  SizeConfig.blockSizeVertical * 4),
       child: FadeAnimation(
         2.3,
         Center(

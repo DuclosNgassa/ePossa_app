@@ -6,6 +6,7 @@ import 'package:epossa_app/pages/popup/change_password_popup.dart';
 import 'package:epossa_app/pages/popup/change_phonenumber_popup.dart';
 import 'package:epossa_app/pages/popup/finance_popup.dart';
 import 'package:epossa_app/pages/popup/popup_helper.dart';
+import 'package:epossa_app/util/size_config.dart';
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatefulWidget {
@@ -16,8 +17,11 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return Container(
-      padding: EdgeInsets.all(30),
+//      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5, vertical:  SizeConfig.blockSizeVertical * 4),
+      padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5,right: SizeConfig.blockSizeHorizontal * 5, top: SizeConfig.blockSizeVertical *5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -29,7 +33,7 @@ class _AccountPageState extends State<AccountPage> {
           FadeAnimation(
             1.3,
             SizedBox(
-              height: 50.0,
+              height: SizeConfig.blockSizeVertical * 5,
             ),
           ),
           _buildListConfig(),
@@ -52,7 +56,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ],
         ),
-        SizedBox(height: 50,),
+        SizedBox(height: SizeConfig.blockSizeVertical * 5,),
         Text(
           _getUser().name,
           style: TextStyle(
@@ -69,7 +73,7 @@ class _AccountPageState extends State<AccountPage> {
 
   Widget _buildListConfig() {
     return Container(
-      height: 300,
+      height: SizeConfig.screenHeight * 0.5,
       child: ListView(
         children: <Widget>[
           FadeAnimation(
@@ -94,7 +98,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
           SizedBox(
-            height: 10,
+            height: SizeConfig.blockSizeVertical * 1.5,
           ),
           FadeAnimation(
             1.6,
@@ -118,7 +122,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
           SizedBox(
-            height: 10,
+            height: SizeConfig.blockSizeVertical * 1.5,
           ),
           FadeAnimation(
             1.9,
@@ -144,7 +148,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
           SizedBox(
-            height: 10,
+            height: SizeConfig.blockSizeVertical * 1.5,
           ),
           FadeAnimation(
             2.2,

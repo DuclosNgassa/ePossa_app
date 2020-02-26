@@ -1,5 +1,6 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
+import 'package:epossa_app/util/size_config.dart';
 import 'package:flutter/material.dart';
 
 class FinancePopup extends StatefulWidget {
@@ -20,16 +21,18 @@ class _FinancePopupState extends State<FinancePopup> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(top: 20.0),
+          padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 4),
           child: FadeAnimation(
             1.3,
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              height: 250,
+              padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 2),
+              height: SizeConfig.screenHeight * 0.4,
               //margin: new EdgeInsets.fromLTRB(76.0, 16.0, 16.0, 16.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -57,7 +60,7 @@ class _FinancePopupState extends State<FinancePopup> {
     return Column(
       children: <Widget>[
         SizedBox(
-          height: 4.0,
+          height: SizeConfig.blockSizeVertical,
         ),
         new Text(
           AppLocalizations.of(context).translate('total_received_amount'),
@@ -68,13 +71,13 @@ class _FinancePopupState extends State<FinancePopup> {
           style: subHeaderTextStyle,
         ),
         new Container(
-          margin: new EdgeInsets.symmetric(vertical: 8.0),
-          height: 2.0,
-          width: 100.0,
+          margin: new EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical),
+          height: SizeConfig.blockSizeVertical * 0.25,
+          width: SizeConfig.screenWidth * 0.25,
           color: new Color(0xff00c6ff),
         ),
         SizedBox(
-          height: 10.0,
+            height: SizeConfig.blockSizeVertical * 1.5,
         ),
         new Text(
           AppLocalizations.of(context).translate('total_sent_amount'),
@@ -85,13 +88,13 @@ class _FinancePopupState extends State<FinancePopup> {
           style: subHeaderTextStyle,
         ),
         new Container(
-          margin: new EdgeInsets.symmetric(vertical: 8.0),
-          height: 2.0,
-          width: 100.0,
+          margin: new EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical),
+          height: SizeConfig.blockSizeVertical * 0.25,
+          width: SizeConfig.screenWidth * 0.25,
           color: new Color(0xff00c6ff),
         ),
         SizedBox(
-          height: 10.0,
+            height: SizeConfig.blockSizeVertical * 1.5,
         ),
         new Text(
           AppLocalizations.of(context).translate('difference'),
@@ -107,7 +110,7 @@ class _FinancePopupState extends State<FinancePopup> {
 
   Widget _buildFooterMessage() {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5, vertical:  SizeConfig.blockSizeVertical * 4),
       child: FadeAnimation(
         1.6,
         Center(
