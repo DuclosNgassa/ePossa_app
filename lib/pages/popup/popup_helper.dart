@@ -1,9 +1,9 @@
-import 'package:epossa_app/util/size_config.dart';
+import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../popup_content.dart';
-import '../popup_layout.dart';
+import 'controller/popup_content.dart';
+import 'controller/popup_layout.dart';
 
 class PopupHelper {
   static showPopup(BuildContext context, Widget widget, String title,

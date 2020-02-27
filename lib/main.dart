@@ -1,12 +1,12 @@
 import 'package:epossa_app/animations/fade_animation.dart';
-import 'package:epossa_app/util/size_config.dart';
+import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'localization/app_localizations.dart';
-import 'pages/login_page.dart';
+import 'pages/authentication/login_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -221,8 +221,8 @@ SizeConfig().init(context);
                               animation: _widthController,
                               builder: (context, child) => Container(
                                 width: _widthAnimation.value,
-                                height: SizeConfig.blockSizeVertical * 12,
-                                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
+                                height: SizeConfig.blockSizeVertical * 11,
+                                padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 3, vertical: SizeConfig.blockSizeVertical * 1.2),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50),
                                   color: Colors.blue.withOpacity(.4),
@@ -242,8 +242,8 @@ SizeConfig().init(context);
                                               Transform.scale(
                                             scale: _scale2Animation.value,
                                             child: Container(
-                                              width: SizeConfig.blockSizeHorizontal * 16,
-                                              height: SizeConfig.blockSizeHorizontal * 15,
+                                              width: SizeConfig.blockSizeHorizontal * 13,
+                                              height: SizeConfig.blockSizeHorizontal * 14,
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: Colors.blue),

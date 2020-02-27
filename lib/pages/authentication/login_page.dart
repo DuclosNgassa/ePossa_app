@@ -1,44 +1,36 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
-import 'package:epossa_app/pages/login_page.dart';
-import 'package:epossa_app/util/size_config.dart';
+import 'package:epossa_app/pages/authentication/signin_page.dart';
+import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'navigation_page.dart';
+import '../navigation/navigation_page.dart';
 
-class SignInPage extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _SignInPageState createState() => _SignInPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
-  TextEditingController _nameController = new TextEditingController();
+class _LoginPageState extends State<LoginPage> {
   TextEditingController _phoneNumberController = new TextEditingController();
-  TextEditingController _password1Controller = new TextEditingController();
-  TextEditingController _password2Controller = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
 
-  FocusNode _nameFocusNode;
   FocusNode _phoneNumberFocusNode;
-  FocusNode _password1FocusNode;
-  FocusNode _password2FocusNode;
+  FocusNode _passwordFocusNode;
 
   @override
   void initState() {
     super.initState();
-    _nameFocusNode = new FocusNode();
     _phoneNumberFocusNode = new FocusNode();
-    _password1FocusNode = new FocusNode();
-    _password2FocusNode = new FocusNode();
+    _passwordFocusNode = new FocusNode();
   }
 
   @override
   void dispose() {
     //Clean up the controller when the widget is disposed
-    _nameController.dispose();
     _phoneNumberController.dispose();
-    _password1Controller.dispose();
-    _password2Controller.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -49,39 +41,41 @@ class _SignInPageState extends State<SignInPage> {
       backgroundColor: Colors.white,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
-        child: Container(
-          height: SizeConfig.screenHeight,
-          width: SizeConfig.screenWidth,
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: SingleChildScrollView(
-              child: Column(
-                //crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  _buildBackground(context),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: SizeConfig.blockSizeVertical * 5),
-                    child: Column(
-                      children: <Widget>[
-                        _buildSigninInput(context),
-                        SizedBox(
-                          height: SizeConfig.blockSizeVertical * 2,
-                        ),
-                        _buildSigninButton(context),
-                        SizedBox(
-                          height: SizeConfig.blockSizeVertical * 2,
-                        ),
-                        _buildLoginButton(context),
-                        SizedBox(
-                          height: SizeConfig.blockSizeVertical * 2,
-                        ),
-                        _buildPasswordForgottenButton(context),
-                      ],
+        child: Center(
+          child: Container(
+            height: SizeConfig.screenHeight,
+            width: SizeConfig.screenWidth,
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    _buildBackground(context),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.blockSizeVertical * 5),
+                      child: Column(
+                        children: <Widget>[
+                          _buildLoginInput(context),
+                          SizedBox(
+                            height: SizeConfig.blockSizeVertical * 2,
+                          ),
+                          _buildLoginButton(context),
+                          SizedBox(
+                            height: SizeConfig.blockSizeVertical * 2,
+                          ),
+                          _buildSignInButton(context),
+                          SizedBox(
+                            height: SizeConfig.blockSizeVertical * 3,
+                          ),
+                          _buildPasswordForgottenButton(context),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -90,9 +84,9 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Container _buildBackground(BuildContext context) {
+  Widget _buildBackground(BuildContext context) {
     return Container(
-      height: SizeConfig.screenHeight * 0.4,
+      height: SizeConfig.screenHeight * 0.5,
       decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage('assets/images/background.png'),
@@ -161,7 +155,7 @@ class _SignInPageState extends State<SignInPage> {
       1.9,
       Center(
         child: Text(
-          AppLocalizations.of(context).translate("signin"),
+          AppLocalizations.of(context).translate("login"),
           style: TextStyle(
               color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
         ),
@@ -169,11 +163,11 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget _buildSigninInput(BuildContext context) {
+  Widget _buildLoginInput(BuildContext context) {
     return FadeAnimation(
       2.2,
       Container(
-        padding: EdgeInsets.all(5),
+        padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
@@ -188,49 +182,15 @@ class _SignInPageState extends State<SignInPage> {
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Colors.grey[300]),
-                ),
-              ),
+                  border: Border(bottom: BorderSide(color: Colors.grey[300]))),
               child: TextFormField(
                 autofocus: true,
-                keyboardType: TextInputType.text,
-                controller: _nameController,
-                textInputAction: TextInputAction.next,
-                focusNode: _nameFocusNode,
-                onFieldSubmitted: (term) {
-                  _fieldFocusChange(_nameFocusNode, _phoneNumberFocusNode);
-                },
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.person),
-                  hintStyle: TextStyle(
-                    color: Colors.grey.withOpacity(.8),
-                  ),
-                  hintText: AppLocalizations.of(context).translate("name"),
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return AppLocalizations.of(context)
-                        .translate('name_please');
-                  }
-                  return null;
-                },
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Colors.grey[300]),
-                ),
-              ),
-              child: TextFormField(
                 keyboardType: TextInputType.phone,
                 controller: _phoneNumberController,
                 textInputAction: TextInputAction.next,
                 focusNode: _phoneNumberFocusNode,
                 onFieldSubmitted: (term) {
-                  _fieldFocusChange(_phoneNumberFocusNode, _password1FocusNode);
+                  _fieldFocusChange(_phoneNumberFocusNode, _passwordFocusNode);
                 },
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -251,19 +211,12 @@ class _SignInPageState extends State<SignInPage> {
               ),
             ),
             Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Colors.grey[300]),
-                ),
-              ),
               child: TextFormField(
                 obscureText: true,
-                keyboardType: TextInputType.text,
-                controller: _password1Controller,
-                textInputAction: TextInputAction.next,
-                focusNode: _password1FocusNode,
+                controller: _passwordController,
+                focusNode: _passwordFocusNode,
                 onFieldSubmitted: (term) {
-                  _fieldFocusChange(_password1FocusNode, _password2FocusNode);
+                  //TODO doLogin()
                 },
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -280,35 +233,17 @@ class _SignInPageState extends State<SignInPage> {
                 },
               ),
             ),
-            Container(
-              child: TextFormField(
-                obscureText: true,
-                keyboardType: TextInputType.text,
-                controller: _password2Controller,
-                focusNode: _password2FocusNode,
-                onFieldSubmitted: (term) {
-                  //TODO doSignIn()
-                },
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.lock),
-                  hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
-                  hintText:
-                      AppLocalizations.of(context).translate("password_repeat"),
-                ),
-              ),
-            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSigninButton(BuildContext context) {
+  Widget _buildLoginButton(BuildContext context) {
     return FadeAnimation(
       2.5,
       GestureDetector(
-        onTap: () => _signIn(context),
+        onTap: () => _login(context),
         child: Container(
           //width: 120,
           height: SizeConfig.blockSizeVertical * 8,
@@ -320,7 +255,7 @@ class _SignInPageState extends State<SignInPage> {
               ])),
           child: Center(
             child: Text(
-              AppLocalizations.of(context).translate("signin").toUpperCase(),
+              AppLocalizations.of(context).translate("login").toUpperCase(),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 18.0,
@@ -333,23 +268,22 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget _buildLoginButton(BuildContext context) {
+  Widget _buildSignInButton(BuildContext context) {
     return FadeAnimation(
       2.8,
       GestureDetector(
-        onTap: () => _login(context),
+        onTap: () => _signIn(context),
         child: RichText(
           text: TextSpan(children: [
             TextSpan(
-              text:
-                  AppLocalizations.of(context).translate("already_registered"),
+              text: AppLocalizations.of(context).translate("no_account"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
                   fontSize: 18.0,
                   fontWeight: FontWeight.w400),
             ),
             TextSpan(
-              text: AppLocalizations.of(context).translate("to_login"),
+              text: AppLocalizations.of(context).translate("create_account"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
                   fontSize: 18.0,
@@ -358,20 +292,6 @@ class _SignInPageState extends State<SignInPage> {
           ]),
         ),
       ),
-    );
-  }
-
-  _signIn(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => NavigationPage()),
-    );
-  }
-
-  _login(BuildContext context) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
     );
   }
 
@@ -395,9 +315,22 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
+  _login(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => NavigationPage()),
+    );
+  }
+
+  _signIn(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SignInPage()),
+    );
+  }
+
   _fieldFocusChange(FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
   }
-
 }

@@ -1,7 +1,7 @@
 import 'package:epossa_app/localization/app_localizations.dart';
-import 'package:epossa_app/pages/account_page.dart';
-import 'package:epossa_app/pages/history_page.dart';
-import 'package:epossa_app/pages/home_page.dart';
+import 'package:epossa_app/pages/account/account_page.dart';
+import 'package:epossa_app/pages/history/history_page.dart';
+import 'package:epossa_app/pages/home/home_page.dart';
 import 'package:epossa_app/pages/popup/payment_popup.dart';
 import 'package:epossa_app/pages/popup/popup_helper.dart';
 import 'package:epossa_app/pages/popup/receive_popup.dart';

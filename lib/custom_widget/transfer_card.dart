@@ -1,6 +1,8 @@
 import 'package:epossa_app/converter/date_converter.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/transfer.dart';
+import 'package:epossa_app/styling/size_config.dart';
+import 'package:epossa_app/styling/styling.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -22,18 +24,11 @@ class _TransferCardState extends State<TransferCard> {
 
   _TransferCardState(this.transfer, this.isReceiver);
 
-  static final baseTextStyle = const TextStyle(fontFamily: 'Poppins');
-
-  final headerTextStyle = baseTextStyle.copyWith(
-      color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w600);
-
-  static final regularTextStyle = baseTextStyle.copyWith(
-      color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w400);
-
-  final subHeaderTextStyle = regularTextStyle.copyWith(fontSize: 16.0);
-
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    Styling().init(context);
+
     return Column(
       children: <Widget>[
         Center(
@@ -76,11 +71,11 @@ class _TransferCardState extends State<TransferCard> {
         ),
         new Text(
           AppLocalizations.of(context).translate('amount'),
-          style: headerTextStyle,
+          style: Styling.headerTextStyle,
         ),
         new Text(
           widget.transfer.amount.toString() + ' FCFA',
-          style: subHeaderTextStyle,
+          style: Styling.subHeaderTextStyle,
         ),
         new Container(
           margin: new EdgeInsets.symmetric(vertical: 8.0),
@@ -93,12 +88,12 @@ class _TransferCardState extends State<TransferCard> {
         ),
         new Text(
           widget.isReceiver ? _senderTitle : _receiverTitle,
-          style: headerTextStyle,
+          style: Styling.headerTextStyle,
         ),
         SizedBox(height: 5),
         new Text(
           widget.isReceiver ? _sender : _receiver,
-          style: subHeaderTextStyle,
+          style: Styling.subHeaderTextStyle,
         ),
         new Container(
           margin: new EdgeInsets.symmetric(vertical: 8.0),
@@ -108,7 +103,7 @@ class _TransferCardState extends State<TransferCard> {
         ),
         new Text(
           AppLocalizations.of(context).translate('transfer_date'),
-          style: headerTextStyle,
+          style: Styling.headerTextStyle,
         ),
         SizedBox(height: 5),
         new Row(
@@ -121,7 +116,7 @@ class _TransferCardState extends State<TransferCard> {
             new Text(
               DateConverter.convertToString(
                   widget.transfer.created_at, context),
-              style: subHeaderTextStyle,
+              style: Styling.subHeaderTextStyle,
             ),
           ],
         ),
@@ -139,7 +134,7 @@ class _TransferCardState extends State<TransferCard> {
         isSendingAndDescriptionNotEmpty()
             ? Text(
                 AppLocalizations.of(context).translate('description'),
-                style: headerTextStyle,
+                style: Styling.headerTextStyle,
               )
             : Container(
                 width: 0,
@@ -165,7 +160,7 @@ class _TransferCardState extends State<TransferCard> {
     return Expanded(
       child: new Text(
         widget.transfer.description,
-        style: subHeaderTextStyle,
+        style: Styling.subHeaderTextStyle,
       ),
     );
   }

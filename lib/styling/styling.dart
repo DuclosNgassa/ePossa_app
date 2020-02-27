@@ -1,20 +1,10 @@
+import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'global.dart';
+import 'my_color.dart';
 
-class SizeConfig {
-  static MediaQueryData _mediaQueryData;
-  static double screenWidth;
-  static double screenHeight;
-  static double blockSizeHorizontal;
-  static double blockSizeVertical;
-
-  static double _safeAreaHorizontal;
-  static double _safeAreaVertical;
-  static double safeBlockHorizontal;
-  static double safeBlockVertical;
-
+class Styling {
   static double BUTTON_FONT_SIZE;
 
   static TextStyle styleTitleBlack;
@@ -30,6 +20,10 @@ class SizeConfig {
   static TextStyle styleNormalBlack3;
   static TextStyle styleButtonWhite;
   static TextStyle styleFormGrey;
+  static TextStyle baseTextStyle;
+  static TextStyle headerTextStyle;
+  static TextStyle regularTextStyle;
+  static TextStyle subHeaderTextStyle;
 
   static const TextStyle styleFormBlack = const TextStyle(
     color: Colors.black,
@@ -42,20 +36,7 @@ class SizeConfig {
   static TextStyle styleSubtitleBlack;
 
   void init(BuildContext context) {
-    _mediaQueryData = MediaQuery.of(context);
-    screenWidth = _mediaQueryData.size.width;
-    screenHeight = _mediaQueryData.size.height;
-    blockSizeHorizontal = screenWidth / 100;
-    blockSizeVertical = screenHeight / 100;
-
-    BUTTON_FONT_SIZE = blockSizeHorizontal * 3;
-
-    _safeAreaHorizontal =
-        _mediaQueryData.padding.left + _mediaQueryData.padding.right;
-    _safeAreaVertical =
-        _mediaQueryData.padding.top + _mediaQueryData.padding.bottom;
-    safeBlockHorizontal = (screenWidth - _safeAreaHorizontal) / 100;
-    safeBlockVertical = (screenHeight - _safeAreaVertical) / 100;
+    SizeConfig().init(context);
 
     styleTitleBlack = new TextStyle(
         color: Colors.black,
@@ -73,12 +54,12 @@ class SizeConfig {
         color: Colors.black45, fontSize: SizeConfig.safeBlockHorizontal * 3);
 
     stylePrice = new TextStyle(
-        color: colorDeepPurple500,
+        color: MyColor.colorDeepPurple500,
         fontWeight: FontWeight.bold,
         fontSize: SizeConfig.safeBlockHorizontal * 4);
 
     stylePriceCard = new TextStyle(
-        color: colorDeepPurple500,
+        color: MyColor.colorDeepPurple500,
         fontWeight: FontWeight.bold,
         fontSize: SizeConfig.safeBlockHorizontal * 3);
 
@@ -149,5 +130,17 @@ class SizeConfig {
       fontStyle: FontStyle.italic,
       fontSize: SizeConfig.safeBlockHorizontal * 3,
     );
+
+
+    baseTextStyle = TextStyle(fontFamily: 'Poppins');
+
+     headerTextStyle = baseTextStyle.copyWith(
+        color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w600);
+
+    regularTextStyle = baseTextStyle.copyWith(
+        color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w400);
+
+    final subHeaderTextStyle = regularTextStyle.copyWith(fontSize: 16.0);
+
   }
 }

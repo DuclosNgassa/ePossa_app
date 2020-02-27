@@ -1,6 +1,6 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
-import 'package:epossa_app/util/size_config.dart';
+import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 
 class ChangePhonenumberPopup extends StatefulWidget {

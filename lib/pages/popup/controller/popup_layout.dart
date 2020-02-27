@@ -1,4 +1,4 @@
-import 'package:epossa_app/util/size_config.dart';
+import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

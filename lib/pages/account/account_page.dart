@@ -7,7 +7,7 @@ import 'package:epossa_app/pages/popup/change_password_popup.dart';
 import 'package:epossa_app/pages/popup/change_phonenumber_popup.dart';
 import 'package:epossa_app/pages/popup/finance_popup.dart';
 import 'package:epossa_app/pages/popup/popup_helper.dart';
-import 'package:epossa_app/util/size_config.dart';
+import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatefulWidget {

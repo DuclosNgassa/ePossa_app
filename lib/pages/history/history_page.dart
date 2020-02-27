@@ -5,7 +5,7 @@ import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/transfer.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/services/transfer_service.dart';
-import 'package:epossa_app/util/size_config.dart';
+import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 
 class HistoryPage extends StatefulWidget {
