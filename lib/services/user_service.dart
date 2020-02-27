@@ -73,6 +73,21 @@ class UserService {
     }
   }
 
+  Future<bool> delete(int id) async {
+    Map<String, String> headers = await _sharedPreferenceService.getHeaders();
+
+    final response =
+    await http.Client().delete('$URL_USERS/$id', headers: headers);
+    if (response.statusCode == HttpStatus.ok) {
+      final responseBody = await json.decode(response.body);
+      if (responseBody["result"] == "ok") {
+        return true;
+      }
+    } else {
+      throw Exception('Failed to delete a user. Error: ${response.toString()}');
+    }
+  }
+
   Future<User> convertResponseToUser(Map<String, dynamic> json) async {
     if (json["data"] == null) {
       return null;

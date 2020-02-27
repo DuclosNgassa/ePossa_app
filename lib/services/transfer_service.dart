@@ -24,7 +24,6 @@ class TransferService {
     }
   }
 
-
   Future<List<Transfer>> readAll() async {
     Map<String, String> headers = await _sharedPreferenceService.getHeaders();
 
@@ -86,6 +85,33 @@ class TransferService {
     }
   }
 
+  Future<Transfer> update(Map<String, dynamic> params) async {
+    Map<String, String> headers = await _sharedPreferenceService.getHeaders();
+
+    final response = await http.Client()
+        .put('$URL_TRANSFERS/${params["id"]}', headers: headers, body: params);
+    if (response.statusCode == HttpStatus.ok) {
+      final responseBody = await json.decode(response.body);
+      return convertResponseToTransferUpdate(responseBody);
+    } else {
+      throw Exception('Failed to update Transfers. Error: ${response.toString()}');
+    }
+  }
+
+  Future<bool> delete(int id) async {
+    Map<String, String> headers = await _sharedPreferenceService.getHeaders();
+
+    final response =
+    await http.Client().delete('$URL_TRANSFERS/$id', headers: headers);
+    if (response.statusCode == HttpStatus.ok) {
+      final responseBody = await json.decode(response.body);
+      if (responseBody["result"] == "ok") {
+        return true;
+      }
+    } else {
+      throw Exception('Failed to delete a Transfers. Error: ${response.toString()}');
+    }
+  }
 
   Future<List<Transfer>> fetchTransfer() async {
     List<Transfer> transferList = new List();
