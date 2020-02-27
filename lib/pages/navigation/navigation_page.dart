@@ -85,7 +85,7 @@ class _NavigationPageState extends State<NavigationPage> {
             titleColor: Colors.white,
             subtitle: AppLocalizations.of(context).translate('pay_service'),
             subTitleColor: Colors.white,
-            backgroundColor: Colors.cyan,
+            backgroundColor: Colors.purple,
             onTap: () => PopupHelper.showPopup(
               context,
               PaymentPopup(),
@@ -94,12 +94,12 @@ class _NavigationPageState extends State<NavigationPage> {
           ),
           MenuItem(
             child: Icon(Icons.exit_to_app, color: Colors.white),
-            title: AppLocalizations.of(context).translate('sale'),
+            title: AppLocalizations.of(context).translate('receive_money'),
             titleColor: Colors.white,
             subtitle: AppLocalizations.of(context)
                 .translate('monetize_your_services'),
             subTitleColor: Colors.white,
-            backgroundColor: Colors.purple,
+            backgroundColor: Colors.cyan,
             onTap: () => PopupHelper.showPopup(context, ReceivePopup(),
                 AppLocalizations.of(context).translate('receive_money')),
           ),
