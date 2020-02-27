@@ -2,10 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-const APP_URL = "https://play.google.com/store/apps/details?id=com.softsolution.emarket_app";
+const APP_URL =
+    "https://play.google.com/store/apps/details?id=com.softsolution.emarket_app";
 //const SITE_WEB = "https://kmersoftdesign.wordpress.com/";
 const SITE_WEB = "https://www.kmerconsulting.com/";
-const PRIVACY_POLICY_URL = "https://kmersoftdesign.wordpress.com/datenschutzerklarung/";
+const PRIVACY_POLICY_URL =
+    "https://kmersoftdesign.wordpress.com/datenschutzerklarung/";
 
 const SERVER_URL = "https://emarket.kmerconsulting.com"; // Server
 

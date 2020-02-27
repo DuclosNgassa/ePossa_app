@@ -1,13 +1,14 @@
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/util/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:page_transition/page_transition.dart';
 
 import 'localization/app_localizations.dart';
 import 'pages/login_page.dart';
 
-void main(){
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      localeResolutionCallback: (locale, supportedLocales){
+      localeResolutionCallback: (locale, supportedLocales) {
         for (var supportedLocale in supportedLocales) {
           if (supportedLocale.languageCode == locale.languageCode &&
               supportedLocale.countryCode == locale.countryCode) {
@@ -127,16 +128,17 @@ class _StartScreenState extends State<StartScreen>
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
+SizeConfig().init(context);
 
     return Scaffold(
       backgroundColor: Color.fromRGBO(102, 0, 204, 50),
-//      backgroundColor: Color.fromRGBO(3, 9, 23, 1),
       body: Container(
+        padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 7),
         width: double.infinity,
         child: Stack(
           children: <Widget>[
             Positioned(
-              top: -50,
+              top: -SizeConfig.blockSizeVertical * 7,
               left: 0,
               child: FadeAnimation(
                 1,
@@ -152,13 +154,13 @@ class _StartScreenState extends State<StartScreen>
               ),
             ),
             Positioned(
-              top: -100,
+              top: -SizeConfig.blockSizeVertical * 15,
               left: 0,
               child: FadeAnimation(
                 1.3,
                 Container(
                   width: width,
-                  height: 400,
+                  height: SizeConfig.blockSizeVertical * 62,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage('assets/images/one.png'),
@@ -168,13 +170,13 @@ class _StartScreenState extends State<StartScreen>
               ),
             ),
             Positioned(
-              top: -150,
+              top: -SizeConfig.blockSizeVertical * 23,
               left: 0,
               child: FadeAnimation(
                   1.6,
                   Container(
                     width: width,
-                    height: 400,
+                    height: SizeConfig.blockSizeVertical * 62,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage('assets/images/one.png'),
@@ -183,7 +185,7 @@ class _StartScreenState extends State<StartScreen>
                   )),
             ),
             Container(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 5),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,18 +197,18 @@ class _StartScreenState extends State<StartScreen>
                         style: TextStyle(color: Colors.white, fontSize: 50),
                       )),
                   SizedBox(
-                    height: 15,
+                    height: SizeConfig.blockSizeVertical * 2,
                   ),
                   FadeAnimation(
                     1.3,
                     Text(
                       AppLocalizations.of(context).translate('slash_message'),
                       style: TextStyle(
-                          color: Colors.white.withOpacity(.7), height: 1.4),
+                          color: Colors.white.withOpacity(.7), height: 1.4, fontSize: 20),
                     ),
                   ),
                   SizedBox(
-                    height: 180,
+                    height: SizeConfig.blockSizeVertical * 28,
                   ),
                   FadeAnimation(
                     1.6,
@@ -219,11 +221,12 @@ class _StartScreenState extends State<StartScreen>
                               animation: _widthController,
                               builder: (context, child) => Container(
                                 width: _widthAnimation.value,
-                                height: 80,
-                                padding: EdgeInsets.all(10),
+                                height: SizeConfig.blockSizeVertical * 12,
+                                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color: Colors.blue.withOpacity(.4),),
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: Colors.blue.withOpacity(.4),
+                                ),
                                 child: InkWell(
                                   onTap: () {
                                     _scaleController.forward();
@@ -239,8 +242,8 @@ class _StartScreenState extends State<StartScreen>
                                               Transform.scale(
                                             scale: _scale2Animation.value,
                                             child: Container(
-                                              width: 60,
-                                              height: 60,
+                                              width: SizeConfig.blockSizeHorizontal * 16,
+                                              height: SizeConfig.blockSizeHorizontal * 15,
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: Colors.blue),
@@ -261,9 +264,6 @@ class _StartScreenState extends State<StartScreen>
                             ),
                           )),
                     ),
-                  ),
-                  SizedBox(
-                    height: 60,
                   ),
                 ],
               ),

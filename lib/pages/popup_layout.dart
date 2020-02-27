@@ -1,3 +1,4 @@
+import 'package:epossa_app/util/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -43,10 +44,13 @@ class PopupLayout extends ModalRoute {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
-    if (top == null) this.top = 10;
-    if (bottom == null) this.bottom = 20;
-    if (left == null) this.left = 20;
-    if (right == null) this.right = 20;
+
+    SizeConfig().init(context);
+
+    if (top == null) this.top = SizeConfig.blockSizeVertical * 1.5;
+    if (bottom == null) this.bottom = SizeConfig.blockSizeVertical * 3;
+    if (left == null) this.left = SizeConfig.blockSizeHorizontal * 4;
+    if (right == null) this.right = SizeConfig.blockSizeHorizontal * 4;
 
     return GestureDetector(
       onTap: () {

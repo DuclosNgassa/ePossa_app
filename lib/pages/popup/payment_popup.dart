@@ -52,26 +52,37 @@ class _PaymentPopupState extends State<PaymentPopup> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
 
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          _buildInputForm(),
-          SizedBox(
-            height: SizeConfig.blockSizeVertical * 2,
-          ),
-          _buildQrCodeButton(),
-          SizedBox(height: SizeConfig.blockSizeVertical * 2,),
-          _buildQrCodeGalleryButton(),
-          SizedBox(height: SizeConfig.blockSizeVertical * 2,),
-          _buildTransferButton(),
-          SizedBox(height: SizeConfig.blockSizeVertical * 3,),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5, vertical:  SizeConfig.blockSizeVertical * 2),
-            child: _buildFooterMessage(),
-          ),
-        ],
+    return SingleChildScrollView(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            _buildInputForm(),
+            SizedBox(
+              height: SizeConfig.blockSizeVertical * 2,
+            ),
+            _buildQrCodeButton(),
+            SizedBox(
+              height: SizeConfig.blockSizeVertical * 2,
+            ),
+            _buildQrCodeGalleryButton(),
+            SizedBox(
+              height: SizeConfig.blockSizeVertical * 2,
+            ),
+            _buildTransferButton(),
+            SizedBox(
+              height: SizeConfig.blockSizeVertical * 3,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.blockSizeHorizontal * 5,
+                vertical: SizeConfig.blockSizeVertical * 2,
+              ),
+              child: _buildFooterMessage(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -80,7 +91,9 @@ class _PaymentPopupState extends State<PaymentPopup> {
     return FadeAnimation(
       1.5,
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5, vertical: SizeConfig.blockSizeVertical),
+        padding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.blockSizeHorizontal * 5,
+            vertical: SizeConfig.blockSizeVertical),
         child: Form(
           key: _formKey,
           child: Container(
@@ -103,6 +116,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
                     ),
                   ),
                   child: TextFormField(
+                    autofocus: true,
                     controller: _phoneNumberController,
                     keyboardType: TextInputType.phone,
                     textInputAction: TextInputAction.next,
@@ -158,6 +172,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
                   ),
                 ),
                 Container(
+                  margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 2),
                   child: TextFormField(
                     controller: _descriptionController,
                     textInputAction: TextInputAction.newline,
@@ -184,74 +199,10 @@ class _PaymentPopupState extends State<PaymentPopup> {
     );
   }
 
-  Widget _buildScanButtons() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical, horizontal: SizeConfig.blockSizeHorizontal * 5),
-      child: FadeAnimation(
-        1.8,
-        Center(
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  //width: 120,
-                  height: SizeConfig.blockSizeVertical * 6,
-                  //padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(colors: [
-                      Color.fromRGBO(143, 148, 251, 1),
-                      Color.fromRGBO(143, 148, 251, 6),
-                    ]),
-                  ),
-                  child: RawMaterialButton(
-                    onPressed: () => _scan(),
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context).translate('scan_qr_code'),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'OpenSans'),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  //width: 120,
-                  height: SizeConfig.blockSizeVertical * 6,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(colors: [
-                      Color.fromRGBO(143, 148, 251, 1),
-                      Color.fromRGBO(143, 148, 251, 6),
-                    ]),
-                  ),
-                  child: RawMaterialButton(
-                    onPressed: () => _scanPhoto(),
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)
-                            .translate('scan_qr_code_gallery'),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'OpenSans'),
-                      ),
-                    ),
-                  ),
-                ),
-              ]),
-        ),
-      ),
-    );
-  }
-
   Widget _buildQrCodeButton() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
+      padding:
+          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
       child: FadeAnimation(
         2,
         Center(
@@ -285,10 +236,10 @@ class _PaymentPopupState extends State<PaymentPopup> {
     );
   }
 
-
   Widget _buildQrCodeGalleryButton() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
+      padding:
+          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
       child: FadeAnimation(
         2,
         Center(
@@ -325,14 +276,13 @@ class _PaymentPopupState extends State<PaymentPopup> {
 
   Widget _buildTransferButton() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
       child: FadeAnimation(
         2,
         Center(
           child: Container(
             //width: 120,
-            height: 50,
-            padding: EdgeInsets.all(15),
+            height: SizeConfig.blockSizeVertical * 8,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Color.fromRGBO(51, 51, 153, 1),

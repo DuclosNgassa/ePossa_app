@@ -1,20 +1,22 @@
+import 'package:epossa_app/util/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../popup_content.dart';
 import '../popup_layout.dart';
 
-class PopupHelper{
-
+class PopupHelper {
   static showPopup(BuildContext context, Widget widget, String title,
       {BuildContext popupContext}) {
+    SizeConfig().init(context);
+
     Navigator.push(
       context,
       PopupLayout(
-        top: 30,
-        left: 30,
-        right: 30,
-        bottom: 50,
+        top: SizeConfig.blockSizeVertical * 4,
+        left: SizeConfig.blockSizeHorizontal * 6,
+        right: SizeConfig.blockSizeHorizontal * 6,
+        bottom: SizeConfig.blockSizeVertical * 6,
         child: PopupContent(
           content: Scaffold(
             appBar: AppBar(
@@ -41,5 +43,4 @@ class PopupHelper{
       ),
     );
   }
-
 }

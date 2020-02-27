@@ -7,20 +7,51 @@ import 'package:flutter/services.dart';
 
 import 'navigation_page.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
+  @override
+  _SignInPageState createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
+  TextEditingController _nameController = new TextEditingController();
+  TextEditingController _phoneNumberController = new TextEditingController();
+  TextEditingController _password1Controller = new TextEditingController();
+  TextEditingController _password2Controller = new TextEditingController();
+
+  FocusNode _nameFocusNode;
+  FocusNode _phoneNumberFocusNode;
+  FocusNode _password1FocusNode;
+  FocusNode _password2FocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameFocusNode = new FocusNode();
+    _phoneNumberFocusNode = new FocusNode();
+    _password1FocusNode = new FocusNode();
+    _password2FocusNode = new FocusNode();
+  }
+
+  @override
+  void dispose() {
+    //Clean up the controller when the widget is disposed
+    _nameController.dispose();
+    _phoneNumberController.dispose();
+    _password1Controller.dispose();
+    _password2Controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Colors.white,
-      //backgroundColor: Color.fromRGBO(102, 0, 204, 50),
-      //backgroundColor: Color.fromRGBO(3, 9, 23, 1),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Container(
           height: SizeConfig.screenHeight,
           width: SizeConfig.screenWidth,
-          //padding: EdgeInsets.all(30),
           child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: SingleChildScrollView(
@@ -30,7 +61,8 @@ class SignInPage extends StatelessWidget {
                 children: <Widget>[
                   _buildBackground(context),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeVertical * 5),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.blockSizeVertical * 5),
                     child: Column(
                       children: <Widget>[
                         _buildSigninInput(context),
@@ -156,53 +188,114 @@ class SignInPage extends StatelessWidget {
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey[300]),),),
-              child: TextField(
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey[300]),
+                ),
+              ),
+              child: TextFormField(
+                autofocus: true,
+                keyboardType: TextInputType.text,
+                controller: _nameController,
+                textInputAction: TextInputAction.next,
+                focusNode: _nameFocusNode,
+                onFieldSubmitted: (term) {
+                  _fieldFocusChange(_nameFocusNode, _phoneNumberFocusNode);
+                },
                 decoration: InputDecoration(
-                    border: InputBorder.none,
-                    prefixIcon: Icon(Icons.person),
-                    hintStyle: TextStyle(
-                      color: Colors.grey.withOpacity(.8),
-                    ),
-                    hintText: AppLocalizations.of(context).translate("name"),),
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.person),
+                  hintStyle: TextStyle(
+                    color: Colors.grey.withOpacity(.8),
+                  ),
+                  hintText: AppLocalizations.of(context).translate("name"),
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return AppLocalizations.of(context)
+                        .translate('name_please');
+                  }
+                  return null;
+                },
               ),
             ),
             Container(
               decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey[300]),),),
-              child: TextField(
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey[300]),
+                ),
+              ),
+              child: TextFormField(
                 keyboardType: TextInputType.phone,
+                controller: _phoneNumberController,
+                textInputAction: TextInputAction.next,
+                focusNode: _phoneNumberFocusNode,
+                onFieldSubmitted: (term) {
+                  _fieldFocusChange(_phoneNumberFocusNode, _password1FocusNode);
+                },
                 decoration: InputDecoration(
-                    border: InputBorder.none,
-                    prefixIcon: Icon(Icons.phone_iphone),
-                    hintStyle: TextStyle(
-                      color: Colors.grey.withOpacity(.8),
-                    ),
-                    hintText: AppLocalizations.of(context).translate("phonenumber"),),
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.phone_iphone),
+                  hintStyle: TextStyle(
+                    color: Colors.grey.withOpacity(.8),
+                  ),
+                  hintText:
+                      AppLocalizations.of(context).translate("phonenumber"),
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return AppLocalizations.of(context)
+                        .translate('phonenumber_please');
+                  }
+                  return null;
+                },
               ),
             ),
             Container(
               decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: Colors.grey[300]),),),
-              child: TextField(
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey[300]),
+                ),
+              ),
+              child: TextFormField(
                 obscureText: true,
                 keyboardType: TextInputType.text,
+                controller: _password1Controller,
+                textInputAction: TextInputAction.next,
+                focusNode: _password1FocusNode,
+                onFieldSubmitted: (term) {
+                  _fieldFocusChange(_password1FocusNode, _password2FocusNode);
+                },
                 decoration: InputDecoration(
-                    border: InputBorder.none,
-                    prefixIcon: Icon(Icons.lock),
-                    hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
-                    hintText: AppLocalizations.of(context).translate("password"),),
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.lock),
+                  hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
+                  hintText: AppLocalizations.of(context).translate("password"),
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return AppLocalizations.of(context)
+                        .translate('password_please');
+                  }
+                  return null;
+                },
               ),
             ),
             Container(
-              child: TextField(
+              child: TextFormField(
                 obscureText: true,
                 keyboardType: TextInputType.text,
+                controller: _password2Controller,
+                focusNode: _password2FocusNode,
+                onFieldSubmitted: (term) {
+                  //TODO doSignIn()
+                },
                 decoration: InputDecoration(
-                    border: InputBorder.none,
-                    prefixIcon: Icon(Icons.lock),
-                    hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
-                    hintText: AppLocalizations.of(context).translate("password_repeat"),),
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.lock),
+                  hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
+                  hintText:
+                      AppLocalizations.of(context).translate("password_repeat"),
+                ),
               ),
             ),
           ],
@@ -248,7 +341,8 @@ class SignInPage extends StatelessWidget {
         child: RichText(
           text: TextSpan(children: [
             TextSpan(
-              text: AppLocalizations.of(context).translate("already_registered"),
+              text:
+                  AppLocalizations.of(context).translate("already_registered"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
                   fontSize: 18.0,
@@ -300,4 +394,10 @@ class SignInPage extends StatelessWidget {
       ),
     );
   }
+
+  _fieldFocusChange(FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
+  }
+
 }

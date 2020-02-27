@@ -28,9 +28,7 @@ class _TransferCardState extends State<TransferCard> {
       color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w600);
 
   static final regularTextStyle = baseTextStyle.copyWith(
-      color: Colors.black87,
-      fontSize: 16,
-      fontWeight: FontWeight.w400);
+      color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w400);
 
   final subHeaderTextStyle = regularTextStyle.copyWith(fontSize: 16.0);
 
@@ -67,7 +65,8 @@ class _TransferCardState extends State<TransferCard> {
     String _receiverTitle = AppLocalizations.of(context).translate('receiver');
     String _receiver = widget.transfer.phone_number_receiver;
 
-    String _senderTitle = AppLocalizations.of(context).translate('sender');;
+    String _senderTitle = AppLocalizations.of(context).translate('sender');
+    ;
     String _sender = widget.transfer.phone_number_sender;
 
     return new Column(
@@ -139,7 +138,7 @@ class _TransferCardState extends State<TransferCard> {
               ),
         isSendingAndDescriptionNotEmpty()
             ? Text(
-          AppLocalizations.of(context).translate('description'),
+                AppLocalizations.of(context).translate('description'),
                 style: headerTextStyle,
               )
             : Container(

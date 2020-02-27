@@ -101,7 +101,7 @@ class _NavigationPageState extends State<NavigationPage> {
             subTitleColor: Colors.white,
             backgroundColor: Colors.purple,
             onTap: () => PopupHelper.showPopup(context, ReceivePopup(),
-                AppLocalizations.of(context).translate('receipt_of_funds')),
+                AppLocalizations.of(context).translate('receive_money')),
           ),
         ],
       ),

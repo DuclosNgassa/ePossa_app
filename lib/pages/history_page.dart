@@ -38,7 +38,10 @@ class _HistoryPageState extends State<HistoryPage>
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Container(
-      padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5,right: SizeConfig.blockSizeHorizontal * 5, top: SizeConfig.blockSizeVertical *5),
+      padding: EdgeInsets.only(
+          left: SizeConfig.blockSizeHorizontal * 5,
+          right: SizeConfig.blockSizeHorizontal * 5,
+          top: SizeConfig.blockSizeVertical * 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,

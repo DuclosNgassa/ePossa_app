@@ -9,7 +9,6 @@ class ChangePhonenumberPopup extends StatefulWidget {
 }
 
 class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
-
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   //
@@ -47,7 +46,9 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
             height: SizeConfig.blockSizeVertical * 8,
           ),
           _buildSaveButtons(),
-          SizedBox(height: SizeConfig.blockSizeVertical * 5,),
+          SizedBox(
+            height: SizeConfig.blockSizeVertical * 5,
+          ),
           _buildFooterMessage(),
         ],
       ),
@@ -58,7 +59,9 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
     return FadeAnimation(
       1.5,
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5,),
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.blockSizeHorizontal * 5,
+        ),
         child: Form(
           key: _formKey,
           child: Container(
@@ -76,9 +79,12 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
-                      border:
-                          Border(bottom: BorderSide(color: Colors.grey[300]),),),
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey[300]),
+                    ),
+                  ),
                   child: TextFormField(
+                    autofocus: true,
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
                     textInputAction: TextInputAction.next,
@@ -91,10 +97,12 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
                         prefixIcon: Icon(Icons.phone_iphone),
                         hintStyle:
                             TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: AppLocalizations.of(context).translate('phonenumber')),
+                        hintText: AppLocalizations.of(context)
+                            .translate('phonenumber')),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return AppLocalizations.of(context).translate('new_phonenumber_please');
+                        return AppLocalizations.of(context)
+                            .translate('new_phonenumber_please');
                       }
                       return null;
                     },
@@ -110,15 +118,17 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
 
   Widget _buildSaveButtons() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
+      padding:
+          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
       child: FadeAnimation(
         2,
         Center(
           child: Container(
-            height:  SizeConfig.blockSizeVertical * 8,
+            height: SizeConfig.blockSizeVertical * 8,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Color.fromRGBO(51, 51, 153, 1),),
+              borderRadius: BorderRadius.circular(10),
+              color: Color.fromRGBO(51, 51, 153, 1),
+            ),
             child: RawMaterialButton(
               onPressed: () => _save(),
               child: Center(
@@ -140,17 +150,19 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
 
   Widget _buildFooterMessage() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5, vertical:  SizeConfig.blockSizeVertical * 4),
+      padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.blockSizeHorizontal * 5,
+          vertical: SizeConfig.blockSizeVertical * 4),
       child: FadeAnimation(
         2.3,
         Center(
-          child: Text(AppLocalizations.of(context).translate('new_phonenumber'),),
+          child: Text(
+            AppLocalizations.of(context).translate('new_phonenumber'),
+          ),
         ),
       ),
     );
   }
 
-  Future<void> _save() async {
-  }
-
+  Future<void> _save() async {}
 }

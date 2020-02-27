@@ -31,7 +31,8 @@ class _FinancePopupState extends State<FinancePopup> {
           child: FadeAnimation(
             1.3,
             Container(
-              padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 2),
+              padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.blockSizeHorizontal * 2),
               height: SizeConfig.screenHeight * 0.4,
               //margin: new EdgeInsets.fromLTRB(76.0, 16.0, 16.0, 16.0),
               decoration: BoxDecoration(
@@ -71,13 +72,14 @@ class _FinancePopupState extends State<FinancePopup> {
           style: subHeaderTextStyle,
         ),
         new Container(
-          margin: new EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical),
+          margin:
+              new EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical),
           height: SizeConfig.blockSizeVertical * 0.25,
           width: SizeConfig.screenWidth * 0.25,
           color: new Color(0xff00c6ff),
         ),
         SizedBox(
-            height: SizeConfig.blockSizeVertical * 1.5,
+          height: SizeConfig.blockSizeVertical * 1.5,
         ),
         new Text(
           AppLocalizations.of(context).translate('total_sent_amount'),
@@ -88,13 +90,14 @@ class _FinancePopupState extends State<FinancePopup> {
           style: subHeaderTextStyle,
         ),
         new Container(
-          margin: new EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical),
+          margin:
+              new EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical),
           height: SizeConfig.blockSizeVertical * 0.25,
           width: SizeConfig.screenWidth * 0.25,
           color: new Color(0xff00c6ff),
         ),
         SizedBox(
-            height: SizeConfig.blockSizeVertical * 1.5,
+          height: SizeConfig.blockSizeVertical * 1.5,
         ),
         new Text(
           AppLocalizations.of(context).translate('difference'),
@@ -110,7 +113,9 @@ class _FinancePopupState extends State<FinancePopup> {
 
   Widget _buildFooterMessage() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5, vertical:  SizeConfig.blockSizeVertical * 4),
+      padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.blockSizeHorizontal * 5,
+          vertical: SizeConfig.blockSizeVertical * 4),
       child: FadeAnimation(
         1.6,
         Center(

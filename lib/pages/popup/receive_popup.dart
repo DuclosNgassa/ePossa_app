@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
+import 'package:epossa_app/util/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
@@ -34,6 +35,8 @@ class _ReceivePopupState extends State<ReceivePopup> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -41,11 +44,11 @@ class _ReceivePopupState extends State<ReceivePopup> {
         children: <Widget>[
           _displayQRCode(),
           SizedBox(
-            height: 40,
+            height: SizeConfig.blockSizeVertical * 5,
           ),
           _builAmountInput(),
           SizedBox(
-            height: 10,
+            height: SizeConfig.blockSizeVertical * 1.5,
           ),
           _buildQRCodeButtons(),
           _buildFooterMessage(),
@@ -56,12 +59,12 @@ class _ReceivePopupState extends State<ReceivePopup> {
 
   Widget _displayQRCode() {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
+      padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical),
       child: FadeAnimation(
         1.2,
         SizedBox(
-          width: 200,
-          height: 200,
+          width: SizeConfig.blockSizeVertical * 30,
+          height: SizeConfig.blockSizeVertical * 30,
           child: Image.memory(barCode),
         ),
       ),
@@ -74,7 +77,7 @@ class _ReceivePopupState extends State<ReceivePopup> {
       Form(
         key: _formKey,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
           child: Container(
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
@@ -92,12 +95,13 @@ class _ReceivePopupState extends State<ReceivePopup> {
                 controller: amountController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                    border: InputBorder.none,
-                    prefixIcon: Icon(Icons.attach_money),
-                    hintStyle: TextStyle(
-                      color: Colors.grey.withOpacity(.8),
-                    ),
-                    hintText: AppLocalizations.of(context).translate('amount'),),
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.attach_money),
+                  hintStyle: TextStyle(
+                    color: Colors.grey.withOpacity(.8),
+                  ),
+                  hintText: AppLocalizations.of(context).translate('amount'),
+                ),
               ),
             ),
           ),
@@ -108,7 +112,7 @@ class _ReceivePopupState extends State<ReceivePopup> {
 
   Widget _buildQRCodeButtons() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+      padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical * 3, horizontal: SizeConfig.blockSizeHorizontal * 5),
       child: FadeAnimation(
         1.8,
         Center(
@@ -116,8 +120,8 @@ class _ReceivePopupState extends State<ReceivePopup> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(
-                height: 50,
-                padding: EdgeInsets.all(5),
+                height: SizeConfig.blockSizeVertical * 8,
+                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Color.fromRGBO(51, 51, 153, 1)),
@@ -126,7 +130,8 @@ class _ReceivePopupState extends State<ReceivePopup> {
                       int.parse(amountController.text)),
                   child: Center(
                     child: Text(
-                      AppLocalizations.of(context).translate('qr_code_with_amount'),
+                      AppLocalizations.of(context)
+                          .translate('qr_code_with_amount'),
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 14.0,
@@ -137,8 +142,8 @@ class _ReceivePopupState extends State<ReceivePopup> {
                 ),
               ),
               Container(
-                height: 50,
-                padding: EdgeInsets.all(5),
+                height: SizeConfig.blockSizeVertical * 8,
+                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Color.fromRGBO(51, 51, 153, 1)),
@@ -165,12 +170,14 @@ class _ReceivePopupState extends State<ReceivePopup> {
 
   Widget _buildFooterMessage() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15),
+      padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical, horizontal: SizeConfig.blockSizeHorizontal * 5),
       child: FadeAnimation(
         2.1,
         Center(
           child: Text(
-              AppLocalizations.of(context).translate('scan_qrcode_to_receive_money'),),
+            AppLocalizations.of(context)
+                .translate('scan_qrcode_to_receive_money'),
+          ),
         ),
       ),
     );

@@ -59,7 +59,9 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
             height: SizeConfig.blockSizeVertical * 8,
           ),
           _buildSaveButtons(),
-          SizedBox(height: SizeConfig.blockSizeVertical * 5,),
+          SizedBox(
+            height: SizeConfig.blockSizeVertical * 5,
+          ),
           _buildFooterMessage(),
         ],
       ),
@@ -70,7 +72,9 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
     return FadeAnimation(
       1.5,
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5,),
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.blockSizeHorizontal * 5,
+        ),
         child: Form(
           key: _formKey,
           child: Container(
@@ -91,6 +95,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                       border:
                           Border(bottom: BorderSide(color: Colors.grey[300]))),
                   child: TextFormField(
+                    autofocus: true,
                     obscureText: true,
                     controller: _oldPasswordController,
                     keyboardType: TextInputType.text,
@@ -105,10 +110,12 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                         prefixIcon: Icon(Icons.person),
                         hintStyle:
                             TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: AppLocalizations.of(context).translate('old_password')),
+                        hintText: AppLocalizations.of(context)
+                            .translate('old_password')),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return AppLocalizations.of(context).translate('old_password_please');
+                        return AppLocalizations.of(context)
+                            .translate('old_password_please');
                       }
                       return null;
                     },
@@ -129,14 +136,16 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                           _newPassword1FocusNode, _newPassword2FocusNode);
                     },
                     decoration: InputDecoration(
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.lock),
-                        hintStyle:
-                            TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: AppLocalizations.of(context).translate('new_password'),),
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.lock),
+                      hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
+                      hintText: AppLocalizations.of(context)
+                          .translate('new_password'),
+                    ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return AppLocalizations.of(context).translate('new_password');
+                        return AppLocalizations.of(context)
+                            .translate('new_password');
                       }
                       return null;
                     },
@@ -156,14 +165,16 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                       //Save form
                     },
                     decoration: InputDecoration(
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.lock),
-                        hintStyle:
-                            TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: AppLocalizations.of(context).translate('confirm_new_password'),),
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.lock),
+                      hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
+                      hintText: AppLocalizations.of(context)
+                          .translate('confirm_new_password'),
+                    ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return AppLocalizations.of(context).translate('new_password_again');
+                        return AppLocalizations.of(context)
+                            .translate('new_password_again');
                       }
                       return null;
                     },
@@ -179,12 +190,13 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
 
   Widget _buildSaveButtons() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
+      padding:
+          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
       child: FadeAnimation(
         2,
         Center(
           child: Container(
-            height:  SizeConfig.blockSizeVertical * 8,
+            height: SizeConfig.blockSizeVertical * 8,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Color.fromRGBO(51, 51, 153, 1),
@@ -210,11 +222,15 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
 
   Widget _buildFooterMessage() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5, vertical:  SizeConfig.blockSizeVertical * 4),
+      padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.blockSizeHorizontal * 5,
+          vertical: SizeConfig.blockSizeVertical * 4),
       child: FadeAnimation(
         2.3,
         Center(
-          child: Text(AppLocalizations.of(context).translate('new_password_please'),),
+          child: Text(
+            AppLocalizations.of(context).translate('new_password_please'),
+          ),
         ),
       ),
     );

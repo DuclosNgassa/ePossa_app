@@ -9,7 +9,6 @@ class ChangeNamePopup extends StatefulWidget {
 }
 
 class _ChangeNamePopupState extends State<ChangeNamePopup> {
-
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   //
@@ -47,7 +46,9 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
             height: SizeConfig.blockSizeVertical * 8,
           ),
           _buildSaveButtons(),
-          SizedBox(height: SizeConfig.blockSizeVertical * 5,),
+          SizedBox(
+            height: SizeConfig.blockSizeVertical * 5,
+          ),
           _buildFooterMessage(),
         ],
       ),
@@ -58,7 +59,9 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
     return FadeAnimation(
       1.5,
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5,),
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.blockSizeHorizontal * 5,
+        ),
         child: Form(
           key: _formKey,
           child: Container(
@@ -79,6 +82,7 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
                       border:
                           Border(bottom: BorderSide(color: Colors.grey[300]))),
                   child: TextFormField(
+                    autofocus: true,
                     controller: _nameController,
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,
@@ -91,10 +95,12 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
                         prefixIcon: Icon(Icons.person),
                         hintStyle:
                             TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: AppLocalizations.of(context).translate('name')),
+                        hintText:
+                            AppLocalizations.of(context).translate('name')),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return AppLocalizations.of(context).translate('name_please');
+                        return AppLocalizations.of(context)
+                            .translate('name_please');
                       }
                       return null;
                     },
@@ -110,15 +116,17 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
 
   Widget _buildSaveButtons() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
+      padding:
+          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
       child: FadeAnimation(
         2,
         Center(
           child: Container(
-            height:  SizeConfig.blockSizeVertical * 8,
+            height: SizeConfig.blockSizeVertical * 8,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Color.fromRGBO(51, 51, 153, 1),),
+              borderRadius: BorderRadius.circular(10),
+              color: Color.fromRGBO(51, 51, 153, 1),
+            ),
             child: RawMaterialButton(
               onPressed: () => _save(),
               child: Center(
@@ -140,17 +148,19 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
 
   Widget _buildFooterMessage() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5, vertical:  SizeConfig.blockSizeVertical * 4),
+      padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.blockSizeHorizontal * 5,
+          vertical: SizeConfig.blockSizeVertical * 4),
       child: FadeAnimation(
         2.3,
         Center(
-          child: Text(AppLocalizations.of(context).translate('new_name'),),
+          child: Text(
+            AppLocalizations.of(context).translate('new_name'),
+          ),
         ),
       ),
     );
   }
 
-  Future<void> _save() async {
-  }
-
+  Future<void> _save() async {}
 }

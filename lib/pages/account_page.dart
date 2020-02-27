@@ -1,6 +1,7 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/user.dart';
+import 'package:epossa_app/model/user_status.dart';
 import 'package:epossa_app/pages/popup/change_name_popup.dart';
 import 'package:epossa_app/pages/popup/change_password_popup.dart';
 import 'package:epossa_app/pages/popup/change_phonenumber_popup.dart';
@@ -21,7 +22,10 @@ class _AccountPageState extends State<AccountPage> {
 
     return Container(
 //      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5, vertical:  SizeConfig.blockSizeVertical * 4),
-      padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5,right: SizeConfig.blockSizeHorizontal * 5, top: SizeConfig.blockSizeVertical *5),
+      padding: EdgeInsets.only(
+          left: SizeConfig.blockSizeHorizontal * 5,
+          right: SizeConfig.blockSizeHorizontal * 5,
+          top: SizeConfig.blockSizeVertical * 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -52,11 +56,15 @@ class _AccountPageState extends State<AccountPage> {
             Text(
               AppLocalizations.of(context).translate('my_account'),
               style: TextStyle(
-                  color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
+                  color: Colors.white,
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold),
             ),
           ],
         ),
-        SizedBox(height: SizeConfig.blockSizeVertical * 5,),
+        SizedBox(
+          height: SizeConfig.blockSizeVertical * 5,
+        ),
         Text(
           _getUser().name,
           style: TextStyle(
@@ -80,7 +88,10 @@ class _AccountPageState extends State<AccountPage> {
             1.6,
             ListTile(
               onTap: () => PopupHelper.showPopup(
-                  context, FinancePopup(), AppLocalizations.of(context).translate('my_finance'),),
+                context,
+                FinancePopup(),
+                AppLocalizations.of(context).translate('my_finance'),
+              ),
               leading: Icon(
                 Icons.attach_money,
                 color: Colors.white,
@@ -104,7 +115,10 @@ class _AccountPageState extends State<AccountPage> {
             1.6,
             ListTile(
               onTap: () => PopupHelper.showPopup(
-                  context, ChangeNamePopup(), AppLocalizations.of(context).translate('change_name'),),
+                context,
+                ChangeNamePopup(),
+                AppLocalizations.of(context).translate('change_name'),
+              ),
               leading: Icon(
                 Icons.person,
                 color: Colors.white,
@@ -128,9 +142,10 @@ class _AccountPageState extends State<AccountPage> {
             1.9,
             ListTile(
               onTap: () => PopupHelper.showPopup(
-                  context,
-                  ChangePhonenumberPopup(),
-                  AppLocalizations.of(context).translate('change_phonenumber'),),
+                context,
+                ChangePhonenumberPopup(),
+                AppLocalizations.of(context).translate('change_phonenumber'),
+              ),
               leading: Icon(
                 Icons.phone_iphone,
                 color: Colors.white,
@@ -154,7 +169,10 @@ class _AccountPageState extends State<AccountPage> {
             2.2,
             ListTile(
               onTap: () => PopupHelper.showPopup(
-                  context, ChangePasswordPopup(), AppLocalizations.of(context).translate('change_password'),),
+                context,
+                ChangePasswordPopup(),
+                AppLocalizations.of(context).translate('change_password'),
+              ),
               leading: Icon(
                 Icons.lock,
                 color: Colors.white,
@@ -177,11 +195,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   User _getUser() {
-    User user = new User();
-    user.phone_number = "00237 67 45 34 98";
-    user.name = "Max Mustermann";
-    user.balance = 37250;
-
+    User user = new User(1,"Max Mustermann", DateTime.now(),"00237 67 45 34 98", "password", "deviceToken", UserStatus.active, 25000, 5);
     return user;
   }
 }

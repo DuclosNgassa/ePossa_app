@@ -7,32 +7,55 @@ import 'package:flutter/services.dart';
 
 import 'navigation_page.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  TextEditingController _phoneNumberController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
+
+  FocusNode _phoneNumberFocusNode;
+  FocusNode _passwordFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _phoneNumberFocusNode = new FocusNode();
+    _passwordFocusNode = new FocusNode();
+  }
+
+  @override
+  void dispose() {
+    //Clean up the controller when the widget is disposed
+    _phoneNumberController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Colors.white,
-      //backgroundColor: Color.fromRGBO(102, 0, 204, 50),
-      //backgroundColor: Color.fromRGBO(3, 9, 23, 1),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Center(
           child: Container(
             height: SizeConfig.screenHeight,
             width: SizeConfig.screenWidth,
-            //padding: EdgeInsets.all(30),
             child: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  //crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     _buildBackground(context),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeVertical * 5),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.blockSizeVertical * 5),
                       child: Column(
                         children: <Widget>[
                           _buildLoginInput(context),
@@ -131,7 +154,8 @@ class LoginPage extends StatelessWidget {
     return FadeAnimation(
       1.9,
       Center(
-        child: Text(AppLocalizations.of(context).translate("login"),
+        child: Text(
+          AppLocalizations.of(context).translate("login"),
           style: TextStyle(
               color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
         ),
@@ -143,7 +167,7 @@ class LoginPage extends StatelessWidget {
     return FadeAnimation(
       2.2,
       Container(
-        padding: EdgeInsets.all(5),
+        padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
@@ -159,25 +183,54 @@ class LoginPage extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                   border: Border(bottom: BorderSide(color: Colors.grey[300]))),
-              child: TextField(
+              child: TextFormField(
+                autofocus: true,
                 keyboardType: TextInputType.phone,
+                controller: _phoneNumberController,
+                textInputAction: TextInputAction.next,
+                focusNode: _phoneNumberFocusNode,
+                onFieldSubmitted: (term) {
+                  _fieldFocusChange(_phoneNumberFocusNode, _passwordFocusNode);
+                },
                 decoration: InputDecoration(
-                    border: InputBorder.none,
-                    prefixIcon: Icon(Icons.phone_iphone),
-                    hintStyle: TextStyle(
-                      color: Colors.grey.withOpacity(.8),
-                    ),
-                    hintText: AppLocalizations.of(context).translate("phonenumber"),),
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.phone_iphone),
+                  hintStyle: TextStyle(
+                    color: Colors.grey.withOpacity(.8),
+                  ),
+                  hintText:
+                      AppLocalizations.of(context).translate("phonenumber"),
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return AppLocalizations.of(context)
+                        .translate('phonenumber_please');
+                  }
+                  return null;
+                },
               ),
             ),
             Container(
-              child: TextField(
+              child: TextFormField(
                 obscureText: true,
+                controller: _passwordController,
+                focusNode: _passwordFocusNode,
+                onFieldSubmitted: (term) {
+                  //TODO doLogin()
+                },
                 decoration: InputDecoration(
-                    border: InputBorder.none,
-                    prefixIcon: Icon(Icons.lock),
-                    hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
-                    hintText: AppLocalizations.of(context).translate("password"),),
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.lock),
+                  hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
+                  hintText: AppLocalizations.of(context).translate("password"),
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return AppLocalizations.of(context)
+                        .translate('password_please');
+                  }
+                  return null;
+                },
               ),
             ),
           ],
@@ -274,5 +327,10 @@ class LoginPage extends StatelessWidget {
       context,
       MaterialPageRoute(builder: (context) => SignInPage()),
     );
+  }
+
+  _fieldFocusChange(FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
   }
 }
