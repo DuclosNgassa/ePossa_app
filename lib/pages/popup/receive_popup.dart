@@ -37,22 +37,24 @@ class _ReceivePopupState extends State<ReceivePopup> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
 
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          _displayQRCode(),
-          SizedBox(
-            height: SizeConfig.blockSizeVertical * 5,
-          ),
-          _builAmountInput(),
-          SizedBox(
-            height: SizeConfig.blockSizeVertical * 1.5,
-          ),
-          _buildQRCodeButtons(),
-          _buildFooterMessage(),
-        ],
+    return SingleChildScrollView(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            _displayQRCode(),
+            SizedBox(
+              height: SizeConfig.blockSizeVertical * 5,
+            ),
+            _builAmountInput(),
+            SizedBox(
+              height: SizeConfig.blockSizeVertical * 1.5,
+            ),
+            _buildQRCodeButtons(),
+            _buildFooterMessage(),
+          ],
+        ),
       ),
     );
   }

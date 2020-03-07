@@ -168,8 +168,8 @@ class TransferService {
     return Transfer(
         json["data"]["id"],
         DateTime.parse(json["data"]["created_at"]),
-        json["data"]["phone_number_sender"],
-        json["data"]["phone_number_receiver"],
+        json["data"]["sender"],
+        json["data"]["receiver"],
         json["data"]["amount"],
         json["data"]["description"]);
   }
@@ -185,8 +185,8 @@ class TransferService {
     return Transfer(
       json["data"]["id"],
       DateTime.parse(json["data"]["created_at"]),
-      json["data"]["phone_number_sender"],
-      json["data"]["phone_number_receiver"],
+      json["data"]["sender"],
+      json["data"]["receiver"],
       double.parse(json["data"]["amount"]),
       json["data"]["description"],
     );

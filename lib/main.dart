@@ -221,11 +221,11 @@ SizeConfig().init(context);
                               animation: _widthController,
                               builder: (context, child) => Container(
                                 width: _widthAnimation.value,
-                                height: SizeConfig.blockSizeVertical * 11,
-                                padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 3, vertical: SizeConfig.blockSizeVertical * 1.2),
+                                height: SizeConfig.blockSizeVertical * 10.5,
+                                padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 3, vertical: SizeConfig.blockSizeVertical * 1,),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50),
-                                  color: Colors.blue.withOpacity(.4),
+                                  color: Colors.red.withOpacity(.4),
                                 ),
                                 child: InkWell(
                                   onTap: () {
@@ -243,7 +243,7 @@ SizeConfig().init(context);
                                             scale: _scale2Animation.value,
                                             child: Container(
                                               width: SizeConfig.blockSizeHorizontal * 13,
-                                              height: SizeConfig.blockSizeHorizontal * 14,
+                                              height: SizeConfig.blockSizeHorizontal * 13,
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: Colors.blue),

@@ -37,19 +37,21 @@ class _HistoryPageState extends State<HistoryPage>
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Container(
-      padding: EdgeInsets.only(
-          left: SizeConfig.blockSizeHorizontal * 5,
-          right: SizeConfig.blockSizeHorizontal * 5,
-          top: SizeConfig.blockSizeVertical * 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          _buildTitle(),
-          _buildTabs(),
-          _buildTabBarView(),
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.only(
+            left: SizeConfig.blockSizeHorizontal * 5,
+            right: SizeConfig.blockSizeHorizontal * 5,
+            top: SizeConfig.blockSizeVertical * 5),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            _buildTitle(),
+            _buildTabs(),
+            _buildTabBarView(),
+          ],
+        ),
       ),
     );
   }
@@ -110,7 +112,7 @@ class _HistoryPageState extends State<HistoryPage>
                   borderRadius: BorderRadius.circular(10), color: Colors.white),
               child: ExpansionTile(
                 key: PageStorageKey<String>(
-                    receives.elementAt(index).phone_number_receiver),
+                    receives.elementAt(index).receiver),
                 leading: new Text(DateConverter.convertToString(
                     receives.elementAt(index).created_at, context)),
                 title: Container(

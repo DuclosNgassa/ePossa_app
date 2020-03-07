@@ -3,14 +3,14 @@ import 'package:epossa_app/model/user_status.dart';
 
 class User extends BasisDTO {
   String name;
-  String phone_number;
+  String phone;
   String password;
   String device_token;
   UserStatus status;
   double balance;
   int rating;
 
-  User(id, this.name, created_at, this.phone_number,
+  User(id, this.name, created_at, this.phone,
       this.password, this.device_token, this.status, this.balance, this.rating)
       : super(id, created_at);
 
@@ -19,7 +19,7 @@ class User extends BasisDTO {
         'id': id.toString(),
         'name': name,
         'created_at': created_at.toString(),
-        'phone_number': phone_number,
+        'phone': phone,
         'password': password,
         'device_token': device_token,
         'status': convertStatusToString(status),
@@ -33,7 +33,7 @@ class User extends BasisDTO {
       json["id"],
       json["name"],
       DateTime.parse(json["created_at"]),
-      json["phone_number"],
+      json["phone"],
       json["password"],
       json["device_token"],
       convertStringToStatus(json["user_status"]),
@@ -48,7 +48,7 @@ class User extends BasisDTO {
     Map<String, dynamic> params = Map<String, dynamic>();
     params["name"] = user.name;
     params["created_at"] = user.created_at.toString();
-    params["phone_number"] = user.phone_number;
+    params["phone"] = user.phone;
     params["password"] = user.password;
     params["device_token"] = user.device_token;
     params["user_status"] = convertStatusToString(user.status);

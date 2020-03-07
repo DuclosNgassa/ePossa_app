@@ -58,11 +58,11 @@ class _TransferCardState extends State<TransferCard> {
 
   Widget _buildCard() {
     String _receiverTitle = AppLocalizations.of(context).translate('receiver');
-    String _receiver = widget.transfer.phone_number_receiver;
+    String _receiver = widget.transfer.receiver;
 
     String _senderTitle = AppLocalizations.of(context).translate('sender');
     ;
-    String _sender = widget.transfer.phone_number_sender;
+    String _sender = widget.transfer.sender;
 
     return new Column(
       children: <Widget>[

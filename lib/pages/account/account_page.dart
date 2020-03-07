@@ -20,28 +20,29 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
 
-    return Container(
-//      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5, vertical:  SizeConfig.blockSizeVertical * 4),
-      padding: EdgeInsets.only(
-          left: SizeConfig.blockSizeHorizontal * 5,
-          right: SizeConfig.blockSizeHorizontal * 5,
-          top: SizeConfig.blockSizeVertical * 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          FadeAnimation(
-            1.3,
-            _buildHeader(),
-          ),
-          FadeAnimation(
-            1.3,
-            SizedBox(
-              height: SizeConfig.blockSizeVertical * 5,
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.only(
+            left: SizeConfig.blockSizeHorizontal * 5,
+            right: SizeConfig.blockSizeHorizontal * 5,
+            top: SizeConfig.blockSizeVertical * 5),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            FadeAnimation(
+              1.3,
+              _buildHeader(),
             ),
-          ),
-          _buildListConfig(),
-        ],
+            FadeAnimation(
+              1.3,
+              SizedBox(
+                height: SizeConfig.blockSizeVertical * 5,
+              ),
+            ),
+            _buildListConfig(),
+          ],
+        ),
       ),
     );
   }
@@ -71,7 +72,7 @@ class _AccountPageState extends State<AccountPage> {
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Text(
-          _getUser().phone_number,
+          _getUser().phone,
           style: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
