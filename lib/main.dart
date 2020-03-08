@@ -128,7 +128,7 @@ class _StartScreenState extends State<StartScreen>
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-SizeConfig().init(context);
+    SizeConfig().init(context);
 
     return Scaffold(
       backgroundColor: Color.fromRGBO(102, 0, 204, 50),
@@ -204,7 +204,9 @@ SizeConfig().init(context);
                     Text(
                       AppLocalizations.of(context).translate('slash_message'),
                       style: TextStyle(
-                          color: Colors.white.withOpacity(.7), height: 1.4, fontSize: 20),
+                          color: Colors.white.withOpacity(.7),
+                          height: 1.4,
+                          fontSize: 20),
                     ),
                   ),
                   SizedBox(
@@ -215,54 +217,62 @@ SizeConfig().init(context);
                     AnimatedBuilder(
                       animation: _scaleController,
                       builder: (context, child) => Transform.scale(
-                          scale: _scaleAnimation.value,
-                          child: Center(
-                            child: AnimatedBuilder(
-                              animation: _widthController,
-                              builder: (context, child) => Container(
-                                width: _widthAnimation.value,
-                                height: SizeConfig.blockSizeVertical * 10.5,
-                                padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 3, vertical: SizeConfig.blockSizeVertical * 1,),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: Colors.red.withOpacity(.4),
-                                ),
-                                child: InkWell(
-                                  onTap: () {
-                                    _scaleController.forward();
-                                  },
-                                  child: Stack(children: <Widget>[
-                                    AnimatedBuilder(
-                                      animation: _positionController,
-                                      builder: (context, child) => Positioned(
-                                        left: _positionAnimation.value,
-                                        child: AnimatedBuilder(
-                                          animation: _scale2Controller,
-                                          builder: (context, child) =>
-                                              Transform.scale(
-                                            scale: _scale2Animation.value,
-                                            child: Container(
-                                              width: SizeConfig.blockSizeHorizontal * 13,
-                                              height: SizeConfig.blockSizeHorizontal * 13,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Colors.blue),
-                                              child: hideIcon == false
-                                                  ? Icon(
-                                                      Icons.arrow_forward,
-                                                      color: Colors.white,
-                                                    )
-                                                  : Container(),
-                                            ),
+                        scale: _scaleAnimation.value,
+                        child: Center(
+                          child: AnimatedBuilder(
+                            animation: _widthController,
+                            builder: (context, child) => Container(
+                              width: _widthAnimation.value,
+                              height: SizeConfig.blockSizeVertical * 10.5,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.blockSizeHorizontal * 3,
+                                vertical: SizeConfig.blockSizeVertical * 1,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: Colors.blue.withOpacity(.4),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  _scaleController.forward();
+                                },
+                                child: Stack(children: <Widget>[
+                                  AnimatedBuilder(
+                                    animation: _positionController,
+                                    builder: (context, child) => Positioned(
+                                      left: _positionAnimation.value,
+                                      child: AnimatedBuilder(
+                                        animation: _scale2Controller,
+                                        builder: (context, child) =>
+                                            Transform.scale(
+                                          scale: _scale2Animation.value,
+                                          child: Container(
+                                            width:
+                                                SizeConfig.blockSizeHorizontal *
+                                                    13,
+                                            height:
+                                                SizeConfig.blockSizeVertical *
+                                                    8.5,
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.blue),
+                                            child: hideIcon == false
+                                                ? Icon(
+                                                    Icons.arrow_forward,
+                                                    color: Colors.white,
+                                                  )
+                                                : Container(),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ]),
-                                ),
+                                  ),
+                                ]),
                               ),
                             ),
-                          )),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],

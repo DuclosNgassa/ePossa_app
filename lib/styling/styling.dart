@@ -131,16 +131,14 @@ class Styling {
       fontSize: SizeConfig.safeBlockHorizontal * 3,
     );
 
-
     baseTextStyle = TextStyle(fontFamily: 'Poppins');
 
-     headerTextStyle = baseTextStyle.copyWith(
+    headerTextStyle = baseTextStyle.copyWith(
         color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w600);
 
     regularTextStyle = baseTextStyle.copyWith(
         color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w400);
 
     final subHeaderTextStyle = regularTextStyle.copyWith(fontSize: 16.0);
-
   }
 }

@@ -63,5 +63,6 @@
   "receive_money": "Recevoir l´argent",
   "signin": "Enregistrement",
   "already_registered": "Already registered? ",
-  "slash_message": "Experimentez un mobile money sure et rapide comme vous ne verrez nulle part ailleurs"
+  "slash_message": "Experimentez un mobile money sure et rapide comme vous ne verrez nulle part ailleurs",
+  "advert_save_success_message": "Votre transfert a été éffectué."
 }

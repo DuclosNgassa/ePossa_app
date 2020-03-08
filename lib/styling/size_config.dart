@@ -15,7 +15,6 @@ class SizeConfig {
 
   static double BUTTON_FONT_SIZE;
 
-
   void init(BuildContext context) {
     _mediaQueryData = MediaQuery.of(context);
     screenWidth = _mediaQueryData.size.width;

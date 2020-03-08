@@ -1,4 +1,4 @@
-abstract class BasisDTO<T extends Object> {
+abstract class BasisDTO {
   int id;
   DateTime created_at;
 
@@ -6,5 +6,5 @@ abstract class BasisDTO<T extends Object> {
 
   Map<String, dynamic> toJson();
 
-  Map<String, dynamic> toMap(T basisDTO);
+//Map<String, dynamic> toMap(T basisDTO);
 }

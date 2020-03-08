@@ -399,5 +399,4 @@ class _SignInPageState extends State<SignInPage> {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
   }
-
 }

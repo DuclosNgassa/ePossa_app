@@ -1,7 +1,6 @@
-import 'package:epossa_app/model/basis_dto.dart';
 import 'package:epossa_app/model/user_status.dart';
 
-class User extends BasisDTO {
+class UserDto {
   String name;
   String phone;
   String password;
@@ -10,15 +9,12 @@ class User extends BasisDTO {
   double balance;
   int rating;
 
-  User(id, this.name, created_at, this.phone, this.password, this.device_token,
-      this.status, this.balance, this.rating)
-      : super(id, created_at);
+  UserDto(this.name, this.phone, this.password, this.device_token, this.status,
+      this.balance, this.rating);
 
   @override
   Map<String, dynamic> toJson() => {
-        'id': id.toString(),
         'name': name,
-        'created_at': created_at.toString(),
         'phone': phone,
         'password': password,
         'device_token': device_token,
@@ -29,7 +25,6 @@ class User extends BasisDTO {
 
   Map<String, dynamic> toJsonWithoutId() => {
         'name': name,
-        'created_at': created_at.toString(),
         'phone': phone,
         'password': password,
         'device_token': device_token,
@@ -39,11 +34,9 @@ class User extends BasisDTO {
       };
 
   @override
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      json["id"],
+  factory UserDto.fromJson(Map<String, dynamic> json) {
+    return UserDto(
       json["name"],
-      DateTime.parse(json["created_at"]),
       json["phone"],
       json["password"],
       json["device_token"],
@@ -54,10 +47,9 @@ class User extends BasisDTO {
   }
 
   @override
-  Map<String, dynamic> toMap(User user) {
+  Map<String, dynamic> toMap(UserDto user) {
     Map<String, dynamic> params = Map<String, dynamic>();
     params["name"] = user.name;
-    params["created_at"] = user.created_at.toString();
     params["phone"] = user.phone;
     params["password"] = user.password;
     params["device_token"] = user.device_token;

@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:epossa_app/model/user.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
-import 'package:epossa_app/util/constant_field.dart';
 import 'package:epossa_app/util/rest_endpoints.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,9 +22,10 @@ class UserService {
   }
 
   Future<List<User>> readAll() async {
-    Map<String, String> headers = await _sharedPreferenceService.getHeaders();
+    //Map<String, String> headers = await _sharedPreferenceService.getHeaders();
 
-    final response = await http.Client().get(URL_USERS, headers: headers);
+    //final response = await http.Client().get(URL_USERS, headers: headers);
+    final response = await http.Client().get(URL_USERS);
     if (response.statusCode == HttpStatus.ok) {
       Map<String, dynamic> mapResponse = json.decode(response.body);
       if (mapResponse["result"] == "ok") {
@@ -61,10 +61,14 @@ class UserService {
   }
 
   Future<User> update(Map<String, dynamic> params) async {
-    Map<String, String> headers = await _sharedPreferenceService.getHeaders();
+    //Map<String, String> headers = await _sharedPreferenceService.getHeaders();
 
+/*
     final response = await http.Client()
         .put('$URL_USERS/${params["id"]}', headers: headers, body: params);
+*/
+    final response =
+        await http.Client().put('$URL_USERS/${params["id"]}', body: params);
     if (response.statusCode == HttpStatus.ok) {
       final responseBody = await json.decode(response.body);
       return convertResponseToUserUpdate(responseBody);
@@ -74,10 +78,13 @@ class UserService {
   }
 
   Future<bool> delete(int id) async {
-    Map<String, String> headers = await _sharedPreferenceService.getHeaders();
+    //Map<String, String> headers = await _sharedPreferenceService.getHeaders();
 
+/*
     final response =
     await http.Client().delete('$URL_USERS/$id', headers: headers);
+*/
+    final response = await http.Client().delete('$URL_USERS/$id');
     if (response.statusCode == HttpStatus.ok) {
       final responseBody = await json.decode(response.body);
       if (responseBody["result"] == "ok") {
@@ -93,7 +100,7 @@ class UserService {
       return null;
     }
 
-    await _sharedPreferenceService.save(AUTHENTICATION_TOKEN, json["token"]);
+//    await _sharedPreferenceService.save(AUTHENTICATION_TOKEN, json["token"]);
 
     return User(
       json["data"]["id"],
@@ -113,7 +120,7 @@ class UserService {
       return null;
     }
 
-    await _sharedPreferenceService.save(AUTHENTICATION_TOKEN, json["token"]);
+//    await _sharedPreferenceService.save(AUTHENTICATION_TOKEN, json["token"]);
 
     return User(
       json["data"]["id"],

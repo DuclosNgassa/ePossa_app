@@ -44,7 +44,6 @@ class PopupLayout extends ModalRoute {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
-
     SizeConfig().init(context);
 
     if (top == null) this.top = SizeConfig.blockSizeVertical * 1.5;

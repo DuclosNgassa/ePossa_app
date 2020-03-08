@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:epossa_app/model/transfer.dart';
+import 'package:epossa_app/model/transferDto.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
-import 'package:epossa_app/util/constant_field.dart';
 import 'package:epossa_app/util/rest_endpoints.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,104 +12,63 @@ class TransferService {
   SharedPreferenceService _sharedPreferenceService =
       new SharedPreferenceService();
 
-  Future<Transfer> create(Map<String, dynamic> params) async {
-    final response =
-        await http.post(Uri.encodeFull(URL_TRANSFERS), body: params);
+  Future<Transfer> create(TransferDTO transfer) async {
+    HttpClientRequest request =
+        await HttpClient().postUrl(Uri.parse(URL_TRANSFERS))
+          ..headers.contentType = ContentType.json
+          ..write(jsonEncode(transfer));
+    HttpClientResponse response = await request.close();
+
     if (response.statusCode == HttpStatus.ok) {
-      final responseBody = await json.decode(response.body);
-      return convertResponseToTransfer(responseBody);
+      String reply = await response.transform(utf8.decoder).join();
+      Map userMap = jsonDecode(reply);
+      return Transfer.fromJson(userMap);
+    } else if (response.statusCode == HttpStatus.notFound) {
+      return null;
     } else {
       throw Exception(
           'Failed to save a Transfer. Error: ${response.toString()}');
     }
   }
 
-  Future<List<Transfer>> readAll() async {
-    Map<String, String> headers = await _sharedPreferenceService.getHeaders();
-
-    final response = await http.Client().get(URL_TRANSFERS, headers: headers);
-    if (response.statusCode == HttpStatus.ok) {
-      Map<String, dynamic> mapResponse = json.decode(response.body);
-      if (mapResponse["result"] == "ok") {
-        final transfers = mapResponse["data"].cast<Map<String, dynamic>>();
-        final transferList = await transfers.map<Transfer>((json) {
-          return Transfer.fromJson(json);
-        }).toList();
-        return transferList;
-      } else {
-        return [];
-      }
-    } else {
-      throw Exception(
-          'Failed to load Transfers from the internet. Error: ${response.toString()}');
-    }
-  }
-
   Future<List<Transfer>> readBySender(String senderPhone) async {
-    Map<String, String> headers = await _sharedPreferenceService.getHeaders();
+    //Map<String, String> headers = await _sharedPreferenceService.getHeaders();
 
-    final response = await http.Client().get('$URL_TRANSFERS_BY_SENDER$senderPhone', headers: headers);
+    //final response = await http.Client().get('$URL_TRANSFERS_BY_SENDER$senderPhone', headers: headers);
+    List<Transfer> transferList = new List();
+
+    final response =
+        await http.Client().get('$URL_TRANSFERS_BY_SENDER$senderPhone');
     if (response.statusCode == HttpStatus.ok) {
-      Map<String, dynamic> mapResponse = json.decode(response.body);
-      if (mapResponse["result"] == "ok") {
-        final transfers = mapResponse["data"].cast<Map<String, dynamic>>();
-        final transferList = await transfers.map<Transfer>((json) {
-          return Transfer.fromJson(json);
-        }).toList();
-        return transferList;
-      } else {
-        return null;
-      }
+      List<dynamic> transfers = jsonDecode(response.body);
+      transferList = await transfers.map<Transfer>((json) {
+        return Transfer.fromJson(json);
+      }).toList();
+      return transferList;
+    } else if (response.statusCode == HttpStatus.notFound) {
+      return transferList;
     } else {
       throw Exception('Failed to load Transfers by sender from the internet');
     }
   }
 
   Future<List<Transfer>> readByReceiver(String receiverPhone) async {
-    Map<String, String> headers = await _sharedPreferenceService.getHeaders();
+    //Map<String, String> headers = await _sharedPreferenceService.getHeaders();
 
-    final response = await http.Client().get('$URL_TRANSFERS_BY_RECEIVER$receiverPhone', headers: headers);
+    //final response = await http.Client().get('$URL_TRANSFERS_BY_RECEIVER$receiverPhone', headers: headers);
+    List<Transfer> transferList = new List();
+    final response =
+        await http.Client().get('$URL_TRANSFERS_BY_RECEIVER$receiverPhone');
     if (response.statusCode == HttpStatus.ok) {
-      Map<String, dynamic> mapResponse = json.decode(response.body);
-      if (mapResponse["result"] == "ok") {
-        final transfers = mapResponse["data"].cast<Map<String, dynamic>>();
-        final transferList = await transfers.map<Transfer>((json) {
-          return Transfer.fromJson(json);
-        }).toList();
-        return transferList;
-      } else {
-        return null;
-      }
+      List<dynamic> transfers = jsonDecode(response.body);
+      transferList = await transfers.map<Transfer>((json) {
+        return Transfer.fromJson(json);
+      }).toList();
+      return transferList;
+    } else if (response.statusCode == HttpStatus.notFound) {
+      return transferList;
     } else {
       throw Exception('Failed to load Transfers by sender from the internet');
-    }
-  }
-
-  Future<Transfer> update(Map<String, dynamic> params) async {
-    Map<String, String> headers = await _sharedPreferenceService.getHeaders();
-
-    final response = await http.Client()
-        .put('$URL_TRANSFERS/${params["id"]}', headers: headers, body: params);
-    if (response.statusCode == HttpStatus.ok) {
-      final responseBody = await json.decode(response.body);
-      return convertResponseToTransferUpdate(responseBody);
-    } else {
-      throw Exception('Failed to update Transfers. Error: ${response.toString()}');
-    }
-  }
-
-  Future<bool> delete(int id) async {
-    Map<String, String> headers = await _sharedPreferenceService.getHeaders();
-
-    final response =
-    await http.Client().delete('$URL_TRANSFERS/$id', headers: headers);
-    if (response.statusCode == HttpStatus.ok) {
-      final responseBody = await json.decode(response.body);
-      if (responseBody["result"] == "ok") {
-        return true;
-      }
-    } else {
-      throw Exception('Failed to delete a Transfers. Error: ${response.toString()}');
     }
   }
 
@@ -158,21 +117,24 @@ class TransferService {
     return transfers;
   }
 
-  Future<Transfer> convertResponseToTransfer(Map<String, dynamic> json) async {
+/*
+
+  Future<Transfer> convertResponseToTransfer(dynamic json) async {
     if (json["data"] == null) {
       return null;
     }
 
-    await _sharedPreferenceService.save(AUTHENTICATION_TOKEN, json["token"]);
+    //await _sharedPreferenceService.save(AUTHENTICATION_TOKEN, json["token"]);
 
     return Transfer(
-        json["data"]["id"],
-        DateTime.parse(json["data"]["created_at"]),
-        json["data"]["sender"],
-        json["data"]["receiver"],
-        json["data"]["amount"],
-        json["data"]["description"]);
+        json["id"],
+        DateTime.parse(json["created_at"]),
+        json["sender"],
+        json["receiver"],
+        json["amount"],
+        json["description"]);
   }
+*/
 
   Future<Transfer> convertResponseToTransferUpdate(
       Map<String, dynamic> json) async {
@@ -180,7 +142,7 @@ class TransferService {
       return null;
     }
 
-    await _sharedPreferenceService.save(AUTHENTICATION_TOKEN, json["token"]);
+    //await _sharedPreferenceService.save(AUTHENTICATION_TOKEN, json["token"]);
 
     return Transfer(
       json["data"]["id"],

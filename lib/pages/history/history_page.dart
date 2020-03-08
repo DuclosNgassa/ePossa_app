@@ -6,6 +6,7 @@ import 'package:epossa_app/model/transfer.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/services/transfer_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
+import 'package:epossa_app/util/constant_field.dart';
 import 'package:flutter/material.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -111,8 +112,7 @@ class _HistoryPageState extends State<HistoryPage>
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10), color: Colors.white),
               child: ExpansionTile(
-                key: PageStorageKey<String>(
-                    receives.elementAt(index).receiver),
+                key: PageStorageKey<String>(receives.elementAt(index).receiver),
                 leading: new Text(DateConverter.convertToString(
                     receives.elementAt(index).created_at, context)),
                 title: Container(
@@ -308,7 +308,8 @@ class _HistoryPageState extends State<HistoryPage>
   }
 
   Future<List<Transfer>> _loadTransfers() async {
-    List<Transfer> transferItems = await _transferService.fetchTransfer();
+    List<Transfer> transferItems =
+        await _transferService.readBySender(LOGED_USER_PHONE);
 
     transferList = _transferService.sortDescending(transferItems);
 
@@ -320,7 +321,8 @@ class _HistoryPageState extends State<HistoryPage>
   }
 
   Future<List<Transfer>> _loadReceived() async {
-    List<Transfer> receivedItems = await _transferService.fetchReceived();
+    List<Transfer> receivedItems =
+        await _transferService.readByReceiver(LOGED_USER_PHONE);
 
     receivedList = _transferService.sortDescending(receivedItems);
 

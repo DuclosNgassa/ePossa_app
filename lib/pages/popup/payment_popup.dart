@@ -2,7 +2,12 @@ import 'dart:typed_data';
 
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
+import 'package:epossa_app/model/transfer.dart';
+import 'package:epossa_app/model/transferDto.dart';
+import 'package:epossa_app/notification/notification.dart';
+import 'package:epossa_app/services/transfer_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
+import 'package:epossa_app/util/constant_field.dart';
 import 'package:flutter/material.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
@@ -12,6 +17,8 @@ class PaymentPopup extends StatefulWidget {
 }
 
 class _PaymentPopupState extends State<PaymentPopup> {
+  TransferService _transferService = new TransferService();
+
   String barcode = '';
   Uint8List bytes = Uint8List(200);
   static const String stars = "***";
@@ -25,6 +32,8 @@ class _PaymentPopupState extends State<PaymentPopup> {
   TextEditingController _phoneNumberController = new TextEditingController();
   TextEditingController _amountController = new TextEditingController();
   TextEditingController _descriptionController = new TextEditingController();
+  Transfer newTransfer =
+      new Transfer(0, DateTime.now(), "sender", "receiver", 0, "description");
   FocusNode _phoneFocusNode;
   FocusNode _amountFocusNode;
   FocusNode _descriptionFocusNode;
@@ -138,6 +147,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
                       }
                       return null;
                     },
+                    onSaved: (val) => newTransfer.receiver = val,
                   ),
                 ),
                 Container(
@@ -169,25 +179,27 @@ class _PaymentPopupState extends State<PaymentPopup> {
                       }
                       return null;
                     },
+                    onSaved: (val) => newTransfer.amount = double.parse(val),
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 2),
+                  margin:
+                      EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 2),
                   child: TextFormField(
                     controller: _descriptionController,
                     textInputAction: TextInputAction.newline,
                     keyboardType: TextInputType.multiline,
                     focusNode: _descriptionFocusNode,
-                    onFieldSubmitted: (term) {
-                      _descriptionFocusNode.unfocus();
-                      //_submitForm();
-                    },
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
                       hintText:
                           AppLocalizations.of(context).translate('description'),
                     ),
+                    onFieldSubmitted: (term) {
+                      _descriptionFocusNode.unfocus();
+                    },
+                    onSaved: (val) => newTransfer.description = val,
                     maxLines: 5,
                   ),
                 ),
@@ -276,7 +288,8 @@ class _PaymentPopupState extends State<PaymentPopup> {
 
   Widget _buildTransferButton() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
+      padding:
+          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
       child: FadeAnimation(
         2,
         Center(
@@ -334,14 +347,46 @@ class _PaymentPopupState extends State<PaymentPopup> {
   }
 
   Future _submit() async {
-    if (_formKey.currentState.validate()) {
-      // If the form is valid, display a Snackbar.
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Processing Data'),
-        ),
-      );
+    final FormState form = _formKey.currentState;
+    if (!form.validate()) {
+      MyNotification.showInfoFlushbar(
+          context,
+          AppLocalizations.of(context).translate('info'),
+          AppLocalizations.of(context).translate('correct_form_errors'),
+          Icon(
+            Icons.info_outline,
+            size: 28,
+            color: Colors.red.shade300,
+          ),
+          Colors.red.shade300,
+          2);
+    } else {
+      form.save();
+      Transfer savedTransfer = await _saveTransfer();
+      if (savedTransfer != null) {
+        MyNotification.showInfoFlushbar(
+            context,
+            AppLocalizations.of(context).translate('info'),
+            AppLocalizations.of(context)
+                .translate('advert_save_success_message'),
+            Icon(
+              Icons.info_outline,
+              size: 28,
+              color: Colors.blue.shade300,
+            ),
+            Colors.blue.shade300,
+            2);
+        _clearForm();
+      }
     }
+  }
+
+  _clearForm() {
+    _formKey.currentState?.reset();
+    _phoneNumberController.text = "";
+    _amountController.text = "";
+    _descriptionController.text = "";
+    setState(() {});
   }
 
   String _getPhoneNumberFromQRCode(String qrCode) {
@@ -365,5 +410,21 @@ class _PaymentPopupState extends State<PaymentPopup> {
   _fieldFocusChange(FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  Future<Transfer> _saveTransfer() async {
+    print(newTransfer);
+    DateTime dateTime = DateTime.now();
+
+    TransferDTO transfer = new TransferDTO(
+        LOGED_USER_PHONE,
+        _phoneNumberController.text,
+        double.parse(_amountController.text),
+        _descriptionController.text);
+
+    //Map<String, dynamic> transferDynamic = transfer.toJsonWithoutId();
+
+    Transfer savedTransfer = await _transferService.create(transfer);
+    return savedTransfer;
   }
 }

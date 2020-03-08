@@ -1,12 +1,11 @@
-
-
 const APP_URL =
     "https://play.google.com/store/apps/details?id=com.kmerconsulting.epossa_app";
 const SITE_WEB = "https://www.kmerconsulting.com/";
 const PRIVACY_POLICY_URL =
     "https://kmersoftdesign.wordpress.com/datenschutzerklarung/";
 
-const SERVER_URL = "https://epossa.kmerconsulting.com"; // Server
+//const SERVER_URL = "https://epossa.kmerconsulting.com"; // Server
+const SERVER_URL = "http://192.168.2.120:8080/api"; // Server
 
 const URL_USERS = SERVER_URL + "/users";
 const URL_USERS_BY_PHONE = URL_USERS + "/phone/";

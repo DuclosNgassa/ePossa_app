@@ -63,5 +63,7 @@
   "receive_money": "Receive money",
   "signin": "Sign in",
   "already_registered": "Already registered? ",
-  "slash_message": "Experience safe and fast mobile money like you won't see anywhere else"
+  "slash_message": "Experience safe and fast mobile money like you won't see anywhere else",
+  "advert_save_success_message": "Your transfer has been completed."
+
 }

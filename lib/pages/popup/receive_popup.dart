@@ -79,7 +79,8 @@ class _ReceivePopupState extends State<ReceivePopup> {
       Form(
         key: _formKey,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
+          padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.blockSizeHorizontal * 5),
           child: Container(
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
@@ -114,7 +115,9 @@ class _ReceivePopupState extends State<ReceivePopup> {
 
   Widget _buildQRCodeButtons() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical * 3, horizontal: SizeConfig.blockSizeHorizontal * 5),
+      padding: EdgeInsets.symmetric(
+          vertical: SizeConfig.blockSizeVertical * 3,
+          horizontal: SizeConfig.blockSizeHorizontal * 5),
       child: FadeAnimation(
         1.8,
         Center(
@@ -172,7 +175,9 @@ class _ReceivePopupState extends State<ReceivePopup> {
 
   Widget _buildFooterMessage() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical, horizontal: SizeConfig.blockSizeHorizontal * 5),
+      padding: EdgeInsets.symmetric(
+          vertical: SizeConfig.blockSizeVertical,
+          horizontal: SizeConfig.blockSizeHorizontal * 5),
       child: FadeAnimation(
         2.1,
         Center(

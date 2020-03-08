@@ -2,7 +2,6 @@ import 'package:epossa_app/util/constant_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceService {
-
   Future<Map<String, String>> getHeaders() async {
     Map<String, String> headers = Map();
     headers['auth-token'] = await read(AUTHENTICATION_TOKEN);
@@ -24,7 +23,7 @@ class SharedPreferenceService {
     prefs.remove(key);
   }
 
-  clearForLogOut() async{
+  clearForLogOut() async {
     remove(USER_PHONE);
     remove(USER_NAME);
   }

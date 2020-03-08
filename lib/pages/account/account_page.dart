@@ -196,7 +196,16 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   User _getUser() {
-    User user = new User(1,"Max Mustermann", DateTime.now(),"00237 67 45 34 98", "password", "deviceToken", UserStatus.active, 25000, 5);
+    User user = new User(
+        1,
+        "Max Mustermann",
+        DateTime.now(),
+        "00237 67 45 34 98",
+        "password",
+        "deviceToken",
+        UserStatus.active,
+        25000,
+        5);
     return user;
   }
 }
