@@ -1,5 +1,3 @@
-
-
 class TransferDTO {
   String sender;
   String receiver;

@@ -4,7 +4,9 @@ import 'dart:io';
 
 import 'package:epossa_app/model/transfer.dart';
 import 'package:epossa_app/model/transferDto.dart';
+import 'package:epossa_app/model/transfer_bilan.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
+import 'package:epossa_app/util/constant_field.dart';
 import 'package:epossa_app/util/rest_endpoints.dart';
 import 'package:http/http.dart' as http;
 
@@ -36,14 +38,20 @@ class TransferService {
 
     //final response = await http.Client().get('$URL_TRANSFERS_BY_SENDER$senderPhone', headers: headers);
     List<Transfer> transferList = new List();
-
+    double sumTransferSent = 0.0;
     final response =
         await http.Client().get('$URL_TRANSFERS_BY_SENDER$senderPhone');
     if (response.statusCode == HttpStatus.ok) {
       List<dynamic> transfers = jsonDecode(response.body);
       transferList = await transfers.map<Transfer>((json) {
-        return Transfer.fromJson(json);
+        Transfer transferMap = Transfer.fromJson(json);
+        sumTransferSent += transferMap.amount;
+        return transferMap;
       }).toList();
+      //save all tranfers sent localy
+      await _sharedPreferenceService.save(
+          SUM_TRANSFER_SENT, sumTransferSent.toString());
+
       return transferList;
     } else if (response.statusCode == HttpStatus.notFound) {
       return transferList;
@@ -57,13 +65,20 @@ class TransferService {
 
     //final response = await http.Client().get('$URL_TRANSFERS_BY_RECEIVER$receiverPhone', headers: headers);
     List<Transfer> transferList = new List();
+    double sumTransferReceived = 0.0;
     final response =
         await http.Client().get('$URL_TRANSFERS_BY_RECEIVER$receiverPhone');
     if (response.statusCode == HttpStatus.ok) {
       List<dynamic> transfers = jsonDecode(response.body);
       transferList = await transfers.map<Transfer>((json) {
-        return Transfer.fromJson(json);
+        Transfer transferMap = Transfer.fromJson(json);
+        sumTransferReceived += transferMap.amount;
+        return transferMap;
       }).toList();
+      //save all tranfers sent localy
+      await _sharedPreferenceService.save(
+          SUM_TRANSFER_RECEIVED, sumTransferReceived.toString());
+
       return transferList;
     } else if (response.statusCode == HttpStatus.notFound) {
       return transferList;
@@ -91,6 +106,24 @@ class TransferService {
     return transferList;
   }
 
+  Future<TransferBilan> getTransferBilan() async {
+    //this both calls save sumTransferSent and sumTransferReceived
+    await readByReceiver(LOGED_USER_PHONE);
+    await readBySender(LOGED_USER_PHONE);
+
+    String sumSent = await _sharedPreferenceService.read(SUM_TRANSFER_SENT);
+    String sumReceived =
+        await _sharedPreferenceService.read(SUM_TRANSFER_RECEIVED);
+
+    TransferBilan transferBilan = TransferBilan();
+    transferBilan.sumTransferSent = double.parse(sumSent ?? 0.0);
+    transferBilan.sumTransferReceived = double.parse(sumReceived ?? 0.0);
+    transferBilan.difference =
+        transferBilan.sumTransferReceived - transferBilan.sumTransferSent;
+
+    return transferBilan;
+  }
+
   Future<List<Transfer>> fetchReceived() async {
     List<Transfer> transferList = new List();
 
@@ -116,25 +149,6 @@ class TransferService {
 
     return transfers;
   }
-
-/*
-
-  Future<Transfer> convertResponseToTransfer(dynamic json) async {
-    if (json["data"] == null) {
-      return null;
-    }
-
-    //await _sharedPreferenceService.save(AUTHENTICATION_TOKEN, json["token"]);
-
-    return Transfer(
-        json["id"],
-        DateTime.parse(json["created_at"]),
-        json["sender"],
-        json["receiver"],
-        json["amount"],
-        json["description"]);
-  }
-*/
 
   Future<Transfer> convertResponseToTransferUpdate(
       Map<String, dynamic> json) async {
