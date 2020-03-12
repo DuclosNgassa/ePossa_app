@@ -1,6 +1,12 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
+import 'package:epossa_app/model/user.dart';
+import 'package:epossa_app/model/userDto.dart';
+import 'package:epossa_app/model/user_status.dart';
+import 'package:epossa_app/notification/notification.dart';
+import 'package:epossa_app/services/user_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
+import 'package:epossa_app/util/constant_field.dart';
 import 'package:flutter/material.dart';
 
 import '../../password_helper.dart';
@@ -20,6 +26,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
   TextEditingController _newPassword1Controller = new TextEditingController();
   TextEditingController _newPassword2Controller = new TextEditingController();
   TextEditingController _oldPasswordController = new TextEditingController();
+  UserService _userService = new UserService();
 
   FocusNode _newPassword1FocusNode;
   FocusNode _newPassword2FocusNode;
@@ -93,7 +100,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                 Container(
                   decoration: BoxDecoration(
                       border:
-                          Border(bottom: BorderSide(color: Colors.grey[300]))),
+                      Border(bottom: BorderSide(color: Colors.grey[300]))),
                   child: TextFormField(
                     autofocus: true,
                     obscureText: true,
@@ -109,7 +116,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                         border: InputBorder.none,
                         prefixIcon: Icon(Icons.person),
                         hintStyle:
-                            TextStyle(color: Colors.grey.withOpacity(.8)),
+                        TextStyle(color: Colors.grey.withOpacity(.8)),
                         hintText: AppLocalizations.of(context)
                             .translate('old_password')),
                     validator: (value) {
@@ -124,7 +131,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                 Container(
                   decoration: BoxDecoration(
                       border:
-                          Border(bottom: BorderSide(color: Colors.grey[300]))),
+                      Border(bottom: BorderSide(color: Colors.grey[300]))),
                   child: TextFormField(
                     obscureText: true,
                     controller: _newPassword1Controller,
@@ -154,7 +161,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                 Container(
                   decoration: BoxDecoration(
                       border:
-                          Border(bottom: BorderSide(color: Colors.grey[300]))),
+                      Border(bottom: BorderSide(color: Colors.grey[300]))),
                   child: TextFormField(
                     obscureText: true,
                     controller: _newPassword2Controller,
@@ -191,7 +198,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
   Widget _buildSaveButtons() {
     return Padding(
       padding:
-          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
+      EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
       child: FadeAnimation(
         2,
         Center(
@@ -241,13 +248,71 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-  String _checkPassword() {
+  bool _checkPassword() {
     if (!PasswordHelper.checkEqualPassword(
         _newPassword1Controller.text, _newPassword2Controller.text)) {
-      return AppLocalizations.of(context).translate('password_different');
+      return false;
     }
-    return null;
+    return true;
   }
 
-  Future<void> _save() async {}
+  Future<void> _save() async {
+    if(_checkPassword()) {
+      //TODO read logedUser from sharePref
+      UserDto userDto = new UserDto.id(
+          1,
+          _newPassword1Controller.text,
+          LOGED_USER_PHONE,
+          "passwordTesterNew",
+          "deviceToken1",
+          UserStatus.active,
+          20000.0,
+          3);
+      User updatedUser = await _userService.update(userDto);
+
+      if (updatedUser != null) {
+        MyNotification.showInfoFlushbar(
+            context,
+            AppLocalizations.of(context).translate('info'),
+            AppLocalizations.of(context)
+                .translate('password_changed_success_message'),
+            Icon(
+              Icons.info_outline,
+              size: 28,
+              color: Colors.blue.shade300,
+            ),
+            Colors.blue.shade300,
+            2);
+      } else {
+        MyNotification.showInfoFlushbar(
+            context,
+            AppLocalizations.of(context).translate('error'),
+            AppLocalizations.of(context)
+                .translate('error_changing_password'),
+            Icon(
+              Icons.error,
+              size: 28,
+              color: Colors.red.shade300,
+            ),
+            Colors.red.shade300,
+            2);
+        return null;
+      }
+    }else{
+      MyNotification.showInfoFlushbar(
+          context,
+          AppLocalizations.of(context).translate('error'),
+          AppLocalizations.of(context)
+              .translate('password_different'),
+          Icon(
+            Icons.error,
+            size: 28,
+            color: Colors.red.shade300,
+          ),
+          Colors.red.shade300,
+          2);
+
+      return null;
+    }
+  }
 }

@@ -1,5 +1,10 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
+import 'package:epossa_app/model/user.dart';
+import 'package:epossa_app/model/userDto.dart';
+import 'package:epossa_app/model/user_status.dart';
+import 'package:epossa_app/notification/notification.dart';
+import 'package:epossa_app/services/user_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +21,7 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
   TextEditingController _phoneController = new TextEditingController();
-
+  UserService _userService = new UserService();
   FocusNode _phoneFocusNode;
 
   @override
@@ -164,5 +169,45 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
     );
   }
 
-  Future<void> _save() async {}
+  Future<void> _save() async {
+    //TODO read logedUser from sharePref
+    UserDto userDto = new UserDto.id(
+        1,
+        "UserNameChangePhone",
+        _phoneController.text,
+        "passwordTesterNew",
+        "deviceToken1",
+        UserStatus.active,
+        20000.0,
+        3);
+    User updatedUser = await _userService.update(userDto);
+
+    if (updatedUser != null) {
+      MyNotification.showInfoFlushbar(
+          context,
+          AppLocalizations.of(context).translate('info'),
+          AppLocalizations.of(context)
+              .translate('phone_changed_success_message'),
+          Icon(
+            Icons.info_outline,
+            size: 28,
+            color: Colors.blue.shade300,
+          ),
+          Colors.blue.shade300,
+          2);
+    } else {
+      MyNotification.showInfoFlushbar(
+          context,
+          AppLocalizations.of(context).translate('error'),
+          AppLocalizations.of(context).translate('error_changing_phone'),
+          Icon(
+            Icons.error,
+            size: 28,
+            color: Colors.red.shade300,
+          ),
+          Colors.red.shade300,
+          2);
+      return null;
+    }
+  }
 }

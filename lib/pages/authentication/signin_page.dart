@@ -1,7 +1,20 @@
+import 'dart:convert';
+import 'dart:math';
+
+import 'package:crypto/crypto.dart';
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
+import 'package:epossa_app/model/user.dart';
+import 'package:epossa_app/model/userDto.dart';
+import 'package:epossa_app/model/user_status.dart';
+import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/login_page.dart';
+import 'package:epossa_app/pages/home/home_page.dart';
+import 'package:epossa_app/password_helper.dart';
+import 'package:epossa_app/services/sharedpreferences_service.dart';
+import 'package:epossa_app/services/user_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
+import 'package:epossa_app/util/constant_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,6 +30,10 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController _phoneNumberController = new TextEditingController();
   TextEditingController _password1Controller = new TextEditingController();
   TextEditingController _password2Controller = new TextEditingController();
+  UserService _userService = new UserService();
+  SharedPreferenceService _sharedPreferenceService =
+      new SharedPreferenceService();
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   FocusNode _nameFocusNode;
   FocusNode _phoneNumberFocusNode;
@@ -54,34 +71,38 @@ class _SignInPageState extends State<SignInPage> {
           width: SizeConfig.screenWidth,
           child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
-            child: SingleChildScrollView(
-              child: Column(
-                //crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  _buildBackground(context),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: SizeConfig.blockSizeVertical * 5),
-                    child: Column(
-                      children: <Widget>[
-                        _buildSigninInput(context),
-                        SizedBox(
-                          height: SizeConfig.blockSizeVertical * 2,
-                        ),
-                        _buildSigninButton(context),
-                        SizedBox(
-                          height: SizeConfig.blockSizeVertical * 2,
-                        ),
-                        _buildLoginButton(context),
-                        SizedBox(
-                          height: SizeConfig.blockSizeVertical * 2,
-                        ),
-                        _buildPasswordForgottenButton(context),
-                      ],
+            child: Form(
+              key: _formKey,
+              autovalidate: false,
+              child: SingleChildScrollView(
+                child: Column(
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    _buildBackground(context),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.blockSizeVertical * 5),
+                      child: Column(
+                        children: <Widget>[
+                          _buildSigninInput(context),
+                          SizedBox(
+                            height: SizeConfig.blockSizeVertical * 2,
+                          ),
+                          _buildSigninButton(context),
+                          SizedBox(
+                            height: SizeConfig.blockSizeVertical * 2,
+                          ),
+                          _buildLoginButton(context),
+                          SizedBox(
+                            height: SizeConfig.blockSizeVertical * 2,
+                          ),
+                          _buildPasswordForgottenButton(context),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -296,6 +317,13 @@ class _SignInPageState extends State<SignInPage> {
                   hintText:
                       AppLocalizations.of(context).translate("password_repeat"),
                 ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return AppLocalizations.of(context)
+                        .translate('password_please');
+                  }
+                  return null;
+                },
               ),
             ),
           ],
@@ -337,7 +365,7 @@ class _SignInPageState extends State<SignInPage> {
     return FadeAnimation(
       2.8,
       GestureDetector(
-        onTap: () => _login(context),
+        onTap: () => _login(),
         child: RichText(
           text: TextSpan(children: [
             TextSpan(
@@ -361,14 +389,105 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  _signIn(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => NavigationPage()),
+  _signIn(BuildContext context) async {
+    final FormState form = _formKey.currentState;
+
+    if (!form.validate()) {
+      MyNotification.showInfoFlushbar(
+          context,
+          AppLocalizations.of(context).translate('info'),
+          AppLocalizations.of(context).translate('correct_form_errors'),
+          Icon(
+            Icons.error,
+            size: 28,
+            color: Colors.red.shade300,
+          ),
+          Colors.red.shade300,
+          2);
+    } else {
+      //Validate password
+      bool isPasswordEqual = PasswordHelper.checkEqualPassword(
+          _password1Controller.text, _password2Controller.text);
+      if (isPasswordEqual) {
+        var rand = Random();
+        var saltBytes = List<int>.generate(32, (_) => rand.nextInt(256));
+        var salt = base64.encode(saltBytes);
+
+        var hashedPassword = _hashPassword(_password1Controller.text, salt);
+
+        UserDto userDto = new UserDto(
+            _nameController.text,
+            _phoneNumberController.text,
+            hashedPassword,
+            "deviceToken" + _nameController.text,
+            UserStatus.active,
+            0,
+            3);
+        User createdUser = await _userService.create(userDto);
+        if (createdUser != null) {
+          MyNotification.showInfoFlushbar(
+              context,
+              AppLocalizations.of(context).translate('info'),
+              AppLocalizations.of(context)
+                  .translate('signin_success'),
+              Icon(
+                Icons.info_outline,
+                size: 28,
+                color: Colors.blue.shade300,
+              ),
+              Colors.blue.shade300,
+              2);
+          //await _sharedPreferenceService.save(LOGEDIN, "YES");
+          _login();
+          //_navigateToHome();
+        } else {
+          MyNotification.showInfoFlushbar(
+              context,
+              AppLocalizations.of(context).translate('error'),
+              AppLocalizations.of(context).translate('error_signin'),
+              Icon(
+                Icons.error,
+                size: 28,
+                color: Colors.red.shade300,
+              ),
+              Colors.red.shade300,
+              2);
+        }
+      } else {
+        MyNotification.showInfoFlushbar(
+            context,
+            AppLocalizations.of(context).translate('error'),
+            AppLocalizations.of(context).translate('password_different'),
+            Icon(
+              Icons.error,
+              size: 28,
+              color: Colors.red.shade300,
+            ),
+            Colors.red.shade300,
+            2);
+      }
+    }
+  }
+
+  _hashPassword(String password, String salt) {
+    var key = utf8.encode(password);
+    var bytes = utf8.encode(salt);
+
+    var hmacSha256 = new Hmac(sha256, key); // HMAC-SHA256
+    var digest = hmacSha256.convert(bytes);
+
+    return digest.toString();
+  }
+
+  _navigateToHome() {
+    Navigator.of(context).pushReplacement(
+      new MaterialPageRoute(
+        builder: (context) => new HomePage(),
+      ),
     );
   }
 
-  _login(BuildContext context) {
+  _login() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),

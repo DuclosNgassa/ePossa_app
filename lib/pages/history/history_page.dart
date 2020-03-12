@@ -6,6 +6,7 @@ import 'package:epossa_app/model/transfer.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/services/transfer_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
+import 'package:epossa_app/styling/styling.dart';
 import 'package:epossa_app/util/constant_field.dart';
 import 'package:flutter/material.dart';
 
@@ -38,6 +39,7 @@ class _HistoryPageState extends State<HistoryPage>
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    Styling().init(context);
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(
@@ -220,6 +222,7 @@ class _HistoryPageState extends State<HistoryPage>
                 ),
                 child: Text(
                   AppLocalizations.of(context).translate('no_transaction'),
+                  style: Styling.styleTitleWhite,
                 ),
               ),
             );
@@ -231,7 +234,7 @@ class _HistoryPageState extends State<HistoryPage>
               AppLocalizations.of(context)
                   .translate('error_loading_transactions'),
               Icon(
-                Icons.info_outline,
+                Icons.error,
                 size: 28,
                 color: Colors.redAccent,
               ),
@@ -272,6 +275,7 @@ class _HistoryPageState extends State<HistoryPage>
                 child: Text(
                   AppLocalizations.of(context)
                       .translate('no_received_transaction'),
+                  style: Styling.styleTitleWhite,
                 ),
               ),
             );
@@ -283,7 +287,7 @@ class _HistoryPageState extends State<HistoryPage>
               AppLocalizations.of(context)
                   .translate('error_loading_transactions'),
               Icon(
-                Icons.info_outline,
+                Icons.error,
                 size: 28,
                 color: Colors.redAccent,
               ),

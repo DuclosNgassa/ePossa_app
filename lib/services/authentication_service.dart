@@ -13,7 +13,7 @@ class UserService {
   SharedPreferenceService _sharedPreferenceService =
       new SharedPreferenceService();
 
-  Future<User> create(UserDto userDto) async {
+  Future<User> signin(UserDto userDto) async {
     //Map<String, String> headers = await _sharedPreferenceService.getHeaders();
     //int id = userDto.id;
     HttpClientRequest request =
@@ -40,43 +40,29 @@ class UserService {
 
   }
 
-  Future<List<User>> readAll() async {
-    //Map<String, String> headers = await _sharedPreferenceService.getHeaders();
+  Future<User> login(UserDto userDto) async {
+    HttpClientRequest request =
+    await HttpClient().getUrl(Uri.parse('$URL_LOGIN'))
+      ..headers.contentType = ContentType.json
+      ..write(jsonEncode(userDto));
+    HttpClientResponse response = await request.close();
 
-    //final response = await http.Client().get(URL_USERS, headers: headers);
-    final response = await http.Client().get(URL_USERS);
     if (response.statusCode == HttpStatus.ok) {
-      Map<String, dynamic> mapResponse = json.decode(response.body);
-      if (mapResponse["result"] == "ok") {
-        final users = mapResponse["data"].cast<Map<String, dynamic>>();
-        final userList = await users.map<User>((json) {
-          return User.fromJson(json);
-        }).toList();
-        return userList;
-      } else {
-        return [];
-      }
-    } else {
-      throw Exception(
-          'Failed to load Users from the internet. Error: ${response.toString()}');
-    }
-  }
+      String reply = await response.transform(utf8.decoder).join();
+      Map userMap = jsonDecode(reply);
+      User createdUser = User.fromJson(userMap);
+      //TODO Save user in SharePref
+      _sharedPreferenceService.save(USER_PHONE, createdUser.phone);
+      _sharedPreferenceService.save(USER_NAME, createdUser.name);
 
-  Future<User> readByPhoneNumber(String phoneNumber) async {
-    final response = await http.Client().get('$URL_USERS_BY_PHONE$phoneNumber');
-    if (response.statusCode == HttpStatus.ok) {
-      Map<String, dynamic> mapResponse = json.decode(response.body);
-      if (mapResponse["result"] == "ok") {
-        return convertResponseToUser(mapResponse);
-      } else {
-        return null;
-      }
+      return createdUser;
     } else if (response.statusCode == HttpStatus.notFound) {
       return null;
     } else {
       throw Exception(
-          'Failed to readByPhoneNumber from the internet. Error: ${response.toString()}');
+          'Failed to create user. Error: ${response.toString()}');
     }
+
   }
 
   Future<User> update(UserDto userDto) async {

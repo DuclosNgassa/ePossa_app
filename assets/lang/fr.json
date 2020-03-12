@@ -48,6 +48,11 @@
   "sending": "Envoi",
   "no_transaction": "Vous n´avez pas encore de transactions",
   "error": "Erreur",
+  "error_signin": "Erreur lors de l´enregistrement. Veuillez rééssayer s´il vous plaît",
+  "correct_form_errors": "Veuillez corriger les érreurs de votre formulaire",
+  "error_changing_name": "Erreur lors du changement de nom",
+  "error_changing_password": "Erreur lors du changement de mot de passe",
+  "error_changing_phone": "Erreur lors du changement de numéro de téléphone",
   "error_loading_transactions": "Erreur lors du chargement des transactions",
   "loading": "Chargement ...",
   "no_received_transaction": "Vous n´avez pas encore de recu de transferts",
@@ -62,7 +67,11 @@
   "monetize_your_services": "Monetisez vos services",
   "receive_money": "Recevoir l´argent",
   "signin": "Enregistrement",
+  "signin_success": "Merci pour votre enregistrement",
   "already_registered": "Already registered? ",
   "slash_message": "Experimentez un mobile money sure et rapide comme vous ne verrez nulle part ailleurs",
-  "advert_save_success_message": "Votre transfert a été éffectué."
+  "transfer_sent_success_message": "Votre transfert a été éffectué.",
+  "name_changed_success_message": "Votre nom a été changé.",
+  "password_changed_success_message": "Votre mot de passe a été changé.",
+  "phone_changed_success_message": "Votre numéro de télephone a été changé."
 }

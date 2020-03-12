@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
+import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/signin_page.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +18,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController _phoneNumberController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   FocusNode _phoneNumberFocusNode;
   FocusNode _passwordFocusNode;
@@ -47,34 +51,37 @@ class _LoginPageState extends State<LoginPage> {
             width: SizeConfig.screenWidth,
             child: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    _buildBackground(context),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: SizeConfig.blockSizeVertical * 5),
-                      child: Column(
-                        children: <Widget>[
-                          _buildLoginInput(context),
-                          SizedBox(
-                            height: SizeConfig.blockSizeVertical * 2,
-                          ),
-                          _buildLoginButton(context),
-                          SizedBox(
-                            height: SizeConfig.blockSizeVertical * 2,
-                          ),
-                          _buildSignInButton(context),
-                          SizedBox(
-                            height: SizeConfig.blockSizeVertical * 3,
-                          ),
-                          _buildPasswordForgottenButton(context),
-                        ],
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      _buildBackground(context),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: SizeConfig.blockSizeVertical * 5),
+                        child: Column(
+                          children: <Widget>[
+                            _buildLoginInput(context),
+                            SizedBox(
+                              height: SizeConfig.blockSizeVertical * 2,
+                            ),
+                            _buildLoginButton(context),
+                            SizedBox(
+                              height: SizeConfig.blockSizeVertical * 2,
+                            ),
+                            _buildSignInButton(context),
+                            SizedBox(
+                              height: SizeConfig.blockSizeVertical * 3,
+                            ),
+                            _buildPasswordForgottenButton(context),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -315,15 +322,71 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _login(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => NavigationPage()),
-    );
+  _login(BuildContext context) async {
+    final FormState form = _formKey.currentState;
+
+    if (!form.validate()) {
+      MyNotification.showInfoFlushbar(
+          context,
+          AppLocalizations.of(context).translate('info'),
+          AppLocalizations.of(context).translate('correct_form_errors'),
+          Icon(
+            Icons.error,
+            size: 28,
+            color: Colors.red.shade300,
+          ),
+          Colors.red.shade300,
+          2);
+    } else {
+        //Read
+        var salt = base64.encode(saltBytes);
+
+        var hashedPassword = _hashPassword(_password1Controller.text, salt);
+
+        UserDto userDto = new UserDto(
+            _nameController.text,
+            _phoneNumberController.text,
+            hashedPassword,
+            "deviceToken" + _nameController.text,
+            UserStatus.active,
+            0,
+            3);
+        User createdUser = await _userService.create(userDto);
+        if (createdUser != null) {
+          MyNotification.showInfoFlushbar(
+              context,
+              AppLocalizations.of(context).translate('info'),
+              AppLocalizations.of(context)
+                  .translate('signin_success'),
+              Icon(
+                Icons.info_outline,
+                size: 28,
+                color: Colors.blue.shade300,
+              ),
+              Colors.blue.shade300,
+              2);
+          //await _sharedPreferenceService.save(LOGEDIN, "YES");
+          _login();
+          //_navigateToHome();
+        } else {
+          MyNotification.showInfoFlushbar(
+              context,
+              AppLocalizations.of(context).translate('error'),
+              AppLocalizations.of(context).translate('error_signin'),
+              Icon(
+                Icons.error,
+                size: 28,
+                color: Colors.red.shade300,
+              ),
+              Colors.red.shade300,
+              2);
+        }
+    }
   }
 
+
   _signIn(BuildContext context) {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => SignInPage()),
     );

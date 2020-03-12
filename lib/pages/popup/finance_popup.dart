@@ -126,7 +126,7 @@ class _FinancePopupState extends State<FinancePopup> {
               AppLocalizations.of(context).translate('error'),
               AppLocalizations.of(context).translate('error_loading'),
               Icon(
-                Icons.info_outline,
+                Icons.error,
                 size: 28,
                 color: Colors.redAccent,
               ),

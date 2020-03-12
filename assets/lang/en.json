@@ -48,6 +48,11 @@
   "sending": "Sending",
   "no_transaction": "You have no transactions yet",
   "error": "Error",
+  "error_signin": "Error during registration. Try again, please",
+  "correct_form_errors": "Please correct the errors in your form",
+  "error_changing_name": "Error when changing name",
+  "error_changing_password": "Error when changing password",
+  "error_changing_phone": "Error when changing phone number",
   "error_loading_transactions": "Error loading transactions",
   "loading": "Loading ...",
   "no_received_transaction": "You don't have a transfer receipt yet",
@@ -62,8 +67,11 @@
   "monetize_your_services": "Monetize your services",
   "receive_money": "Receive money",
   "signin": "Sign in",
+  "signin_success": "Thank you for your registration",
   "already_registered": "Already registered? ",
   "slash_message": "Experience safe and fast mobile money like you won't see anywhere else",
-  "advert_save_success_message": "Your transfer has been completed."
-
+  "transfer_sent_success_message": "Your transfer has been completed.",
+  "name_changed_success_message": "Your name has been changed.",
+  "password_changed_success_message": "Your password has been changed.",
+  "phone_changed_success_message": "Your phone number has been changed."
 }

@@ -1,63 +1,60 @@
 import 'package:epossa_app/model/user_status.dart';
 
 class UserDto {
+  int id;
   String name;
   String phone;
   String password;
-  String device_token;
+  String device;
   UserStatus status;
   double balance;
   int rating;
+  String salt;
+  String authenticationToken;
 
-  UserDto(this.name, this.phone, this.password, this.device_token, this.status,
+
+  UserDto(this.name, this.phone, this.password, this.device, this.status,
       this.balance, this.rating);
 
-  @override
+  UserDto.id(this.id, this.name, this.phone, this.password, this.device, this.status,
+      this.balance, this.rating, this.authenticationToken);
+
+  UserDto.login(this.phone, this.password);
+
+  UserDto.name(this.name);
+
+  UserDto.phone(this.phone);
+
+  UserDto.password(this.password);
+
+  UserDto.balance(this.balance);
+
+  UserDto.rating(this.rating);
+
   Map<String, dynamic> toJson() => {
+        'id':id,
         'name': name,
         'phone': phone,
         'password': password,
-        'device_token': device_token,
+        'device': device,
         'status': convertStatusToString(status),
         'balance': balance.toString(),
         'rating': rating.toString(),
+        'salt': salt,
       };
 
-  Map<String, dynamic> toJsonWithoutId() => {
-        'name': name,
-        'phone': phone,
-        'password': password,
-        'device_token': device_token,
-        'status': convertStatusToString(status),
-        'balance': balance.toString(),
-        'rating': rating.toString(),
-      };
-
-  @override
   factory UserDto.fromJson(Map<String, dynamic> json) {
-    return UserDto(
+    return UserDto.id(
+      json["id"],
       json["name"],
       json["phone"],
       json["password"],
-      json["device_token"],
+      json["device"],
       convertStringToStatus(json["user_status"]),
       json["balance"],
       json["rating"],
+      json["authenticationToken"],
     );
-  }
-
-  @override
-  Map<String, dynamic> toMap(UserDto user) {
-    Map<String, dynamic> params = Map<String, dynamic>();
-    params["name"] = user.name;
-    params["phone"] = user.phone;
-    params["password"] = user.password;
-    params["device_token"] = user.device_token;
-    params["user_status"] = convertStatusToString(user.status);
-    params["balance"] = user.balance.toString();
-    params["rating"] = user.rating.toString();
-
-    return params;
   }
 
   static String convertStatusToString(UserStatus value) {

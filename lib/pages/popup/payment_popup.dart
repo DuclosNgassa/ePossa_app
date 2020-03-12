@@ -368,7 +368,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
             context,
             AppLocalizations.of(context).translate('info'),
             AppLocalizations.of(context)
-                .translate('advert_save_success_message'),
+                .translate('transfer_sent_success_message'),
             Icon(
               Icons.info_outline,
               size: 28,

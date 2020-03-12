@@ -116,8 +116,8 @@ class TransferService {
         await _sharedPreferenceService.read(SUM_TRANSFER_RECEIVED);
 
     TransferBilan transferBilan = TransferBilan();
-    transferBilan.sumTransferSent = double.parse(sumSent ?? 0.0);
-    transferBilan.sumTransferReceived = double.parse(sumReceived ?? 0.0);
+    transferBilan.sumTransferSent = double.parse(sumSent?? "0");
+    transferBilan.sumTransferReceived = double.parse(sumReceived?? "0");
     transferBilan.difference =
         transferBilan.sumTransferReceived - transferBilan.sumTransferSent;
 
