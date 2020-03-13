@@ -368,16 +368,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-/*
-  _navigateToHome() {
-    Navigator.of(context).pushReplacement(
-      new MaterialPageRoute(
-        builder: (context) => new HomePage(),
-      ),
-    );
-  }
-*/
-
   _signIn(BuildContext context) {
     Navigator.pushReplacement(
       context,
