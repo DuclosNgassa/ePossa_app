@@ -100,7 +100,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                 Container(
                   decoration: BoxDecoration(
                       border:
-                      Border(bottom: BorderSide(color: Colors.grey[300]))),
+                          Border(bottom: BorderSide(color: Colors.grey[300]))),
                   child: TextFormField(
                     autofocus: true,
                     obscureText: true,
@@ -116,7 +116,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                         border: InputBorder.none,
                         prefixIcon: Icon(Icons.person),
                         hintStyle:
-                        TextStyle(color: Colors.grey.withOpacity(.8)),
+                            TextStyle(color: Colors.grey.withOpacity(.8)),
                         hintText: AppLocalizations.of(context)
                             .translate('old_password')),
                     validator: (value) {
@@ -131,7 +131,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                 Container(
                   decoration: BoxDecoration(
                       border:
-                      Border(bottom: BorderSide(color: Colors.grey[300]))),
+                          Border(bottom: BorderSide(color: Colors.grey[300]))),
                   child: TextFormField(
                     obscureText: true,
                     controller: _newPassword1Controller,
@@ -161,7 +161,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                 Container(
                   decoration: BoxDecoration(
                       border:
-                      Border(bottom: BorderSide(color: Colors.grey[300]))),
+                          Border(bottom: BorderSide(color: Colors.grey[300]))),
                   child: TextFormField(
                     obscureText: true,
                     controller: _newPassword2Controller,
@@ -198,7 +198,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
   Widget _buildSaveButtons() {
     return Padding(
       padding:
-      EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
+          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
       child: FadeAnimation(
         2,
         Center(
@@ -257,7 +257,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
   }
 
   Future<void> _save() async {
-    if(_checkPassword()) {
+    if (_checkPassword()) {
       //TODO read logedUser from sharePref
       UserDto userDto = new UserDto.id(
           1,
@@ -267,7 +267,8 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
           "deviceToken1",
           UserStatus.active,
           20000.0,
-          3);
+          3,
+          "salt");
       User updatedUser = await _userService.update(userDto);
 
       if (updatedUser != null) {
@@ -287,8 +288,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
         MyNotification.showInfoFlushbar(
             context,
             AppLocalizations.of(context).translate('error'),
-            AppLocalizations.of(context)
-                .translate('error_changing_password'),
+            AppLocalizations.of(context).translate('error_changing_password'),
             Icon(
               Icons.error,
               size: 28,
@@ -298,12 +298,11 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
             2);
         return null;
       }
-    }else{
+    } else {
       MyNotification.showInfoFlushbar(
           context,
           AppLocalizations.of(context).translate('error'),
-          AppLocalizations.of(context)
-              .translate('password_different'),
+          AppLocalizations.of(context).translate('password_different'),
           Icon(
             Icons.error,
             size: 28,

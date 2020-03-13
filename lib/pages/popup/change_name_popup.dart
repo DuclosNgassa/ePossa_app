@@ -171,11 +171,19 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
 
   Future<void> _save() async {
     //TODO read logedUser from sharePref
-    UserDto userDto = new UserDto.id(1, _nameController.text, LOGED_USER_PHONE,
-        "passwordTester", "deviceToken1", UserStatus.active, 20000.0, 3);
+    UserDto userDto = new UserDto.id(
+        1,
+        _nameController.text,
+        LOGED_USER_PHONE,
+        "passwordTester",
+        "deviceToken1",
+        UserStatus.active,
+        20000.0,
+        3,
+        "salt");
     User updatedUser = await _userService.update(userDto);
 
-    if(updatedUser != null){
+    if (updatedUser != null) {
       MyNotification.showInfoFlushbar(
           context,
           AppLocalizations.of(context).translate('info'),
@@ -190,12 +198,11 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
           2);
 
       _nameController.text = "";
-    }else{
+    } else {
       MyNotification.showInfoFlushbar(
           context,
           AppLocalizations.of(context).translate('error'),
-          AppLocalizations.of(context)
-              .translate('error_changing_name'),
+          AppLocalizations.of(context).translate('error_changing_name'),
           Icon(
             Icons.error,
             size: 28,

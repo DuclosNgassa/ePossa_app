@@ -87,25 +87,6 @@ class TransferService {
     }
   }
 
-  Future<List<Transfer>> fetchTransfer() async {
-    List<Transfer> transferList = new List();
-
-    for (int i = 0; i <= 10; i++) {
-      Transfer transfer = new Transfer(
-          i,
-          new DateTime.now(),
-          '0023767655567' + i.toString(),
-          '00237654458989' + i.toString(),
-          double.parse("1000" + i.toString()),
-          'Chausurehvhgvghvhjvjvvhvkvhvhjvjvhvhvhvk jvkjvvkjvhj hgvhvghvhjvjv g ghvjhgvghvhgv  hvhvhvkhvvvzfuozuofu' +
-              i.toString());
-
-      transferList.add(transfer);
-    }
-
-    return transferList;
-  }
-
   Future<TransferBilan> getTransferBilan() async {
     //this both calls save sumTransferSent and sumTransferReceived
     await readByReceiver(LOGED_USER_PHONE);
@@ -116,31 +97,12 @@ class TransferService {
         await _sharedPreferenceService.read(SUM_TRANSFER_RECEIVED);
 
     TransferBilan transferBilan = TransferBilan();
-    transferBilan.sumTransferSent = double.parse(sumSent?? "0");
-    transferBilan.sumTransferReceived = double.parse(sumReceived?? "0");
+    transferBilan.sumTransferSent = double.parse(sumSent ?? "0");
+    transferBilan.sumTransferReceived = double.parse(sumReceived ?? "0");
     transferBilan.difference =
         transferBilan.sumTransferReceived - transferBilan.sumTransferSent;
 
     return transferBilan;
-  }
-
-  Future<List<Transfer>> fetchReceived() async {
-    List<Transfer> transferList = new List();
-
-    for (int i = 0; i <= 10; i++) {
-      Transfer transfer = new Transfer(
-          i,
-          new DateTime.now(),
-          '0023767655567' + i.toString(),
-          '00237654458989' + i.toString(),
-          double.parse("1000" + i.toString()),
-          'Chausurehvhgvghvhjvjvvhvkvhvhjvjvhvhvhvk jvkjvvkjvhj ' +
-              i.toString());
-
-      transferList.add(transfer);
-    }
-
-    return transferList;
   }
 
   List<Transfer> sortDescending(List<Transfer> transfers) {
@@ -148,23 +110,5 @@ class TransferService {
         transfer1.created_at.isAfter(transfer2.created_at) ? 0 : 1);
 
     return transfers;
-  }
-
-  Future<Transfer> convertResponseToTransferUpdate(
-      Map<String, dynamic> json) async {
-    if (json["data"] == null) {
-      return null;
-    }
-
-    //await _sharedPreferenceService.save(AUTHENTICATION_TOKEN, json["token"]);
-
-    return Transfer(
-      json["data"]["id"],
-      DateTime.parse(json["data"]["created_at"]),
-      json["data"]["sender"],
-      json["data"]["receiver"],
-      double.parse(json["data"]["amount"]),
-      json["data"]["description"],
-    );
   }
 }

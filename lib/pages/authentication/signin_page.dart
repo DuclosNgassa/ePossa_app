@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:crypto/crypto.dart';
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/user.dart';
@@ -11,14 +10,11 @@ import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/login_page.dart';
 import 'package:epossa_app/pages/home/home_page.dart';
 import 'package:epossa_app/password_helper.dart';
+import 'package:epossa_app/services/authentication_service.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
-import 'package:epossa_app/services/user_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
-import 'package:epossa_app/util/constant_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../navigation/navigation_page.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -30,7 +26,9 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController _phoneNumberController = new TextEditingController();
   TextEditingController _password1Controller = new TextEditingController();
   TextEditingController _password2Controller = new TextEditingController();
-  UserService _userService = new UserService();
+
+  //UserService _userService = new UserService();
+  AuthenticationService _authenticationService = new AuthenticationService();
   SharedPreferenceService _sharedPreferenceService =
       new SharedPreferenceService();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
@@ -336,7 +334,7 @@ class _SignInPageState extends State<SignInPage> {
     return FadeAnimation(
       2.5,
       GestureDetector(
-        onTap: () => _signIn(context),
+        onTap: () => _signIn(),
         child: Container(
           //width: 120,
           height: SizeConfig.blockSizeVertical * 8,
@@ -389,7 +387,7 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  _signIn(BuildContext context) async {
+  _signIn() async {
     final FormState form = _formKey.currentState;
 
     if (!form.validate()) {
@@ -413,23 +411,24 @@ class _SignInPageState extends State<SignInPage> {
         var saltBytes = List<int>.generate(32, (_) => rand.nextInt(256));
         var salt = base64.encode(saltBytes);
 
-        var hashedPassword = _hashPassword(_password1Controller.text, salt);
+        var hashedPassword = _authenticationService.hashPassword(
+            _password1Controller.text, salt);
 
-        UserDto userDto = new UserDto(
+        UserDto userDto = new UserDto.salt(
             _nameController.text,
             _phoneNumberController.text,
             hashedPassword,
             "deviceToken" + _nameController.text,
             UserStatus.active,
             0,
-            3);
-        User createdUser = await _userService.create(userDto);
+            3,
+            salt);
+        User createdUser = await _authenticationService.signin(userDto);
         if (createdUser != null) {
           MyNotification.showInfoFlushbar(
               context,
               AppLocalizations.of(context).translate('info'),
-              AppLocalizations.of(context)
-                  .translate('signin_success'),
+              AppLocalizations.of(context).translate('signin_success'),
               Icon(
                 Icons.info_outline,
                 size: 28,
@@ -467,16 +466,6 @@ class _SignInPageState extends State<SignInPage> {
             2);
       }
     }
-  }
-
-  _hashPassword(String password, String salt) {
-    var key = utf8.encode(password);
-    var bytes = utf8.encode(salt);
-
-    var hmacSha256 = new Hmac(sha256, key); // HMAC-SHA256
-    var digest = hmacSha256.convert(bytes);
-
-    return digest.toString();
   }
 
   _navigateToHome() {

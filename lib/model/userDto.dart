@@ -12,12 +12,14 @@ class UserDto {
   String salt;
   String authenticationToken;
 
-
   UserDto(this.name, this.phone, this.password, this.device, this.status,
       this.balance, this.rating);
 
-  UserDto.id(this.id, this.name, this.phone, this.password, this.device, this.status,
-      this.balance, this.rating, this.authenticationToken);
+  UserDto.salt(this.name, this.phone, this.password, this.device, this.status,
+      this.balance, this.rating, this.salt);
+
+  UserDto.id(this.id, this.name, this.phone, this.password, this.device,
+      this.status, this.balance, this.rating, this.authenticationToken);
 
   UserDto.login(this.phone, this.password);
 
@@ -32,7 +34,7 @@ class UserDto {
   UserDto.rating(this.rating);
 
   Map<String, dynamic> toJson() => {
-        'id':id,
+        'id': id,
         'name': name,
         'phone': phone,
         'password': password,

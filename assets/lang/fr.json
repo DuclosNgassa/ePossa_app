@@ -48,6 +48,8 @@
   "sending": "Envoi",
   "no_transaction": "Vous n´avez pas encore de transactions",
   "error": "Erreur",
+  "error_login_data": "Le numéro de téléphone et ou le mot de passe est incorrectx",
+  "try_again": "Veuillez rééssayer s´il vous plaît",
   "error_signin": "Erreur lors de l´enregistrement. Veuillez rééssayer s´il vous plaît",
   "correct_form_errors": "Veuillez corriger les érreurs de votre formulaire",
   "error_changing_name": "Erreur lors du changement de nom",

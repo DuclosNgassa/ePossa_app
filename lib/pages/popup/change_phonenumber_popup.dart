@@ -179,7 +179,8 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
         "deviceToken1",
         UserStatus.active,
         20000.0,
-        3);
+        3,
+        "salt");
     User updatedUser = await _userService.update(userDto);
 
     if (updatedUser != null) {

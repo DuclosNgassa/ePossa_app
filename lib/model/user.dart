@@ -9,9 +9,10 @@ class User extends BasisDTO {
   UserStatus status;
   double balance;
   int rating;
+  String salt;
 
   User(id, this.name, created_at, this.phone, this.password, this.device,
-      this.status, this.balance, this.rating)
+      this.status, this.balance, this.rating, this.salt)
       : super(id, created_at);
 
   @override
@@ -25,6 +26,7 @@ class User extends BasisDTO {
         'status': convertStatusToString(status),
         'balance': balance.toString(),
         'rating': rating.toString(),
+        'salt': salt,
       };
 
   Map<String, dynamic> toJsonWithoutId() => {
@@ -50,6 +52,7 @@ class User extends BasisDTO {
       convertStringToStatus(json["status"]),
       json["balance"],
       json["rating"],
+      json["salt"],
     );
   }
 

@@ -1,14 +1,12 @@
-import 'dart:math';
-
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/signin_page.dart';
+import 'package:epossa_app/pages/navigation/navigation_page.dart';
+import 'package:epossa_app/services/authentication_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../navigation/navigation_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _phoneNumberController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  AuthenticationService _authenticationService = new AuthenticationService();
 
   FocusNode _phoneNumberFocusNode;
   FocusNode _passwordFocusNode;
@@ -250,7 +249,7 @@ class _LoginPageState extends State<LoginPage> {
     return FadeAnimation(
       2.5,
       GestureDetector(
-        onTap: () => _login(context),
+        onTap: () => _login(),
         child: Container(
           //width: 120,
           height: SizeConfig.blockSizeVertical * 8,
@@ -322,7 +321,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _login(BuildContext context) async {
+  _login() async {
     final FormState form = _formKey.currentState;
 
     if (!form.validate()) {
@@ -338,52 +337,46 @@ class _LoginPageState extends State<LoginPage> {
           Colors.red.shade300,
           2);
     } else {
-        //Read
-        var salt = base64.encode(saltBytes);
+      bool login = await _authenticationService.login(
+          _phoneNumberController.text, _passwordController.text);
 
-        var hashedPassword = _hashPassword(_password1Controller.text, salt);
-
-        UserDto userDto = new UserDto(
-            _nameController.text,
-            _phoneNumberController.text,
-            hashedPassword,
-            "deviceToken" + _nameController.text,
-            UserStatus.active,
-            0,
+      if (login) {
+        _navigateToStartPage();
+      } else {
+        //TODO implements count number of try and if > 3 block account for 30Min
+        MyNotification.showInfoFlushbar(
+            context,
+            AppLocalizations.of(context).translate('error'),
+            AppLocalizations.of(context).translate('error_login_data') +
+                "\n" +
+                AppLocalizations.of(context).translate('try_again'),
+            Icon(
+              Icons.error,
+              size: 28,
+              color: Colors.red.shade300,
+            ),
+            Colors.red.shade300,
             3);
-        User createdUser = await _userService.create(userDto);
-        if (createdUser != null) {
-          MyNotification.showInfoFlushbar(
-              context,
-              AppLocalizations.of(context).translate('info'),
-              AppLocalizations.of(context)
-                  .translate('signin_success'),
-              Icon(
-                Icons.info_outline,
-                size: 28,
-                color: Colors.blue.shade300,
-              ),
-              Colors.blue.shade300,
-              2);
-          //await _sharedPreferenceService.save(LOGEDIN, "YES");
-          _login();
-          //_navigateToHome();
-        } else {
-          MyNotification.showInfoFlushbar(
-              context,
-              AppLocalizations.of(context).translate('error'),
-              AppLocalizations.of(context).translate('error_signin'),
-              Icon(
-                Icons.error,
-                size: 28,
-                color: Colors.red.shade300,
-              ),
-              Colors.red.shade300,
-              2);
-        }
+      }
     }
   }
 
+  _navigateToStartPage() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => NavigationPage()),
+    );
+  }
+
+/*
+  _navigateToHome() {
+    Navigator.of(context).pushReplacement(
+      new MaterialPageRoute(
+        builder: (context) => new HomePage(),
+      ),
+    );
+  }
+*/
 
   _signIn(BuildContext context) {
     Navigator.pushReplacement(

@@ -17,9 +17,9 @@ class UserService {
     //Map<String, String> headers = await _sharedPreferenceService.getHeaders();
     //int id = userDto.id;
     HttpClientRequest request =
-    await HttpClient().postUrl(Uri.parse('$URL_USERS'))
-      ..headers.contentType = ContentType.json
-      ..write(jsonEncode(userDto));
+        await HttpClient().postUrl(Uri.parse('$URL_USERS'))
+          ..headers.contentType = ContentType.json
+          ..write(jsonEncode(userDto));
     HttpClientResponse response = await request.close();
 
     if (response.statusCode == HttpStatus.ok) {
@@ -34,10 +34,8 @@ class UserService {
     } else if (response.statusCode == HttpStatus.notFound) {
       return null;
     } else {
-      throw Exception(
-          'Failed to create user. Error: ${response.toString()}');
+      throw Exception('Failed to create user. Error: ${response.toString()}');
     }
-
   }
 
   Future<List<User>> readAll() async {
@@ -63,19 +61,16 @@ class UserService {
   }
 
   Future<User> readByPhoneNumber(String phoneNumber) async {
+    User user = null;
     final response = await http.Client().get('$URL_USERS_BY_PHONE$phoneNumber');
     if (response.statusCode == HttpStatus.ok) {
-      Map<String, dynamic> mapResponse = json.decode(response.body);
-      if (mapResponse["result"] == "ok") {
-        return convertResponseToUser(mapResponse);
-      } else {
-        return null;
-      }
+      dynamic userDynamic = jsonDecode(response.body);
+      User user = User.fromJson(userDynamic);
+      return user;
     } else if (response.statusCode == HttpStatus.notFound) {
-      return null;
+      return user;
     } else {
-      throw Exception(
-          'Failed to readByPhoneNumber from the internet. Error: ${response.toString()}');
+      throw Exception('Failed to load user by phone from the internet');
     }
   }
 
@@ -83,9 +78,9 @@ class UserService {
     //Map<String, String> headers = await _sharedPreferenceService.getHeaders();
     int id = userDto.id;
     HttpClientRequest request =
-    await HttpClient().putUrl(Uri.parse('$URL_USERS/$id'))
-      ..headers.contentType = ContentType.json
-      ..write(jsonEncode(userDto));
+        await HttpClient().putUrl(Uri.parse('$URL_USERS/$id'))
+          ..headers.contentType = ContentType.json
+          ..write(jsonEncode(userDto));
     HttpClientResponse response = await request.close();
 
     if (response.statusCode == HttpStatus.ok) {
@@ -96,10 +91,8 @@ class UserService {
     } else if (response.statusCode == HttpStatus.notFound) {
       return null;
     } else {
-      throw Exception(
-          'Failed to update user. Error: ${response.toString()}');
+      throw Exception('Failed to update user. Error: ${response.toString()}');
     }
-
   }
 
   Future<bool> delete(int id) async {
@@ -137,6 +130,7 @@ class UserService {
       User.convertStringToStatus(json["data"]["user_status"]),
       json["data"]["balance"],
       json["data"]["rating"],
+      json["data"]["salt"],
     );
   }
 
@@ -157,6 +151,7 @@ class UserService {
       User.convertStringToStatus(json["data"]["user_status"]),
       double.parse(json["data"]["balance"]),
       int.parse(json["data"]["rating"]),
+      json["data"]["salt"],
     );
   }
 }
