@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/user.dart';
 import 'package:epossa_app/model/userDto.dart';
-import 'package:epossa_app/model/user_status.dart';
 import 'package:epossa_app/notification/notification.dart';
+import 'package:epossa_app/services/authentication_service.dart';
+import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/services/user_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:epossa_app/util/constant_field.dart';
@@ -27,6 +30,9 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
   TextEditingController _newPassword2Controller = new TextEditingController();
   TextEditingController _oldPasswordController = new TextEditingController();
   UserService _userService = new UserService();
+  AuthenticationService _authenticationService = new AuthenticationService();
+  SharedPreferenceService _sharedPreferenceService =
+      new SharedPreferenceService();
 
   FocusNode _newPassword1FocusNode;
   FocusNode _newPassword2FocusNode;
@@ -248,7 +254,17 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-  bool _checkPassword() {
+  bool _checkOldPassword(String givenPassword, oldPassword, String salt) {
+    String hashedPassword =
+        _authenticationService.hashPassword(givenPassword, salt);
+
+    if (hashedPassword != oldPassword) {
+      return false;
+    }
+    return true;
+  }
+
+  bool _checkPasswordEqual() {
     if (!PasswordHelper.checkEqualPassword(
         _newPassword1Controller.text, _newPassword2Controller.text)) {
       return false;
@@ -257,18 +273,40 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
   }
 
   Future<void> _save() async {
-    if (_checkPassword()) {
-      //TODO read logedUser from sharePref
-      UserDto userDto = new UserDto.id(
-          1,
-          _newPassword1Controller.text,
-          LOGED_USER_PHONE,
-          "passwordTesterNew",
-          "deviceToken1",
-          UserStatus.active,
-          20000.0,
-          3,
-          "salt");
+    String logedUserString = await _sharedPreferenceService.read(USER);
+    Map userMap = jsonDecode(logedUserString);
+    User logedUser = User.fromJsonPref(userMap);
+
+    if (!_checkOldPassword(
+        _oldPasswordController.text, logedUser.password, logedUser.salt)) {
+      MyNotification.showInfoFlushbar(
+          context,
+          AppLocalizations.of(context).translate('error'),
+          AppLocalizations.of(context).translate('old_password_different'),
+          Icon(
+            Icons.error,
+            size: 28,
+            color: Colors.red.shade300,
+          ),
+          Colors.red.shade300,
+          2);
+      return null;
+    } else if (_checkPasswordEqual()) {
+      String salt = _authenticationService.getSalt();
+
+      var hashedPassword = _authenticationService.hashPassword(
+          _newPassword1Controller.text, salt);
+
+      UserDto userDto = new UserDto.idSalt(
+          logedUser.id,
+          logedUser.name,
+          logedUser.phone,
+          hashedPassword,
+          salt,
+          logedUser.device,
+          logedUser.status,
+          logedUser.balance,
+          logedUser.rating);
       User updatedUser = await _userService.update(userDto);
 
       if (updatedUser != null) {

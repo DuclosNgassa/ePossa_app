@@ -27,6 +27,8 @@ class UserService {
       Map userMap = jsonDecode(reply);
       User createdUser = User.fromJson(userMap);
       //TODO Save user in SharePref
+      //_sharedPreferenceService.save(USER, reply);
+
       _sharedPreferenceService.save(USER_PHONE, createdUser.phone);
       _sharedPreferenceService.save(USER_NAME, createdUser.name);
 

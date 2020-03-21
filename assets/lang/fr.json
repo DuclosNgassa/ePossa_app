@@ -32,6 +32,7 @@
   "confirm_new_password":"Confirmez votre nouveau mot de passe",
   "new_password_again":"Repetez votre nouveau mot de passe S´il vous plaît",
   "password_different": "Les 2 mots de passe sont differents. Corrigez les s´il vous plaît",
+  "old_password_different": "Votre ancien mot de passe n´est pas correct. Veuillez rééssayer s´il vous plaît",
   "total_received_amount":"Montant total recu",
   "total_sent_amount":"Montant total envoyé",
   "difference":"Difference",

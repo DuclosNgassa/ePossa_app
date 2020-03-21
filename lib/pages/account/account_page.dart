@@ -121,11 +121,7 @@ class _AccountPageState extends State<AccountPage> {
           FadeAnimation(
             1.6,
             ListTile(
-              onTap: () => PopupHelper.showPopup(
-                context,
-                ChangeNamePopup(),
-                AppLocalizations.of(context).translate('change_name'),
-              ),
+              onTap: () => showChangeNamePopup(),
               leading: Icon(
                 Icons.person,
                 color: Colors.white,
@@ -199,6 +195,15 @@ class _AccountPageState extends State<AccountPage> {
         ],
       ),
     );
+  }
+
+  showChangeNamePopup() {
+    PopupHelper.showPopup(
+      context,
+      ChangeNamePopup(),
+      AppLocalizations.of(context).translate('change_name'),
+    );
+    //_getUser();
   }
 
   void _getUser() async {

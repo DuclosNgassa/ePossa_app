@@ -21,6 +21,9 @@ class UserDto {
   UserDto.id(this.id, this.name, this.phone, this.password, this.device,
       this.status, this.balance, this.rating, this.authenticationToken);
 
+  UserDto.idSalt(this.id, this.name, this.phone, this.password, this.salt,
+      this.device, this.status, this.balance, this.rating);
+
   UserDto.login(this.phone, this.password);
 
   UserDto.name(this.name);

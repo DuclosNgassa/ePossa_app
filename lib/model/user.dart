@@ -56,6 +56,21 @@ class User extends BasisDTO {
     );
   }
 
+  factory User.fromJsonPref(Map<String, dynamic> json) {
+    return User(
+      int.parse(json["id"]),
+      json["name"],
+      DateTime.parse(json["created_at"]),
+      json["phone"],
+      json["password"],
+      json["device"],
+      convertStringToStatus(json["status"]),
+      double.parse(json["balance"]),
+      int.parse(json["rating"]),
+      json["salt"],
+    );
+  }
+
   static String convertStatusToString(UserStatus value) {
     switch (value) {
       case UserStatus.active:

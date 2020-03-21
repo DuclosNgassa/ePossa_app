@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:crypto/crypto.dart';
 import 'package:epossa_app/model/user.dart';
@@ -49,6 +50,10 @@ class AuthenticationService {
     }
     String hashedPassword = hashPassword(password, logedUser.salt);
     if (hashedPassword == logedUser.password) {
+      //TODO Save user in SharePref
+      String logedUserString = jsonEncode(logedUser);
+      await _sharedPreferenceService.save(USER, logedUserString);
+
       await _sharedPreferenceService.save(LOGEDIN, "YES");
       await _sharedPreferenceService.save(USER_PHONE, logedUser.phone);
       await _sharedPreferenceService.save(USER_NAME, logedUser.name);
@@ -59,8 +64,8 @@ class AuthenticationService {
     }
   }
 
-  logout() {
-    _sharedPreferenceService.clearForLogOut();
+  logout() async {
+    await _sharedPreferenceService.clearForLogOut();
   }
 
   String hashPassword(String password, String salt) {
@@ -71,5 +76,12 @@ class AuthenticationService {
     var digest = hmacSha256.convert(bytes);
 
     return digest.toString();
+  }
+
+  String getSalt() {
+    var rand = Random();
+    var saltBytes = List<int>.generate(32, (_) => rand.nextInt(256));
+    var salt = base64.encode(saltBytes);
+    return salt;
   }
 }

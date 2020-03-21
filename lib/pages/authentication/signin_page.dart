@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/user.dart';
@@ -407,9 +404,7 @@ class _SignInPageState extends State<SignInPage> {
       bool isPasswordEqual = PasswordHelper.checkEqualPassword(
           _password1Controller.text, _password2Controller.text);
       if (isPasswordEqual) {
-        var rand = Random();
-        var saltBytes = List<int>.generate(32, (_) => rand.nextInt(256));
-        var salt = base64.encode(saltBytes);
+        String salt = _authenticationService.getSalt();
 
         var hashedPassword = _authenticationService.hashPassword(
             _password1Controller.text, salt);

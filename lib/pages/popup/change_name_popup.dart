@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/user.dart';
 import 'package:epossa_app/model/userDto.dart';
-import 'package:epossa_app/model/user_status.dart';
 import 'package:epossa_app/notification/notification.dart';
+import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/services/user_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:epossa_app/util/constant_field.dart';
@@ -23,6 +25,8 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _nameController = new TextEditingController();
   UserService _userService = new UserService();
+  SharedPreferenceService _sharedPreferenceService =
+      new SharedPreferenceService();
 
   FocusNode _nameFocusNode;
 
@@ -170,20 +174,23 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
   }
 
   Future<void> _save() async {
-    //TODO read logedUser from sharePref
+    String logedUserString = await _sharedPreferenceService.read(USER);
+    Map userMap = jsonDecode(logedUserString);
+    User logedUser = User.fromJsonPref(userMap);
     UserDto userDto = new UserDto.id(
-        1,
+        logedUser.id,
         _nameController.text,
-        LOGED_USER_PHONE,
-        "passwordTester",
-        "deviceToken1",
-        UserStatus.active,
-        20000.0,
-        3,
-        "salt");
+        logedUser.phone,
+        logedUser.password,
+        logedUser.salt,
+        logedUser.status,
+        logedUser.balance,
+        logedUser.rating,
+        logedUser.salt);
     User updatedUser = await _userService.update(userDto);
 
     if (updatedUser != null) {
+      await _sharedPreferenceService.save(USER, jsonEncode(updatedUser));
       MyNotification.showInfoFlushbar(
           context,
           AppLocalizations.of(context).translate('info'),
@@ -198,6 +205,7 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
           2);
 
       _nameController.text = "";
+      setState(() {});
     } else {
       MyNotification.showInfoFlushbar(
           context,

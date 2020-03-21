@@ -1,3 +1,4 @@
+const String USER = "USER";
 const String USER_PHONE = "USER_PHONE";
 const String USER_NAME = "USER_NAME";
 const String DEVICE_TOKEN = "DEVICE_TOKEN";
