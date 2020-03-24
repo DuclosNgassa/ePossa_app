@@ -1,9 +1,11 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
+import 'package:epossa_app/model/userDto.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/signin_page.dart';
 import 'package:epossa_app/pages/navigation/navigation_page.dart';
 import 'package:epossa_app/services/authentication_service.dart';
+import 'package:epossa_app/services/user_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passwordController = new TextEditingController();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   AuthenticationService _authenticationService = new AuthenticationService();
+  UserService _userService = new UserService();
 
   FocusNode _phoneNumberFocusNode;
   FocusNode _passwordFocusNode;
@@ -341,6 +344,8 @@ class _LoginPageState extends State<LoginPage> {
           _phoneNumberController.text, _passwordController.text);
 
       if (login) {
+        UserDTO user =
+            await _userService.readByPhoneNumber(_phoneNumberController.text);
         _navigateToStartPage();
       } else {
         //TODO implements count number of try and if > 3 block account for 30Min

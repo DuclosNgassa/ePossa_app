@@ -1,64 +1,59 @@
 import 'package:epossa_app/model/user_status.dart';
+import 'package:intl/intl.dart';
 
-class UserDto {
-  int id;
+import 'basis_dto.dart';
+
+class UserDTO extends BasisDTO {
+  var formatter = new DateFormat('yyyy-MM-dd HH:mm');
   String name;
   String phone;
-  String password;
   String device;
   UserStatus status;
   double balance;
   int rating;
-  String salt;
-  String authenticationToken;
 
-  UserDto(this.name, this.phone, this.password, this.device, this.status,
-      this.balance, this.rating);
-
-  UserDto.salt(this.name, this.phone, this.password, this.device, this.status,
-      this.balance, this.rating, this.salt);
-
-  UserDto.id(this.id, this.name, this.phone, this.password, this.device,
-      this.status, this.balance, this.rating, this.authenticationToken);
-
-  UserDto.idSalt(this.id, this.name, this.phone, this.password, this.salt,
-      this.device, this.status, this.balance, this.rating);
-
-  UserDto.login(this.phone, this.password);
-
-  UserDto.name(this.name);
-
-  UserDto.phone(this.phone);
-
-  UserDto.password(this.password);
-
-  UserDto.balance(this.balance);
-
-  UserDto.rating(this.rating);
+  UserDTO(id, created_at, this.name, this.phone, this.device, this.status,
+      this.balance, this.rating)
+      : super(id, created_at);
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'created_at': formatter.format(created_at),
         'name': name,
         'phone': phone,
-        'password': password,
         'device': device,
         'status': convertStatusToString(status),
         'balance': balance.toString(),
         'rating': rating.toString(),
-        'salt': salt,
       };
 
-  factory UserDto.fromJson(Map<String, dynamic> json) {
-    return UserDto.id(
+  factory UserDTO.fromJson(Map<String, dynamic> json) {
+    var formatterFactory = new DateFormat('yyyy-MM-dd HH:mm');
+    return UserDTO(
       json["id"],
+      DateTime.parse(
+          formatterFactory.format(DateTime.parse(json["created_at"]))),
       json["name"],
       json["phone"],
-      json["password"],
       json["device"],
-      convertStringToStatus(json["user_status"]),
+      convertStringToStatus(json["status"]),
       json["balance"],
       json["rating"],
-      json["authenticationToken"],
+    );
+  }
+
+  factory UserDTO.fromJsonPref(Map<String, dynamic> json) {
+    var formatterFactory = new DateFormat('yyyy-MM-dd HH:mm');
+    return UserDTO(
+      json["id"],
+      DateTime.parse(
+          formatterFactory.format(DateTime.parse(json["created_at"]))),
+      json["name"],
+      json["phone"],
+      json["device"],
+      convertStringToStatus(json["status"]),
+      double.parse(json["balance"]),
+      int.parse(json["rating"]),
     );
   }
 

@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
-import 'package:crypto/crypto.dart';
+import 'package:epossa_app/model/LoginViewModel.dart';
 import 'package:epossa_app/model/user.dart';
 import 'package:epossa_app/model/userDto.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
-import 'package:epossa_app/services/user_service.dart';
 import 'package:epossa_app/util/constant_field.dart';
 import 'package:epossa_app/util/rest_endpoints.dart';
 
@@ -15,25 +13,17 @@ class AuthenticationService {
   SharedPreferenceService _sharedPreferenceService =
       new SharedPreferenceService();
 
-  UserService _userService = new UserService();
-
-  Future<User> signin(UserDto userDto) async {
-    //Map<String, String> headers = await _sharedPreferenceService.getHeaders();
-    //int id = userDto.id;
+  Future<UserDTO> signin(User user) async {
     HttpClientRequest request =
-        await HttpClient().postUrl(Uri.parse('$URL_USERS'))
+        await HttpClient().postUrl(Uri.parse('$URL_SIGNIN'))
           ..headers.contentType = ContentType.json
-          ..write(jsonEncode(userDto));
+          ..write(jsonEncode(user));
     HttpClientResponse response = await request.close();
 
     if (response.statusCode == HttpStatus.ok) {
       String reply = await response.transform(utf8.decoder).join();
       Map userMap = jsonDecode(reply);
-      User createdUser = User.fromJson(userMap);
-      //TODO Save user in SharePref
-      await _sharedPreferenceService.save(USER_PHONE, createdUser.phone);
-      await _sharedPreferenceService.save(USER_NAME, createdUser.name);
-
+      UserDTO createdUser = UserDTO.fromJson(userMap);
       return createdUser;
     } else if (response.statusCode == HttpStatus.notFound) {
       return null;
@@ -43,45 +33,30 @@ class AuthenticationService {
   }
 
   Future<bool> login(String phone, String password) async {
-    User logedUser = await _userService.readByPhoneNumber(phone);
+    LoginViewModel loginViewModel = new LoginViewModel(phone, password);
+    return await _login(loginViewModel);
+  }
 
-    if (logedUser == null) {
-      return false;
+  Future<bool> _login(LoginViewModel loginViewModel) async {
+    HttpClientRequest request =
+        await HttpClient().postUrl(Uri.parse('$URL_LOGIN'))
+          ..headers.contentType = ContentType.json
+          ..write(jsonEncode(loginViewModel));
+    HttpClientResponse response = await request.close();
+
+    if (response.statusCode == HttpStatus.ok) {
+      List<String> response_tokens = response.headers[AUTHORIZATION_TOKEN];
+
+      if (response_tokens.length > 0) {
+        String jw_bearer_token = response_tokens[0];
+        _sharedPreferenceService.save(AUTHORIZATION_TOKEN, jw_bearer_token);
+        return true;
+      }
     }
-    String hashedPassword = hashPassword(password, logedUser.salt);
-    if (hashedPassword == logedUser.password) {
-      //TODO Save user in SharePref
-      String logedUserString = jsonEncode(logedUser);
-      await _sharedPreferenceService.save(USER, logedUserString);
-
-      await _sharedPreferenceService.save(LOGEDIN, "YES");
-      await _sharedPreferenceService.save(USER_PHONE, logedUser.phone);
-      await _sharedPreferenceService.save(USER_NAME, logedUser.name);
-
-      return true;
-    } else {
-      return false;
-    }
+    return false;
   }
 
   logout() async {
     await _sharedPreferenceService.clearForLogOut();
-  }
-
-  String hashPassword(String password, String salt) {
-    var key = utf8.encode(password);
-    var bytes = utf8.encode(salt);
-
-    var hmacSha256 = new Hmac(sha256, key); // HMAC-SHA256
-    var digest = hmacSha256.convert(bytes);
-
-    return digest.toString();
-  }
-
-  String getSalt() {
-    var rand = Random();
-    var saltBytes = List<int>.generate(32, (_) => rand.nextInt(256));
-    var salt = base64.encode(saltBytes);
-    return salt;
   }
 }

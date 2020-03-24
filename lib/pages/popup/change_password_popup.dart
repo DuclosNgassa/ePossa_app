@@ -2,17 +2,14 @@ import 'dart:convert';
 
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
-import 'package:epossa_app/model/user.dart';
 import 'package:epossa_app/model/userDto.dart';
+import 'package:epossa_app/model/userPassword.dart';
 import 'package:epossa_app/notification/notification.dart';
-import 'package:epossa_app/services/authentication_service.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/services/user_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:epossa_app/util/constant_field.dart';
 import 'package:flutter/material.dart';
-
-import '../../password_helper.dart';
 
 class ChangePasswordPopup extends StatefulWidget {
   @override
@@ -30,7 +27,6 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
   TextEditingController _newPassword2Controller = new TextEditingController();
   TextEditingController _oldPasswordController = new TextEditingController();
   UserService _userService = new UserService();
-  AuthenticationService _authenticationService = new AuthenticationService();
   SharedPreferenceService _sharedPreferenceService =
       new SharedPreferenceService();
 
@@ -254,35 +250,13 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-  bool _checkOldPassword(String givenPassword, oldPassword, String salt) {
-    String hashedPassword =
-        _authenticationService.hashPassword(givenPassword, salt);
-
-    if (hashedPassword != oldPassword) {
-      return false;
-    }
-    return true;
-  }
-
-  bool _checkPasswordEqual() {
-    if (!PasswordHelper.checkEqualPassword(
-        _newPassword1Controller.text, _newPassword2Controller.text)) {
-      return false;
-    }
-    return true;
-  }
-
   Future<void> _save() async {
-    String logedUserString = await _sharedPreferenceService.read(USER);
-    Map userMap = jsonDecode(logedUserString);
-    User logedUser = User.fromJsonPref(userMap);
-
-    if (!_checkOldPassword(
-        _oldPasswordController.text, logedUser.password, logedUser.salt)) {
+    final FormState form = _formKey.currentState;
+    if (!form.validate()) {
       MyNotification.showInfoFlushbar(
           context,
           AppLocalizations.of(context).translate('error'),
-          AppLocalizations.of(context).translate('old_password_different'),
+          AppLocalizations.of(context).translate('correct_form_errors'),
           Icon(
             Icons.error,
             size: 28,
@@ -290,43 +264,50 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
           ),
           Colors.red.shade300,
           2);
-      return null;
-    } else if (_checkPasswordEqual()) {
-      String salt = _authenticationService.getSalt();
+    } else {
+      String logedUserString = await _sharedPreferenceService.read(USER);
+      Map userMap = jsonDecode(logedUserString);
+      UserDTO logedUser = UserDTO.fromJsonPref(userMap);
 
-      var hashedPassword = _authenticationService.hashPassword(
-          _newPassword1Controller.text, salt);
+      if (_newPassword1Controller.text == _newPassword2Controller.text) {
+        UserPassword userDto = new UserPassword(logedUser.phone,
+            _oldPasswordController.text, _newPassword1Controller.text);
 
-      UserDto userDto = new UserDto.idSalt(
-          logedUser.id,
-          logedUser.name,
-          logedUser.phone,
-          hashedPassword,
-          salt,
-          logedUser.device,
-          logedUser.status,
-          logedUser.balance,
-          logedUser.rating);
-      User updatedUser = await _userService.update(userDto);
+        bool successfulChange = await _userService.changePassword(userDto);
 
-      if (updatedUser != null) {
-        MyNotification.showInfoFlushbar(
-            context,
-            AppLocalizations.of(context).translate('info'),
-            AppLocalizations.of(context)
-                .translate('password_changed_success_message'),
-            Icon(
-              Icons.info_outline,
-              size: 28,
-              color: Colors.blue.shade300,
-            ),
-            Colors.blue.shade300,
-            2);
+        if (successfulChange) {
+          _clearForm();
+          MyNotification.showInfoFlushbar(
+              context,
+              AppLocalizations.of(context).translate('info'),
+              AppLocalizations.of(context)
+                  .translate('password_changed_success_message'),
+              Icon(
+                Icons.info_outline,
+                size: 28,
+                color: Colors.blue.shade300,
+              ),
+              Colors.blue.shade300,
+              2);
+        } else {
+          MyNotification.showInfoFlushbar(
+              context,
+              AppLocalizations.of(context).translate('error'),
+              AppLocalizations.of(context).translate('error_changing_password'),
+              Icon(
+                Icons.error,
+                size: 28,
+                color: Colors.red.shade300,
+              ),
+              Colors.red.shade300,
+              2);
+          return null;
+        }
       } else {
         MyNotification.showInfoFlushbar(
             context,
             AppLocalizations.of(context).translate('error'),
-            AppLocalizations.of(context).translate('error_changing_password'),
+            AppLocalizations.of(context).translate('password_different'),
             Icon(
               Icons.error,
               size: 28,
@@ -334,22 +315,16 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
             ),
             Colors.red.shade300,
             2);
+
         return null;
       }
-    } else {
-      MyNotification.showInfoFlushbar(
-          context,
-          AppLocalizations.of(context).translate('error'),
-          AppLocalizations.of(context).translate('password_different'),
-          Icon(
-            Icons.error,
-            size: 28,
-            color: Colors.red.shade300,
-          ),
-          Colors.red.shade300,
-          2);
-
-      return null;
     }
+  }
+
+  void _clearForm() {
+    _oldPasswordController.text = "";
+    _newPassword1Controller.text = "";
+    _newPassword2Controller.text = "";
+    setState(() {});
   }
 }

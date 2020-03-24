@@ -6,9 +6,7 @@ import 'package:epossa_app/model/user_status.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/login_page.dart';
 import 'package:epossa_app/pages/home/home_page.dart';
-import 'package:epossa_app/password_helper.dart';
 import 'package:epossa_app/services/authentication_service.dart';
-import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,10 +22,7 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController _password1Controller = new TextEditingController();
   TextEditingController _password2Controller = new TextEditingController();
 
-  //UserService _userService = new UserService();
   AuthenticationService _authenticationService = new AuthenticationService();
-  SharedPreferenceService _sharedPreferenceService =
-      new SharedPreferenceService();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   FocusNode _nameFocusNode;
@@ -401,24 +396,16 @@ class _SignInPageState extends State<SignInPage> {
           2);
     } else {
       //Validate password
-      bool isPasswordEqual = PasswordHelper.checkEqualPassword(
-          _password1Controller.text, _password2Controller.text);
-      if (isPasswordEqual) {
-        String salt = _authenticationService.getSalt();
-
-        var hashedPassword = _authenticationService.hashPassword(
-            _password1Controller.text, salt);
-
-        UserDto userDto = new UserDto.salt(
+      if (_password1Controller.text == _password2Controller.text) {
+        User user = new User(
             _nameController.text,
             _phoneNumberController.text,
-            hashedPassword,
+            _password1Controller.text,
             "deviceToken" + _nameController.text,
             UserStatus.active,
             0,
-            3,
-            salt);
-        User createdUser = await _authenticationService.signin(userDto);
+            3);
+        UserDTO createdUser = await _authenticationService.signin(user);
         if (createdUser != null) {
           MyNotification.showInfoFlushbar(
               context,
@@ -431,9 +418,7 @@ class _SignInPageState extends State<SignInPage> {
               ),
               Colors.blue.shade300,
               2);
-          //await _sharedPreferenceService.save(LOGEDIN, "YES");
           _login();
-          //_navigateToHome();
         } else {
           MyNotification.showInfoFlushbar(
               context,

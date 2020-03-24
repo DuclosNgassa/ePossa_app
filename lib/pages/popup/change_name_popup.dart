@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
-import 'package:epossa_app/model/user.dart';
 import 'package:epossa_app/model/userDto.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
@@ -98,6 +97,13 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,
                     focusNode: _nameFocusNode,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return AppLocalizations.of(context)
+                            .translate('name_please');
+                      }
+                      return null;
+                    },
                     onFieldSubmitted: (term) {
                       //Save form
                     },
@@ -108,13 +114,6 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
                             TextStyle(color: Colors.grey.withOpacity(.8)),
                         hintText:
                             AppLocalizations.of(context).translate('name')),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return AppLocalizations.of(context)
-                            .translate('name_please');
-                      }
-                      return null;
-                    },
                   ),
                 ),
               ],
@@ -174,43 +173,13 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
   }
 
   Future<void> _save() async {
-    String logedUserString = await _sharedPreferenceService.read(USER);
-    Map userMap = jsonDecode(logedUserString);
-    User logedUser = User.fromJsonPref(userMap);
-    UserDto userDto = new UserDto.id(
-        logedUser.id,
-        _nameController.text,
-        logedUser.phone,
-        logedUser.password,
-        logedUser.salt,
-        logedUser.status,
-        logedUser.balance,
-        logedUser.rating,
-        logedUser.salt);
-    User updatedUser = await _userService.update(userDto);
+    final FormState form = _formKey.currentState;
 
-    if (updatedUser != null) {
-      await _sharedPreferenceService.save(USER, jsonEncode(updatedUser));
-      MyNotification.showInfoFlushbar(
-          context,
-          AppLocalizations.of(context).translate('info'),
-          AppLocalizations.of(context)
-              .translate('name_changed_success_message'),
-          Icon(
-            Icons.info_outline,
-            size: 28,
-            color: Colors.blue.shade300,
-          ),
-          Colors.blue.shade300,
-          2);
-
-      _nameController.text = "";
-      setState(() {});
-    } else {
+    if (!form.validate()) {
       MyNotification.showInfoFlushbar(
           context,
           AppLocalizations.of(context).translate('error'),
-          AppLocalizations.of(context).translate('error_changing_name'),
+          AppLocalizations.of(context).translate('correct_form_errors'),
           Icon(
             Icons.error,
             size: 28,
@@ -218,6 +187,55 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
           ),
           Colors.red.shade300,
           2);
+    } else {
+      String logedUserString = await _sharedPreferenceService.read(USER);
+      Map userMap = jsonDecode(logedUserString);
+      UserDTO logedUser = UserDTO.fromJsonPref(userMap);
+      UserDTO userDto = new UserDTO(
+          logedUser.id,
+          logedUser.created_at,
+          _nameController.text,
+          logedUser.phone,
+          logedUser.device,
+          logedUser.status,
+          logedUser.balance,
+          logedUser.rating);
+
+      UserDTO updatedUser = await _userService.update(userDto);
+
+      if (updatedUser != null) {
+        _clearForm();
+        await _sharedPreferenceService.save(USER, jsonEncode(updatedUser));
+        MyNotification.showInfoFlushbar(
+            context,
+            AppLocalizations.of(context).translate('info'),
+            AppLocalizations.of(context)
+                .translate('name_changed_success_message'),
+            Icon(
+              Icons.info_outline,
+              size: 28,
+              color: Colors.blue.shade300,
+            ),
+            Colors.blue.shade300,
+            2);
+      } else {
+        MyNotification.showInfoFlushbar(
+            context,
+            AppLocalizations.of(context).translate('error'),
+            AppLocalizations.of(context).translate('error_changing_name'),
+            Icon(
+              Icons.error,
+              size: 28,
+              color: Colors.red.shade300,
+            ),
+            Colors.red.shade300,
+            2);
+      }
     }
+  }
+
+  void _clearForm() {
+    _nameController.text = "";
+    setState(() {});
   }
 }

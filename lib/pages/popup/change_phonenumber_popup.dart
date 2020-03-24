@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
-import 'package:epossa_app/model/user.dart';
 import 'package:epossa_app/model/userDto.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
@@ -176,41 +175,12 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
   }
 
   Future<void> _save() async {
-    //TODO read logedUser from sharePref
-    String logedUserString = await _sharedPreferenceService.read(USER);
-    Map userMap = jsonDecode(logedUserString);
-    User logedUser = User.fromJsonPref(userMap);
-    UserDto userDto = new UserDto.id(
-        logedUser.id,
-        logedUser.name,
-        _phoneController.text,
-        logedUser.password,
-        logedUser.salt,
-        logedUser.status,
-        logedUser.balance,
-        logedUser.rating,
-        logedUser.salt);
-
-    User updatedUser = await _userService.update(userDto);
-
-    if (updatedUser != null) {
-      MyNotification.showInfoFlushbar(
-          context,
-          AppLocalizations.of(context).translate('info'),
-          AppLocalizations.of(context)
-              .translate('phone_changed_success_message'),
-          Icon(
-            Icons.info_outline,
-            size: 28,
-            color: Colors.blue.shade300,
-          ),
-          Colors.blue.shade300,
-          2);
-    } else {
+    final FormState form = _formKey.currentState;
+    if (!form.validate()) {
       MyNotification.showInfoFlushbar(
           context,
           AppLocalizations.of(context).translate('error'),
-          AppLocalizations.of(context).translate('error_changing_phone'),
+          AppLocalizations.of(context).translate('correct_form_errors'),
           Icon(
             Icons.error,
             size: 28,
@@ -218,7 +188,56 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
           ),
           Colors.red.shade300,
           2);
-      return null;
+    } else {
+      //TODO read logedUser from sharePref
+      String logedUserString = await _sharedPreferenceService.read(USER);
+      Map userMap = jsonDecode(logedUserString);
+      UserDTO logedUser = UserDTO.fromJsonPref(userMap);
+      UserDTO userDto = new UserDTO(
+          logedUser.id,
+          logedUser.created_at,
+          logedUser.name,
+          _phoneController.text,
+          logedUser.device,
+          logedUser.status,
+          logedUser.balance,
+          logedUser.rating);
+
+      UserDTO updatedUser = await _userService.update(userDto);
+
+      if (updatedUser != null) {
+        _clearForm();
+        MyNotification.showInfoFlushbar(
+            context,
+            AppLocalizations.of(context).translate('info'),
+            AppLocalizations.of(context)
+                .translate('phone_changed_success_message'),
+            Icon(
+              Icons.info_outline,
+              size: 28,
+              color: Colors.blue.shade300,
+            ),
+            Colors.blue.shade300,
+            2);
+      } else {
+        MyNotification.showInfoFlushbar(
+            context,
+            AppLocalizations.of(context).translate('error'),
+            AppLocalizations.of(context).translate('error_changing_phone'),
+            Icon(
+              Icons.error,
+              size: 28,
+              color: Colors.red.shade300,
+            ),
+            Colors.red.shade300,
+            2);
+        return null;
+      }
     }
+  }
+
+  void _clearForm() {
+    _phoneController.text = "";
+    setState(() {});
   }
 }

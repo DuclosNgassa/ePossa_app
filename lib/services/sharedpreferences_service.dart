@@ -4,7 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPreferenceService {
   Future<Map<String, String>> getHeaders() async {
     Map<String, String> headers = Map();
-    headers['auth-token'] = await read(AUTHENTICATION_TOKEN);
+    headers[AUTHORIZATION_TOKEN] = await read(AUTHORIZATION_TOKEN);
+    headers[CONTENT_TYPE] = APPLICATION_JSON;
+
     return headers;
   }
 
