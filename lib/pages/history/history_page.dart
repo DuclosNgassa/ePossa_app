@@ -1,13 +1,14 @@
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/bloc/transfer_manager.dart';
 import 'package:epossa_app/converter/date_converter.dart';
 import 'package:epossa_app/custom_widget/transfer_card.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/transfer.dart';
+import 'package:epossa_app/model/transfer_wrapper.dart';
 import 'package:epossa_app/notification/notification.dart';
-import 'package:epossa_app/services/transfer_service.dart';
+import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:epossa_app/styling/styling.dart';
-import 'package:epossa_app/util/constant_field.dart';
 import 'package:flutter/material.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -17,23 +18,20 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage>
     with SingleTickerProviderStateMixin {
+  SharedPreferenceService _sharedPreferenceService =
+      new SharedPreferenceService();
+  TransferManager _transferManager = new TransferManager();
+  GlobalKey<RefreshIndicatorState> refreshKey;
+
   TabController _tabController;
-  List<Transfer> transferList = new List();
   List<bool> transferListExpanded = new List();
-  List<Transfer> receivedList = new List();
   List<bool> receivedListExpanded = new List();
-
-  TransferService _transferService = new TransferService();
-
-  bool isReceiveExpanded = false;
-  bool isSendExpanded = false;
 
   @override
   void initState() {
     super.initState();
+    refreshKey = GlobalKey<RefreshIndicatorState>();
     _tabController = TabController(length: 2, vsync: this);
-    isReceiveExpanded = false;
-    isSendExpanded = false;
   }
 
   @override
@@ -91,17 +89,95 @@ class _HistoryPageState extends State<HistoryPage>
   Widget _buildTabBarView() {
     return FadeAnimation(
       1.9,
-      Container(
-        height: SizeConfig.screenHeight * 0.69,
-        child: TabBarView(
-          controller: _tabController,
-          children: <Widget>[
-            _buildReceivedFuture(),
-            _buildSentFuture(),
-          ],
+      RefreshIndicator(
+        key: refreshKey,
+        onRefresh: () async {
+          await _invalidatePostCache();
+        },
+        child: StreamBuilder<TransferWrapper>(
+          stream: _transferManager.transferWrapper,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Container(
+                height: SizeConfig.screenHeight * 0.69,
+                child: TabBarView(
+                  controller: _tabController,
+                  children: <Widget>[
+                    _buildReceivedFuture(snapshot.data.transferReceivedList),
+                    _buildSentFuture(snapshot.data.transferSentList),
+                  ],
+                ),
+              );
+            } else if (snapshot.hasError) {
+              MyNotification.showInfoFlushbar(
+                  context,
+                  AppLocalizations.of(context).translate('error'),
+                  AppLocalizations.of(context).translate('error_loading'),
+                  Icon(
+                    Icons.info_outline,
+                    size: 28,
+                    color: Colors.redAccent,
+                  ),
+                  Colors.redAccent,
+                  3);
+            }
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Image.asset(
+                    "assets/gif/loading.gif",
+                  ),
+                  Text(
+                    AppLocalizations.of(context).translate('loading'),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
+  }
+
+  Widget _buildSentFuture(List<Transfer> transfers) {
+    _setSendListExpanded(transfers);
+    if (transfers.length > 0) {
+      return _buildSent(transfers);
+    } else {
+      return new Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.blockSizeHorizontal * 4,
+            vertical: SizeConfig.blockSizeVertical * 4,
+          ),
+          child: Text(
+            AppLocalizations.of(context).translate('no_transaction'),
+            style: Styling.styleTitleWhite,
+          ),
+        ),
+      );
+    }
+  }
+
+  Widget _buildReceivedFuture(List<Transfer> transfers) {
+    _setReceivedListExpanded(transfers);
+    if (transfers.length > 0) {
+      return _buildReceived(transfers);
+    } else {
+      return new Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.blockSizeHorizontal * 4,
+            vertical: SizeConfig.blockSizeVertical * 4,
+          ),
+          child: Text(
+            AppLocalizations.of(context).translate('no_received_transaction'),
+            style: Styling.styleTitleWhite,
+          ),
+        ),
+      );
+    }
   }
 
   Widget _buildReceived(List<Transfer> receives) {
@@ -206,134 +282,24 @@ class _HistoryPageState extends State<HistoryPage>
         });
   }
 
-  Widget _buildSentFuture() {
-    return FutureBuilder(
-      future: _loadTransfers(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data.length > 0) {
-            return _buildSent(snapshot.data);
-          } else {
-            return new Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 4,
-                  vertical: SizeConfig.blockSizeVertical * 4,
-                ),
-                child: Text(
-                  AppLocalizations.of(context).translate('no_transaction'),
-                  style: Styling.styleTitleWhite,
-                ),
-              ),
-            );
-          }
-        } else if (snapshot.hasError) {
-          MyNotification.showInfoFlushbar(
-              context,
-              AppLocalizations.of(context).translate('error'),
-              AppLocalizations.of(context)
-                  .translate('error_loading_transactions'),
-              Icon(
-                Icons.error,
-                size: 28,
-                color: Colors.redAccent,
-              ),
-              Colors.redAccent,
-              4);
-        }
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                "assets/gif/loading.gif",
-              ),
-              Text(
-                AppLocalizations.of(context).translate('loading'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildReceivedFuture() {
-    return FutureBuilder(
-      future: _loadReceived(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data.length > 0) {
-            return _buildReceived(snapshot.data);
-          } else {
-            return new Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 4,
-                  vertical: SizeConfig.blockSizeVertical * 4,
-                ),
-                child: Text(
-                  AppLocalizations.of(context)
-                      .translate('no_received_transaction'),
-                  style: Styling.styleTitleWhite,
-                ),
-              ),
-            );
-          }
-        } else if (snapshot.hasError) {
-          MyNotification.showInfoFlushbar(
-              context,
-              AppLocalizations.of(context).translate('error'),
-              AppLocalizations.of(context)
-                  .translate('error_loading_transactions'),
-              Icon(
-                Icons.error,
-                size: 28,
-                color: Colors.redAccent,
-              ),
-              Colors.redAccent,
-              4);
-        }
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                "assets/gif/loading.gif",
-              ),
-              Text(
-                AppLocalizations.of(context).translate('loading'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Future<List<Transfer>> _loadTransfers() async {
-    List<Transfer> transferItems =
-        await _transferService.readBySender(LOGED_USER_PHONE);
-
-    transferList = _transferService.sortDescending(transferItems);
-
-    for (int i = 0; i < transferItems.length; i++) {
-      transferListExpanded.add(false);
-    }
-
-    return transferList;
-  }
-
-  Future<List<Transfer>> _loadReceived() async {
-    List<Transfer> receivedItems =
-        await _transferService.readByReceiver(LOGED_USER_PHONE);
-
-    receivedList = _transferService.sortDescending(receivedItems);
-
-    for (int i = 0; i < receivedItems.length; i++) {
+  void _setReceivedListExpanded(List<Transfer> transferReceived) {
+    for (int i = 0; i < transferReceived.length; i++) {
       receivedListExpanded.add(false);
     }
+  }
 
-    return receivedList;
+  void _setSendListExpanded(List<Transfer> transferSent) {
+    for (int i = 0; i < transferSent.length; i++) {
+      transferListExpanded.add(false);
+    }
+  }
+
+  Future<void> _invalidatePostCache() async {
+    //TODO implements me!!!
+
+    // await _sharedPreferenceService.remove(CATEGORIE_LIST_CACHE_TIME);
+    // await _sharedPreferenceService.remove(POST_LIST_CACHE_TIME);
+
+    setState(() {});
   }
 }

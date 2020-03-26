@@ -2,9 +2,11 @@ import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/pages/account/account_page.dart';
 import 'package:epossa_app/pages/history/history_page.dart';
 import 'package:epossa_app/pages/home/home_page.dart';
+import 'package:epossa_app/pages/popup/controller/popup_content.dart';
+import 'package:epossa_app/pages/popup/controller/popup_layout.dart';
 import 'package:epossa_app/pages/popup/payment_popup.dart';
-import 'package:epossa_app/pages/popup/popup_helper.dart';
 import 'package:epossa_app/pages/popup/receive_popup.dart';
+import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boom_menu/flutter_boom_menu.dart';
 
@@ -17,6 +19,7 @@ class _NavigationPageState extends State<NavigationPage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white);
+
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     HistoryPage(),
@@ -31,6 +34,8 @@ class _NavigationPageState extends State<NavigationPage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return Scaffold(
       backgroundColor: Color.fromRGBO(112, 139, 245, 1),
       body: Container(
@@ -86,7 +91,7 @@ class _NavigationPageState extends State<NavigationPage> {
             subtitle: AppLocalizations.of(context).translate('pay_service'),
             subTitleColor: Colors.white,
             backgroundColor: Colors.purple,
-            onTap: () => PopupHelper.showPopup(
+            onTap: () => showPopup(
               context,
               PaymentPopup(),
               AppLocalizations.of(context).translate('pay_service'),
@@ -100,11 +105,51 @@ class _NavigationPageState extends State<NavigationPage> {
                 .translate('monetize_your_services'),
             subTitleColor: Colors.white,
             backgroundColor: Colors.cyan,
-            onTap: () => PopupHelper.showPopup(context, ReceivePopup(),
+            onTap: () => showPopup(context, ReceivePopup(),
                 AppLocalizations.of(context).translate('receive_money')),
           ),
         ],
       ),
     );
+  }
+
+  void showPopup(BuildContext context, Widget widget, String title,
+      {BuildContext popupContext}) {
+    Navigator.push(
+      context,
+      PopupLayout(
+        top: SizeConfig.blockSizeVertical * 4,
+        left: SizeConfig.blockSizeHorizontal * 6,
+        right: SizeConfig.blockSizeHorizontal * 6,
+        bottom: SizeConfig.blockSizeVertical * 6,
+        child: PopupContent(
+          content: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Color.fromRGBO(112, 139, 245, 1),
+              title: Text(title),
+              leading: new Builder(builder: (context) {
+                return IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    try {
+                      Navigator.pop(context); //close the popup
+                    } catch (e) {
+                      print(e.toString());
+                    }
+                  },
+                );
+              }),
+              brightness: Brightness.light,
+            ),
+            resizeToAvoidBottomPadding: false,
+            body: widget,
+          ),
+        ),
+      ),
+    ).then((_) {
+      setState(() {
+        // refresh state
+      });
+    });
   }
 }

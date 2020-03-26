@@ -15,16 +15,14 @@ class TransferService {
       new SharedPreferenceService();
 
   Future<Transfer> create(TransferDTO transfer) async {
-    HttpClientRequest request =
-        await HttpClient().postUrl(Uri.parse(URL_TRANSFERS))
-          ..headers.contentType = ContentType.json
-          ..write(jsonEncode(transfer));
-    HttpClientResponse response = await request.close();
+    Map<String, String> headers = await _sharedPreferenceService.getHeaders();
 
+    final response = await http.Client()
+        .post('$URL_TRANSFERS', body: jsonEncode(transfer), headers: headers);
     if (response.statusCode == HttpStatus.ok) {
-      String reply = await response.transform(utf8.decoder).join();
-      Map userMap = jsonDecode(reply);
-      return Transfer.fromJson(userMap);
+      dynamic userDynamic = jsonDecode(response.body);
+      Transfer transfer = Transfer.fromJson(userDynamic);
+      return transfer;
     } else if (response.statusCode == HttpStatus.notFound) {
       return null;
     } else {
@@ -34,13 +32,14 @@ class TransferService {
   }
 
   Future<List<Transfer>> readBySender(String senderPhone) async {
-    //Map<String, String> headers = await _sharedPreferenceService.getHeaders();
+    Map<String, String> headers = await _sharedPreferenceService.getHeaders();
 
-    //final response = await http.Client().get('$URL_TRANSFERS_BY_SENDER$senderPhone', headers: headers);
     List<Transfer> transferList = new List();
     double sumTransferSent = 0.0;
-    final response =
-        await http.Client().get('$URL_TRANSFERS_BY_SENDER$senderPhone');
+    //final response = await http.Client().get('$URL_TRANSFERS_BY_SENDER$senderPhone');
+    final response = await http.Client()
+        .get('$URL_TRANSFERS_BY_SENDER$senderPhone', headers: headers);
+
     if (response.statusCode == HttpStatus.ok) {
       List<dynamic> transfers = jsonDecode(response.body);
       transferList = await transfers.map<Transfer>((json) {
@@ -61,13 +60,14 @@ class TransferService {
   }
 
   Future<List<Transfer>> readByReceiver(String receiverPhone) async {
-    //Map<String, String> headers = await _sharedPreferenceService.getHeaders();
+    Map<String, String> headers = await _sharedPreferenceService.getHeaders();
 
-    //final response = await http.Client().get('$URL_TRANSFERS_BY_RECEIVER$receiverPhone', headers: headers);
     List<Transfer> transferList = new List();
     double sumTransferReceived = 0.0;
-    final response =
-        await http.Client().get('$URL_TRANSFERS_BY_RECEIVER$receiverPhone');
+    //final response = await http.Client().get('$URL_TRANSFERS_BY_RECEIVER$receiverPhone');
+    final response = await http.Client()
+        .get('$URL_TRANSFERS_BY_RECEIVER$receiverPhone', headers: headers);
+
     if (response.statusCode == HttpStatus.ok) {
       List<dynamic> transfers = jsonDecode(response.body);
       transferList = await transfers.map<Transfer>((json) {
@@ -89,8 +89,9 @@ class TransferService {
 
   Future<TransferBilan> getTransferBilan() async {
     //this both calls save sumTransferSent and sumTransferReceived
-    await readByReceiver(LOGED_USER_PHONE);
-    await readBySender(LOGED_USER_PHONE);
+    String userPhone = await _sharedPreferenceService.read(USER_PHONE);
+    await readByReceiver(userPhone);
+    await readBySender(userPhone);
 
     String sumSent = await _sharedPreferenceService.read(SUM_TRANSFER_SENT);
     String sumReceived =

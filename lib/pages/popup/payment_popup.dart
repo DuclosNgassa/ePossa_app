@@ -5,6 +5,7 @@ import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/transfer.dart';
 import 'package:epossa_app/model/transferDto.dart';
 import 'package:epossa_app/notification/notification.dart';
+import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/services/transfer_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:epossa_app/util/constant_field.dart';
@@ -29,6 +30,8 @@ class _PaymentPopupState extends State<PaymentPopup> {
   // Note: This is a GlobalKey<FormState>,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
+  SharedPreferenceService _sharedPreferenceService =
+      new SharedPreferenceService();
   TextEditingController _phoneNumberController = new TextEditingController();
   TextEditingController _amountController = new TextEditingController();
   TextEditingController _descriptionController = new TextEditingController();
@@ -414,10 +417,11 @@ class _PaymentPopupState extends State<PaymentPopup> {
 
   Future<Transfer> _saveTransfer() async {
     print(newTransfer);
-    DateTime dateTime = DateTime.now();
+    //DateTime dateTime = DateTime.now();
+    String userPhone = await _sharedPreferenceService.read(USER_PHONE);
 
     TransferDTO transfer = new TransferDTO(
-        LOGED_USER_PHONE,
+        userPhone,
         _phoneNumberController.text,
         double.parse(_amountController.text),
         _descriptionController.text);
