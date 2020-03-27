@@ -17,3 +17,6 @@ const URL_LOGIN = "http://192.168.2.120:8080/login";
 const URL_TRANSFERS = SERVER_URL + "/transfers";
 const URL_TRANSFERS_BY_SENDER = URL_TRANSFERS + "/sender/";
 const URL_TRANSFERS_BY_RECEIVER = URL_TRANSFERS + "/receiver/";
+
+const URL_USER_NOTIFICATION = SERVER_URL + "/userNotification";
+const URL_USER_NOTIFICATION_BY_EMAIL = URL_USER_NOTIFICATION + "/useremail/";

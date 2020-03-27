@@ -61,6 +61,7 @@
   "no_received_transaction": "You don't have a transfer receipt yet",
   "home": "Home",
   "login": "Login",
+  "logout": "Sign out",
   "to_login": "Login",
   "no_account": "No account yet? ",
   "create_account": "Create an account",
@@ -76,5 +77,11 @@
   "transfer_sent_success_message": "Your transfer has been completed.",
   "name_changed_success_message": "Your name has been changed.",
   "password_changed_success_message": "Your password has been changed.",
-  "phone_changed_success_message": "Your phone number has been changed."
+  "phone_changed_success_message": "Your phone number has been changed.",
+  "infos": "Infos",
+  "how_it_works": "How does it work",
+  "contact_us": "Contact US",
+  "inform_friends": "Inform friends",
+  "who_are_we": "Who are we?",
+  "privacy_policy": "Privacy Policy"
 }

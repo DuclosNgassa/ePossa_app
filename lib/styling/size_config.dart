@@ -22,7 +22,7 @@ class SizeConfig {
     blockSizeHorizontal = screenWidth / 100;
     blockSizeVertical = screenHeight / 100;
 
-    BUTTON_FONT_SIZE = blockSizeHorizontal * 3;
+    BUTTON_FONT_SIZE = blockSizeHorizontal * 4;
 
     _safeAreaHorizontal =
         _mediaQueryData.padding.left + _mediaQueryData.padding.right;

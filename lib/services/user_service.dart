@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:epossa_app/model/userDto.dart';
 import 'package:epossa_app/model/userPassword.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
-import 'package:epossa_app/util/constant_field.dart';
 import 'package:epossa_app/util/rest_endpoints.dart';
 import 'package:http/http.dart' as http;
 

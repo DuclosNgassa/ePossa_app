@@ -11,3 +11,9 @@ const String SUM_TRANSFER_RECEIVED = "SUM_TRANSFER_RECEIVED";
 const String LOGEDIN = "LOGEDIN";
 const String YES = "YES";
 const String NO = "NO";
+const String EPOSSA_EMAIL = "kmer.epossa@gmail.com";
+const SITE_WEB = "https://www.kmerconsulting.com/";
+const PRIVACY_POLICY_URL =
+    "https://kmersoftdesign.wordpress.com/datenschutzerklarung/";
+const APP_URL =
+    "https://play.google.com/store/apps/details?id=com.kmerconsulting.epossa_app";

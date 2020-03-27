@@ -1,5 +1,6 @@
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/pages/account/account_page.dart';
+import 'package:epossa_app/pages/help/info_page.dart';
 import 'package:epossa_app/pages/history/history_page.dart';
 import 'package:epossa_app/pages/home/home_page.dart';
 import 'package:epossa_app/pages/popup/controller/popup_content.dart';
@@ -24,6 +25,7 @@ class _NavigationPageState extends State<NavigationPage> {
     HomePage(),
     HistoryPage(),
     AccountPage(),
+    InfoPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -65,6 +67,12 @@ class _NavigationPageState extends State<NavigationPage> {
             ),
             title: Text(
               AppLocalizations.of(context).translate('my_account'),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.info),
+            title: Text(
+              AppLocalizations.of(context).translate('infos'),
             ),
           ),
         ],
@@ -147,9 +155,7 @@ class _NavigationPageState extends State<NavigationPage> {
         ),
       ),
     ).then((_) {
-      setState(() {
-
-      });
+      setState(() {});
     });
   }
 }

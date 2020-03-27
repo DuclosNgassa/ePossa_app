@@ -2,9 +2,9 @@ import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'my_color.dart';
+import 'global_color.dart';
 
-class Styling {
+class GlobalStyling {
   static double BUTTON_FONT_SIZE;
 
   static TextStyle styleTitleBlack;
@@ -54,12 +54,12 @@ class Styling {
         color: Colors.black45, fontSize: SizeConfig.safeBlockHorizontal * 3);
 
     stylePrice = new TextStyle(
-        color: MyColor.colorDeepPurple500,
+        color: GlobalColor.colorDeepPurple500,
         fontWeight: FontWeight.bold,
         fontSize: SizeConfig.safeBlockHorizontal * 4);
 
     stylePriceCard = new TextStyle(
-        color: MyColor.colorDeepPurple500,
+        color: GlobalColor.colorDeepPurple500,
         fontWeight: FontWeight.bold,
         fontSize: SizeConfig.safeBlockHorizontal * 3);
 

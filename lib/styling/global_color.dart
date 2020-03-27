@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class MyColor {
+class GlobalColor {
   static Color colorDeepPurple300 = Colors.deepPurple[300]; //Color(0xFF95E08E);
   static Color colorDeepPurple400 = Colors.deepPurple[400]; //Color(0xFF33BBB5);
   static Color colorDeepPurple500 = Colors.deepPurple[500]; //Color(0xFF00AA12);

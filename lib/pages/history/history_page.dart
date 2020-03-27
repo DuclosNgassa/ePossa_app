@@ -6,8 +6,8 @@ import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/transfer.dart';
 import 'package:epossa_app/model/transfer_wrapper.dart';
 import 'package:epossa_app/notification/notification.dart';
+import 'package:epossa_app/styling/global_styling.dart';
 import 'package:epossa_app/styling/size_config.dart';
-import 'package:epossa_app/styling/styling.dart';
 import 'package:flutter/material.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -36,7 +36,7 @@ class _HistoryPageState extends State<HistoryPage>
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    Styling().init(context);
+    GlobalStyling().init(context);
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(
@@ -146,7 +146,7 @@ class _HistoryPageState extends State<HistoryPage>
           ),
           child: Text(
             AppLocalizations.of(context).translate('no_transaction'),
-            style: Styling.styleTitleWhite,
+            style: GlobalStyling.styleTitleWhite,
           ),
         ),
       );
@@ -166,7 +166,7 @@ class _HistoryPageState extends State<HistoryPage>
           ),
           child: Text(
             AppLocalizations.of(context).translate('no_received_transaction'),
-            style: Styling.styleTitleWhite,
+            style: GlobalStyling.styleTitleWhite,
           ),
         ),
       );

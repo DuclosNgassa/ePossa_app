@@ -1,5 +1,7 @@
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/custom_widget/custom_button.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
+import 'package:epossa_app/pages/authentication/login_page.dart';
 import 'package:epossa_app/pages/popup/change_name_popup.dart';
 import 'package:epossa_app/pages/popup/change_password_popup.dart';
 import 'package:epossa_app/pages/popup/change_phonenumber_popup.dart';
@@ -7,9 +9,12 @@ import 'package:epossa_app/pages/popup/controller/popup_content.dart';
 import 'package:epossa_app/pages/popup/controller/popup_layout.dart';
 import 'package:epossa_app/pages/popup/finance_popup.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
+import 'package:epossa_app/styling/global_color.dart';
+import 'package:epossa_app/styling/global_styling.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:epossa_app/util/constant_field.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AccountPage extends StatefulWidget {
   @override
@@ -26,6 +31,7 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    GlobalStyling().init(context);
 
     return SingleChildScrollView(
       child: Container(
@@ -61,12 +67,30 @@ class _AccountPageState extends State<AccountPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Text(
-              AppLocalizations.of(context).translate('my_account'),
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold),
+            Expanded(
+              child: Text(
+                AppLocalizations.of(context).translate('my_account'),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              width: SizeConfig.blockSizeHorizontal,
+            ),
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: CustomButton(
+                fillColor: GlobalColor.colorRed,
+                icon: FontAwesomeIcons.signOutAlt,
+                splashColor: Colors.white,
+                iconColor: Colors.white,
+                text: AppLocalizations.of(context).translate('logout'),
+                textStyle: TextStyle(
+                    color: Colors.white, fontSize: SizeConfig.BUTTON_FONT_SIZE),
+                onPressed: () => _logOut(),
+              ),
             ),
           ],
         ),
@@ -198,9 +222,7 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  _showPopup(Widget widget, String title,
-      {BuildContext popupContext}) {
-
+  _showPopup(Widget widget, String title, {BuildContext popupContext}) {
     Navigator.push(
       context,
       PopupLayout(
@@ -248,5 +270,12 @@ class _AccountPageState extends State<AccountPage> {
   void initState() {
     super.initState();
     _getUser();
+  }
+
+  _logOut() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
   }
 }

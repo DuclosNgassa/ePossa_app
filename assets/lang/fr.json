@@ -61,6 +61,7 @@
   "no_received_transaction": "Vous n´avez pas encore de recu de transferts",
   "home": "Accueil",
   "login": "Connection",
+  "logout": "Se deconnecter",
   "to_login": "Connectez vous",
   "no_account": "Pas encore de compte? ",
   "create_account": "Créez un compte",
@@ -76,5 +77,11 @@
   "transfer_sent_success_message": "Votre transfert a été éffectué.",
   "name_changed_success_message": "Votre nom a été changé.",
   "password_changed_success_message": "Votre mot de passe a été changé.",
-  "phone_changed_success_message": "Votre numéro de télephone a été changé."
+  "phone_changed_success_message": "Votre numéro de télephone a été changé.",
+  "infos": "Infos",
+  "how_it_works": "Comment ça marche",
+  "contact_us": "Contactez nous",
+  "inform_friends": "Informer les amis",
+  "who_are_we": "Qui sommes-nous?",
+  "privacy_policy": "Politique de confidentialité."
 }
