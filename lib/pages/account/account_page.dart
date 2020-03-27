@@ -3,8 +3,9 @@ import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/pages/popup/change_name_popup.dart';
 import 'package:epossa_app/pages/popup/change_password_popup.dart';
 import 'package:epossa_app/pages/popup/change_phonenumber_popup.dart';
+import 'package:epossa_app/pages/popup/controller/popup_content.dart';
+import 'package:epossa_app/pages/popup/controller/popup_layout.dart';
 import 'package:epossa_app/pages/popup/finance_popup.dart';
-import 'package:epossa_app/pages/popup/popup_helper.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:epossa_app/util/constant_field.dart';
@@ -94,8 +95,7 @@ class _AccountPageState extends State<AccountPage> {
           FadeAnimation(
             1.6,
             ListTile(
-              onTap: () => PopupHelper.showPopup(
-                context,
+              onTap: () => _showPopup(
                 FinancePopup(),
                 AppLocalizations.of(context).translate('my_finance'),
               ),
@@ -121,7 +121,10 @@ class _AccountPageState extends State<AccountPage> {
           FadeAnimation(
             1.6,
             ListTile(
-              onTap: () => showChangeNamePopup(),
+              onTap: () => _showPopup(
+                ChangeNamePopup(),
+                AppLocalizations.of(context).translate('change_name'),
+              ),
               leading: Icon(
                 Icons.person,
                 color: Colors.white,
@@ -144,8 +147,7 @@ class _AccountPageState extends State<AccountPage> {
           FadeAnimation(
             1.9,
             ListTile(
-              onTap: () => PopupHelper.showPopup(
-                context,
+              onTap: () => _showPopup(
                 ChangePhonenumberPopup(),
                 AppLocalizations.of(context).translate('change_phonenumber'),
               ),
@@ -171,8 +173,7 @@ class _AccountPageState extends State<AccountPage> {
           FadeAnimation(
             2.2,
             ListTile(
-              onTap: () => PopupHelper.showPopup(
-                context,
+              onTap: () => _showPopup(
                 ChangePasswordPopup(),
                 AppLocalizations.of(context).translate('change_password'),
               ),
@@ -197,13 +198,43 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  showChangeNamePopup() {
-    PopupHelper.showPopup(
+  _showPopup(Widget widget, String title,
+      {BuildContext popupContext}) {
+
+    Navigator.push(
       context,
-      ChangeNamePopup(),
-      AppLocalizations.of(context).translate('change_name'),
-    );
-    //_getUser();
+      PopupLayout(
+        top: SizeConfig.blockSizeVertical * 4,
+        left: SizeConfig.blockSizeHorizontal * 6,
+        right: SizeConfig.blockSizeHorizontal * 6,
+        bottom: SizeConfig.blockSizeVertical * 6,
+        child: PopupContent(
+          content: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Color.fromRGBO(112, 139, 245, 1),
+              title: Text(title),
+              leading: new Builder(builder: (context) {
+                return IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    try {
+                      Navigator.pop(context); //close the popup
+                    } catch (e) {
+                      print(e.toString());
+                    }
+                  },
+                );
+              }),
+              brightness: Brightness.light,
+            ),
+            resizeToAvoidBottomPadding: false,
+            body: widget,
+          ),
+        ),
+      ),
+    ).then((_) async {
+      _getUser();
+    });
   }
 
   void _getUser() async {

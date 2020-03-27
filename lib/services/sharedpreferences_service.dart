@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:epossa_app/model/userDto.dart';
 import 'package:epossa_app/util/constant_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +26,12 @@ class SharedPreferenceService {
   remove(String key) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove(key);
+  }
+
+  saveUser(UserDTO user) async {
+    await save(USER_PHONE, user.phone);
+    await save(USER_NAME, user.name);
+    await save(USER, jsonEncode(user));
   }
 
   clearForLogOut() async {

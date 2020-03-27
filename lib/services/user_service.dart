@@ -24,9 +24,7 @@ class UserService {
       UserDTO user = UserDTO.fromJson(userDynamic);
 
       // Save user in SharePref
-      await _sharedPreferenceService.save(USER_PHONE, user.phone);
-      await _sharedPreferenceService.save(USER_NAME, user.name);
-      await _sharedPreferenceService.save(USER, jsonEncode(user));
+      await _sharedPreferenceService.saveUser(user);
 
       return user;
     } else if (response.statusCode == HttpStatus.notFound) {
@@ -46,6 +44,9 @@ class UserService {
     if (response.statusCode == HttpStatus.ok) {
       dynamic userDynamic = jsonDecode(response.body);
       UserDTO user = UserDTO.fromJson(userDynamic);
+
+      await _sharedPreferenceService.saveUser(user);
+
       return user;
     } else if (response.statusCode == HttpStatus.notFound) {
       return null;
