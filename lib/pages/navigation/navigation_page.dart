@@ -148,7 +148,7 @@ class _NavigationPageState extends State<NavigationPage> {
       ),
     ).then((_) {
       setState(() {
-        // refresh state
+
       });
     });
   }

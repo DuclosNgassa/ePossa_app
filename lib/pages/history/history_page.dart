@@ -6,7 +6,6 @@ import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/transfer.dart';
 import 'package:epossa_app/model/transfer_wrapper.dart';
 import 'package:epossa_app/notification/notification.dart';
-import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:epossa_app/styling/styling.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +17,9 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage>
     with SingleTickerProviderStateMixin {
-  SharedPreferenceService _sharedPreferenceService =
-      new SharedPreferenceService();
   TransferManager _transferManager = new TransferManager();
-  GlobalKey<RefreshIndicatorState> refreshKey;
+  GlobalKey<RefreshIndicatorState> refreshKeyReceived;
+  GlobalKey<RefreshIndicatorState> refreshKeySent;
 
   TabController _tabController;
   List<bool> transferListExpanded = new List();
@@ -30,7 +28,8 @@ class _HistoryPageState extends State<HistoryPage>
   @override
   void initState() {
     super.initState();
-    refreshKey = GlobalKey<RefreshIndicatorState>();
+    refreshKeyReceived = GlobalKey<RefreshIndicatorState>();
+    refreshKeySent = GlobalKey<RefreshIndicatorState>();
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -89,53 +88,47 @@ class _HistoryPageState extends State<HistoryPage>
   Widget _buildTabBarView() {
     return FadeAnimation(
       1.9,
-      RefreshIndicator(
-        key: refreshKey,
-        onRefresh: () async {
-          await _invalidatePostCache();
-        },
-        child: StreamBuilder<TransferWrapper>(
-          stream: _transferManager.transferWrapper,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Container(
-                height: SizeConfig.screenHeight * 0.69,
-                child: TabBarView(
-                  controller: _tabController,
-                  children: <Widget>[
-                    _buildReceivedFuture(snapshot.data.transferReceivedList),
-                    _buildSentFuture(snapshot.data.transferSentList),
-                  ],
-                ),
-              );
-            } else if (snapshot.hasError) {
-              MyNotification.showInfoFlushbar(
-                  context,
-                  AppLocalizations.of(context).translate('error'),
-                  AppLocalizations.of(context).translate('error_loading'),
-                  Icon(
-                    Icons.info_outline,
-                    size: 28,
-                    color: Colors.redAccent,
-                  ),
-                  Colors.redAccent,
-                  3);
-            }
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+      StreamBuilder<TransferWrapper>(
+        stream: _transferManager.transferWrapper,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Container(
+              height: SizeConfig.screenHeight * 0.69,
+              child: TabBarView(
+                controller: _tabController,
                 children: <Widget>[
-                  Image.asset(
-                    "assets/gif/loading.gif",
-                  ),
-                  Text(
-                    AppLocalizations.of(context).translate('loading'),
-                  ),
+                  _buildReceivedFuture(snapshot.data.transferReceivedList),
+                  _buildSentFuture(snapshot.data.transferSentList),
                 ],
               ),
             );
-          },
-        ),
+          } else if (snapshot.hasError) {
+            MyNotification.showInfoFlushbar(
+                context,
+                AppLocalizations.of(context).translate('error'),
+                AppLocalizations.of(context).translate('error_loading'),
+                Icon(
+                  Icons.info_outline,
+                  size: 28,
+                  color: Colors.redAccent,
+                ),
+                Colors.redAccent,
+                3);
+          }
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  "assets/gif/loading.gif",
+                ),
+                Text(
+                  AppLocalizations.of(context).translate('loading'),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -181,105 +174,121 @@ class _HistoryPageState extends State<HistoryPage>
   }
 
   Widget _buildReceived(List<Transfer> receives) {
-    return ListView.builder(
-        itemCount: receives.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.white),
-              child: ExpansionTile(
-                key: PageStorageKey<String>(receives.elementAt(index).receiver),
-                leading: new Text(DateConverter.convertToString(
-                    receives.elementAt(index).created_at, context)),
-                title: Container(
-                  child: new Text(
-                    receives.elementAt(index).amount.toString() + " FCFA",
-                    style: TextStyle(
-                        fontSize:
-                            (receivedListExpanded.elementAt(index) == false)
-                                ? 18
-                                : 22),
-                  ),
-                ),
-                children: <Widget>[
-                  Container(
-                    child: new TransferCard(
-                      transfer: receives.elementAt(index),
-                      isReceiver: true,
+    return RefreshIndicator(
+      key: refreshKeyReceived,
+      onRefresh: () async {
+        await _reloadData();
+      },
+      child: ListView.builder(
+          itemCount: receives.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white),
+                child: ExpansionTile(
+                  key: PageStorageKey<String>(
+                      receives.elementAt(index).receiver),
+                  leading: new Text(DateConverter.convertToString(
+                      receives.elementAt(index).created_at, context)),
+                  title: Container(
+                    child: new Text(
+                      receives.elementAt(index).amount.toString() + " FCFA",
+                      style: TextStyle(
+                          fontSize:
+                              (receivedListExpanded.elementAt(index) == false)
+                                  ? 18
+                                  : 22),
                     ),
                   ),
-                ],
-                trailing: (receivedListExpanded.elementAt(index) == false)
-                    ? Icon(
-                        Icons.arrow_drop_down,
-                        size: 32,
-                        color: Color.fromRGBO(112, 139, 245, 55),
-                      )
-                    : Icon(
-                        Icons.arrow_drop_up,
-                        size: 32,
-                        color: Color.fromRGBO(112, 139, 245, 55),
+                  children: <Widget>[
+                    Container(
+                      child: new TransferCard(
+                        transfer: receives.elementAt(index),
+                        isReceiver: true,
                       ),
-                onExpansionChanged: (value) {
-                  setState(() {
-                    receivedListExpanded[index] = value;
-                  });
-                },
+                    ),
+                  ],
+                  trailing: (receivedListExpanded.elementAt(index) == false)
+                      ? Icon(
+                          Icons.arrow_drop_down,
+                          size: 32,
+                          color: Color.fromRGBO(112, 139, 245, 55),
+                        )
+                      : Icon(
+                          Icons.arrow_drop_up,
+                          size: 32,
+                          color: Color.fromRGBO(112, 139, 245, 55),
+                        ),
+                  onExpansionChanged: (value) {
+                    setState(() {
+                      receivedListExpanded[index] = value;
+                    });
+                  },
+                ),
               ),
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 
   Widget _buildSent(List<Transfer> transfers) {
-    return ListView.builder(
-        itemCount: transfers.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.white),
-              child: ExpansionTile(
-                leading: new Text(
-                  DateConverter.convertToString(
-                      transfers.elementAt(index).created_at, context),
-                ),
-                title: new Text(
-                  transfers.elementAt(index).amount.toString() + " FCFA",
-                  style: TextStyle(
-                      fontSize: (transferListExpanded.elementAt(index) == false)
-                          ? 18
-                          : 22),
-                ),
-                children: <Widget>[
-                  new TransferCard(
-                    transfer: transfers.elementAt(index),
-                    isReceiver: false,
+    return RefreshIndicator(
+      key: refreshKeySent,
+      onRefresh: () async {
+        await _reloadData();
+      },
+      child: ListView.builder(
+          itemCount: transfers.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white),
+                child: ExpansionTile(
+                  leading: new Text(
+                    DateConverter.convertToString(
+                        transfers.elementAt(index).created_at, context),
                   ),
-                ],
-                trailing: (transferListExpanded.elementAt(index) == false)
-                    ? Icon(
-                        Icons.arrow_drop_down,
-                        size: 32,
-                        color: Color.fromRGBO(112, 139, 245, 55),
-                      )
-                    : Icon(
-                        Icons.arrow_drop_up,
-                        size: 32,
-                        color: Color.fromRGBO(112, 139, 245, 55),
-                      ),
-                onExpansionChanged: (value) {
-                  setState(() {
-                    transferListExpanded[index] = value;
-                  });
-                },
+                  title: new Text(
+                    transfers.elementAt(index).amount.toString() + " FCFA",
+                    style: TextStyle(
+                        fontSize:
+                            (transferListExpanded.elementAt(index) == false)
+                                ? 18
+                                : 22),
+                  ),
+                  children: <Widget>[
+                    new TransferCard(
+                      transfer: transfers.elementAt(index),
+                      isReceiver: false,
+                    ),
+                  ],
+                  trailing: (transferListExpanded.elementAt(index) == false)
+                      ? Icon(
+                          Icons.arrow_drop_down,
+                          size: 32,
+                          color: Color.fromRGBO(112, 139, 245, 55),
+                        )
+                      : Icon(
+                          Icons.arrow_drop_up,
+                          size: 32,
+                          color: Color.fromRGBO(112, 139, 245, 55),
+                        ),
+                  onExpansionChanged: (value) {
+                    setState(() {
+                      transferListExpanded[index] = value;
+                    });
+                  },
+                ),
               ),
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 
   void _setReceivedListExpanded(List<Transfer> transferReceived) {
@@ -294,11 +303,8 @@ class _HistoryPageState extends State<HistoryPage>
     }
   }
 
-  Future<void> _invalidatePostCache() async {
+  Future<void> _reloadData() async {
     //TODO implements me!!!
-
-    // await _sharedPreferenceService.remove(CATEGORIE_LIST_CACHE_TIME);
-    // await _sharedPreferenceService.remove(POST_LIST_CACHE_TIME);
 
     setState(() {});
   }
