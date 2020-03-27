@@ -42,7 +42,7 @@ class TransferService {
 
     if (response.statusCode == HttpStatus.ok) {
       List<dynamic> transfers = jsonDecode(response.body);
-      transferList = await transfers.map<Transfer>((json) {
+      transferList = transfers.map<Transfer>((json) {
         Transfer transferMap = Transfer.fromJson(json);
         sumTransferSent += transferMap.amount;
         return transferMap;
@@ -70,7 +70,7 @@ class TransferService {
 
     if (response.statusCode == HttpStatus.ok) {
       List<dynamic> transfers = jsonDecode(response.body);
-      transferList = await transfers.map<Transfer>((json) {
+      transferList = transfers.map<Transfer>((json) {
         Transfer transferMap = Transfer.fromJson(json);
         sumTransferReceived += transferMap.amount;
         return transferMap;

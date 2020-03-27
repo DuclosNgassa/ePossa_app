@@ -13,7 +13,7 @@ class SizeConfig {
   static double safeBlockHorizontal;
   static double safeBlockVertical;
 
-  static double BUTTON_FONT_SIZE;
+  static double buttonFontSize;
 
   void init(BuildContext context) {
     _mediaQueryData = MediaQuery.of(context);
@@ -22,7 +22,7 @@ class SizeConfig {
     blockSizeHorizontal = screenWidth / 100;
     blockSizeVertical = screenHeight / 100;
 
-    BUTTON_FONT_SIZE = blockSizeHorizontal * 4;
+    buttonFontSize = blockSizeHorizontal * 4;
 
     _safeAreaHorizontal =
         _mediaQueryData.padding.left + _mediaQueryData.padding.right;

@@ -6,6 +6,7 @@ import 'package:epossa_app/model/userDto.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/services/user_service.dart';
+import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:epossa_app/util/constant_field.dart';
 import 'package:flutter/material.dart';
@@ -135,7 +136,7 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
             height: SizeConfig.blockSizeVertical * 8,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Color.fromRGBO(51, 51, 153, 1),
+              color: GlobalColor.colorButtonPrimary,
             ),
             child: RawMaterialButton(
               onPressed: () => _save(),

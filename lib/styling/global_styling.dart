@@ -5,13 +5,12 @@ import 'package:flutter/widgets.dart';
 import 'global_color.dart';
 
 class GlobalStyling {
-  static double BUTTON_FONT_SIZE;
-
   static TextStyle styleTitleBlack;
   static TextStyle styleTitleBlackCard;
   static TextStyle styleCity;
   static TextStyle stylePrice;
   static TextStyle stylePriceCard;
+  static TextStyle styleHeaderWhite;
   static TextStyle styleTitleWhite;
   static TextStyle styleNormalWhite;
   static TextStyle styleNormalBlack;
@@ -54,12 +53,12 @@ class GlobalStyling {
         color: Colors.black45, fontSize: SizeConfig.safeBlockHorizontal * 3);
 
     stylePrice = new TextStyle(
-        color: GlobalColor.colorDeepPurple500,
+        color: GlobalColor.colorPrimary,
         fontWeight: FontWeight.bold,
         fontSize: SizeConfig.safeBlockHorizontal * 4);
 
     stylePriceCard = new TextStyle(
-        color: GlobalColor.colorDeepPurple500,
+        color: GlobalColor.colorPrimary,
         fontWeight: FontWeight.bold,
         fontSize: SizeConfig.safeBlockHorizontal * 3);
 
@@ -67,6 +66,11 @@ class GlobalStyling {
         color: Colors.white,
         fontWeight: FontWeight.bold,
         fontSize: SizeConfig.safeBlockHorizontal * 5);
+
+    styleHeaderWhite = new TextStyle(
+        color: Colors.white,
+        fontSize: SizeConfig.blockSizeHorizontal * 9,
+        fontWeight: FontWeight.bold);
 
     styleNormalWhite = new TextStyle(
       color: Colors.white,
@@ -138,7 +142,5 @@ class GlobalStyling {
 
     regularTextStyle = baseTextStyle.copyWith(
         color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w400);
-
-    final subHeaderTextStyle = regularTextStyle.copyWith(fontSize: 16.0);
   }
 }

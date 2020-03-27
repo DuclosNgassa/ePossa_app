@@ -173,16 +173,17 @@ class _StartScreenState extends State<StartScreen>
               top: -SizeConfig.blockSizeVertical * 23,
               left: 0,
               child: FadeAnimation(
-                  1.6,
-                  Container(
-                    width: width,
-                    height: SizeConfig.blockSizeVertical * 62,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/one.png'),
-                          fit: BoxFit.cover),
-                    ),
-                  )),
+                1.6,
+                Container(
+                  width: width,
+                  height: SizeConfig.blockSizeVertical * 62,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/one.png'),
+                        fit: BoxFit.cover),
+                  ),
+                ),
+              ),
             ),
             Container(
               padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 5),
@@ -191,11 +192,12 @@ class _StartScreenState extends State<StartScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   FadeAnimation(
-                      1,
-                      Text(
-                        "ePossa",
-                        style: TextStyle(color: Colors.white, fontSize: 50),
-                      )),
+                    1,
+                    Text(
+                      "ePossa",
+                      style: TextStyle(color: Colors.white, fontSize: 50),
+                    ),
+                  ),
                   SizedBox(
                     height: SizeConfig.blockSizeVertical * 2,
                   ),

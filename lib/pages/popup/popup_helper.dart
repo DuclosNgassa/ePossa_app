@@ -1,3 +1,4 @@
+import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class PopupHelper {
         child: PopupContent(
           content: Scaffold(
             appBar: AppBar(
-              backgroundColor: Color.fromRGBO(112, 139, 245, 1),
+              backgroundColor: GlobalColor.colorPrimary,
               title: Text(title),
               leading: new Builder(builder: (context) {
                 return IconButton(

@@ -61,8 +61,7 @@ class _HistoryPageState extends State<HistoryPage>
       1.3,
       Text(
         AppLocalizations.of(context).translate('history'),
-        style: TextStyle(
-            color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
+        style: GlobalStyling.styleHeaderWhite,
       ),
     );
   }

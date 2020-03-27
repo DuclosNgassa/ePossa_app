@@ -12,7 +12,6 @@ class User {
   User(this.name, this.phone, this.password, this.device, this.status,
       this.balance, this.rating);
 
-  @override
   Map<String, dynamic> toJson() => {
         'name': name,
         'phone': phone,
@@ -23,7 +22,6 @@ class User {
         'rating': rating.toString(),
       };
 
-  @override
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       json["name"],

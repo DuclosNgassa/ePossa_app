@@ -61,7 +61,6 @@ class _TransferCardState extends State<TransferCard> {
     String _receiver = widget.transfer.receiver;
 
     String _senderTitle = AppLocalizations.of(context).translate('sender');
-    ;
     String _sender = widget.transfer.sender;
 
     return new Column(

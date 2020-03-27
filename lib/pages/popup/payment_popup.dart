@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/transfer.dart';
@@ -7,10 +8,10 @@ import 'package:epossa_app/model/transferDto.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/services/transfer_service.dart';
+import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:epossa_app/util/constant_field.dart';
 import 'package:flutter/material.dart';
-import 'package:qrscan/qrscan.dart' as scanner;
 
 class PaymentPopup extends StatefulWidget {
   @override
@@ -75,10 +76,12 @@ class _PaymentPopupState extends State<PaymentPopup> {
               height: SizeConfig.blockSizeVertical * 2,
             ),
             _buildQrCodeButton(),
+/*
             SizedBox(
               height: SizeConfig.blockSizeVertical * 2,
             ),
             _buildQrCodeGalleryButton(),
+*/
             SizedBox(
               height: SizeConfig.blockSizeVertical * 2,
             ),
@@ -251,6 +254,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
     );
   }
 
+/*
   Widget _buildQrCodeGalleryButton() {
     return Padding(
       padding:
@@ -288,6 +292,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
       ),
     );
   }
+*/
 
   Widget _buildTransferButton() {
     return Padding(
@@ -301,7 +306,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
             height: SizeConfig.blockSizeVertical * 8,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Color.fromRGBO(51, 51, 153, 1),
+              color: GlobalColor.colorButtonPrimary,
             ),
             child: RawMaterialButton(
               onPressed: () => _submit(),
@@ -334,13 +339,20 @@ class _PaymentPopupState extends State<PaymentPopup> {
   }
 
   Future _scan() async {
+    String barcode = await BarcodeScanner.scan();
+    _phoneNumberController.text = barcode;
+    setState(() => this.barcode = barcode);
+
+/*
     String barcode = await scanner.scan();
     setState(() {
       this.barcode = barcode;
       _phoneNumberController.text = _getPhoneNumberFromQRCode(barcode);
     });
+*/
   }
 
+/*
   Future _scanPhoto() async {
     String barcode = await scanner.scanPhoto();
     setState(() {
@@ -348,6 +360,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
       _phoneNumberController.text = _getPhoneNumberFromQRCode(barcode);
     });
   }
+*/
 
   Future _submit() async {
     final FormState form = _formKey.currentState;
@@ -430,5 +443,10 @@ class _PaymentPopupState extends State<PaymentPopup> {
 
     Transfer savedTransfer = await _transferService.create(transfer);
     return savedTransfer;
+  }
+
+  Future scan() async {
+    String barcode = await BarcodeScanner.scan();
+    setState(() => this.barcode = barcode);
   }
 }

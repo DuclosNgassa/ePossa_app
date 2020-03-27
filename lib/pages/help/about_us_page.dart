@@ -1,3 +1,4 @@
+import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/global_styling.dart';
@@ -24,18 +25,58 @@ class _AboutUsPageState extends State<AboutUsPage> {
     SizeConfig().init(context);
     GlobalStyling().init(context);
 
-    return new Scaffold(
-      appBar: new AppBar(
-        backgroundColor: GlobalColor.colorDeepPurple300,
-        title: _buildTitle(),
-        automaticallyImplyLeading: false,
+    return Scaffold(
+      backgroundColor: GlobalColor.colorPrimary,
+      body: Container(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+                left: SizeConfig.blockSizeHorizontal * 5,
+                right: SizeConfig.blockSizeHorizontal * 5,
+                top: SizeConfig.blockSizeVertical * 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding:
+                      EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5),
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      _buildTitle(),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding:
+                      EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 8),
+                  child: new Container(
+                    constraints: BoxConstraints.expand(
+                        height: SizeConfig.screenHeight * 0.70),
+                    child: buildListTile(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
-      body: buildListTile(),
     );
   }
 
-  _buildTitle() {
-    return Text(AppLocalizations.of(context).translate('about_us'));
+  Widget _buildTitle() {
+    return FadeAnimation(
+      1.3,
+      Padding(
+        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
+        child: Text(
+          AppLocalizations.of(context).translate('about_us'),
+          style: GlobalStyling.styleHeaderWhite,
+        ),
+      ),
+    );
   }
 
   Widget buildListTile() {
@@ -44,31 +85,41 @@ class _AboutUsPageState extends State<AboutUsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Container(
-            height: SizeConfig.screenHeight * 0.54,
-            child: Image.asset(
-              "assets/images/kmerconsulting.png",
+          FadeAnimation(
+            1.5,
+            Container(
+              height: SizeConfig.screenHeight * 0.4,
+              child: Image.asset(
+                "assets/images/kmerconsulting.png",
+              ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 3),
-            child: Text(
-              AppLocalizations.of(context).translate('about_us_text'),
-              style: GlobalStyling.styleNormalBlack,
+          FadeAnimation(
+            1.7,
+            Padding(
+              padding:
+                  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 3),
+              child: Text(
+                AppLocalizations.of(context).translate('about_us_text'),
+                style: GlobalStyling.styleTitleWhite,
+              ),
             ),
           ),
           SizedBox(
-            height: SizeConfig.blockSizeVertical * 2,
+            height: SizeConfig.blockSizeVertical * 4,
           ),
-          Container(
-            child: RaisedButton(
-              shape: const StadiumBorder(),
-              color: GlobalColor.colorDeepPurple400,
-              child: Text(
-                AppLocalizations.of(context).translate('visit_us'),
-                style: GlobalStyling.styleSubtitleWhite,
+          FadeAnimation(
+            1.9,
+            Container(
+              child: RaisedButton(
+                shape: const StadiumBorder(),
+                color: GlobalColor.colorButtonPrimary,
+                child: Text(
+                  AppLocalizations.of(context).translate('visit_us'),
+                  style: GlobalStyling.styleButtonWhite,
+                ),
+                onPressed: () => launch(SITE_WEB),
               ),
-              onPressed: () => launch(SITE_WEB),
             ),
           ),
         ],

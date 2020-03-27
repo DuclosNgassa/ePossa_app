@@ -1,3 +1,4 @@
+import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/global_styling.dart';
@@ -28,53 +29,111 @@ class _SharePageState extends State<SharePage> {
     SizeConfig().init(context);
     GlobalStyling().init(context);
 
-    return new Scaffold(
-      appBar: new AppBar(
-        backgroundColor: GlobalColor.colorDeepPurple300,
-        title: _buildTitle(),
-        automaticallyImplyLeading: false,
+    return Scaffold(
+      backgroundColor: GlobalColor.colorPrimary,
+      body: Container(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+                left: SizeConfig.blockSizeHorizontal * 5,
+                right: SizeConfig.blockSizeHorizontal * 5,
+                top: SizeConfig.blockSizeVertical * 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding:
+                      EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5),
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      _buildTitle(),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding:
+                      EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 8),
+                  child: new Container(
+                    constraints: BoxConstraints.expand(
+                        height: SizeConfig.screenHeight * 0.70),
+                    child: buildListTile(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
-      body: buildListTile(),
     );
   }
 
-  _buildTitle() {
-    return Text(AppLocalizations.of(context).translate('share'));
+  Widget _buildTitle() {
+    return FadeAnimation(
+      1.3,
+      Padding(
+        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
+        child: Text(
+          AppLocalizations.of(context).translate('share'),
+          style: GlobalStyling.styleHeaderWhite,
+        ),
+      ),
+    );
   }
 
   Widget buildListTile() {
     return Container(
       child: ListView(
         children: <Widget>[
-          Container(
-            height: SizeConfig.screenHeight * 0.54,
-            child: Image.asset(
-              "assets/gif/sharesocial.gif",
+          FadeAnimation(
+            1.3,
+            Container(
+              height: SizeConfig.screenHeight * 0.47,
+              child: Image.asset(
+                "assets/gif/sharesocial.gif",
+              ),
             ),
           ),
-          ListTile(
-            onTap: () => shareToWhatsapp(),
-            leading: Icon(
-              FontAwesomeIcons.whatsapp,
-              color: Colors.green,
-            ),
-            title: Text("Whatsapp"),
-            trailing: Icon(
-              Icons.arrow_forward_ios,
-              color: GlobalColor.colorGrey400,
+          SizedBox(
+            height: SizeConfig.blockSizeVertical * 2,
+          ),
+          FadeAnimation(
+            1.5,
+            ListTile(
+              onTap: () => shareToWhatsapp(),
+              leading: Icon(
+                FontAwesomeIcons.whatsapp,
+                color: GlobalColor.colorWhite,
+              ),
+              title: Text(
+                "Whatsapp",
+                style: GlobalStyling.styleTitleWhite,
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                color: GlobalColor.colorWhite,
+              ),
             ),
           ),
           Divider(),
-          ListTile(
-            onTap: () => shareToSystem(),
-            leading: Icon(
-              Icons.share,
-              color: Colors.purple,
-            ),
-            title: Text(AppLocalizations.of(context).translate('others')),
-            trailing: Icon(
-              Icons.arrow_forward_ios,
-              color: GlobalColor.colorGrey400,
+          FadeAnimation(
+            1.7,
+            ListTile(
+              onTap: () => shareToSystem(),
+              leading: Icon(
+                Icons.share,
+                color: GlobalColor.colorWhite,
+              ),
+              title: Text(
+                AppLocalizations.of(context).translate('others'),
+                style: GlobalStyling.styleTitleWhite,
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                color: GlobalColor.colorWhite,
+              ),
             ),
           ),
         ],
@@ -83,8 +142,8 @@ class _SharePageState extends State<SharePage> {
   }
 
   void shareToWhatsapp() {
-    FlutterShareMe().shareToWhatsApp(
-        base64ImageUrl: "http://www.whatsapp.de", msg: APP_URL);
+    FlutterShareMe()
+        .shareToWhatsApp(base64Image: "http://www.whatsapp.de", msg: APP_URL);
   }
 
   void shareToFacebook() {

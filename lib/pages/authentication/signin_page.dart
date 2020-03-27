@@ -5,7 +5,6 @@ import 'package:epossa_app/model/userDto.dart';
 import 'package:epossa_app/model/user_status.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/login_page.dart';
-import 'package:epossa_app/pages/home/home_page.dart';
 import 'package:epossa_app/services/authentication_service.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
@@ -174,7 +173,9 @@ class _SignInPageState extends State<SignInPage> {
         child: Text(
           AppLocalizations.of(context).translate("signin"),
           style: TextStyle(
-              color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
+              color: Colors.white,
+              fontSize: SizeConfig.blockSizeHorizontal * 9,
+              fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -446,14 +447,6 @@ class _SignInPageState extends State<SignInPage> {
             2);
       }
     }
-  }
-
-  _navigateToHome() {
-    Navigator.of(context).pushReplacement(
-      new MaterialPageRoute(
-        builder: (context) => new HomePage(),
-      ),
-    );
   }
 
   _login() {

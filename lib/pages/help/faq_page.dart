@@ -1,3 +1,4 @@
+import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/custom_widget/custom_button.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/pages/contact/contact_page.dart';
@@ -20,9 +21,10 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
     GlobalStyling().init(context);
 
     return Scaffold(
+      backgroundColor: GlobalColor.colorPrimary,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate('how_it_works')),
-        backgroundColor: GlobalColor.colorDeepPurple400,
+        backgroundColor: GlobalColor.colorPrimary,
       ),
       body: buildListTile(),
     );
@@ -45,16 +47,21 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
         Container(
           width: SizeConfig.screenWidth * 0.9,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: CustomButton(
-              fillColor: GlobalColor.colorDeepPurple400,
-              splashColor: Colors.white,
-              iconColor: Colors.white,
-              text: AppLocalizations.of(context).translate('other_questions') +
-                  ' ' +
-                  AppLocalizations.of(context).translate('contact_us'),
-              textStyle: GlobalStyling.styleButtonWhite,
-              onPressed: () => showContactPage(),
+            padding: EdgeInsets.symmetric(
+                vertical: SizeConfig.blockSizeVertical * 2),
+            child: FadeAnimation(
+              1.5,
+              CustomButton(
+                fillColor: GlobalColor.colorButtonPrimary,
+                splashColor: Colors.white,
+                iconColor: Colors.white,
+                text:
+                    AppLocalizations.of(context).translate('other_questions') +
+                        ' ' +
+                        AppLocalizations.of(context).translate('contact_us'),
+                textStyle: GlobalStyling.styleButtonWhite,
+                onPressed: () => showContactPage(),
+              ),
             ),
           ),
         ),
@@ -63,99 +70,102 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
   }
 
   Widget buildListFaq() {
-    return ListView(
-      children: <Widget>[
-        ExpansionTile(
-          title: Text(
-            AppLocalizations.of(context).translate('faq1'),
-            style: GlobalStyling.styleTitleBlack,
-          ),
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                AppLocalizations.of(context).translate('resp1'),
-                style: GlobalStyling.styleNormalBlack,
-              ),
+    return FadeAnimation(
+      1.3,
+      ListView(
+        children: <Widget>[
+          ExpansionTile(
+            title: Text(
+              AppLocalizations.of(context).translate('faq1'),
+              style: GlobalStyling.styleTitleWhite,
             ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text(
-            AppLocalizations.of(context).translate('faq2'),
-            style: GlobalStyling.styleTitleBlack,
-          ),
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                AppLocalizations.of(context).translate('resp2'),
-                style: GlobalStyling.styleNormalBlack,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
+                child: Text(
+                  AppLocalizations.of(context).translate('resp1'),
+                  style: GlobalStyling.styleNormalBlack,
+                ),
               ),
-            ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text(
-            AppLocalizations.of(context).translate('faq3'),
-            style: GlobalStyling.styleTitleBlack,
+            ],
           ),
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                AppLocalizations.of(context).translate('resp3'),
-                style: GlobalStyling.styleNormalBlack,
-              ),
+          ExpansionTile(
+            title: Text(
+              AppLocalizations.of(context).translate('faq2'),
+              style: GlobalStyling.styleTitleWhite,
             ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text(
-            AppLocalizations.of(context).translate('faq4'),
-            style: GlobalStyling.styleTitleBlack,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
+                child: Text(
+                  AppLocalizations.of(context).translate('resp2'),
+                  style: GlobalStyling.styleNormalBlack,
+                ),
+              ),
+            ],
           ),
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                AppLocalizations.of(context).translate('resp4'),
-                style: GlobalStyling.styleNormalBlack,
-              ),
+          ExpansionTile(
+            title: Text(
+              AppLocalizations.of(context).translate('faq3'),
+              style: GlobalStyling.styleTitleWhite,
             ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text(
-            AppLocalizations.of(context).translate('faq5'),
-            style: GlobalStyling.styleTitleBlack,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
+                child: Text(
+                  AppLocalizations.of(context).translate('resp3'),
+                  style: GlobalStyling.styleNormalBlack,
+                ),
+              ),
+            ],
           ),
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                AppLocalizations.of(context).translate('resp5'),
-                style: GlobalStyling.styleNormalBlack,
-              ),
+          ExpansionTile(
+            title: Text(
+              AppLocalizations.of(context).translate('faq4'),
+              style: GlobalStyling.styleTitleWhite,
             ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text(
-            AppLocalizations.of(context).translate('faq6'),
-            style: GlobalStyling.styleTitleBlack,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
+                child: Text(
+                  AppLocalizations.of(context).translate('resp4'),
+                  style: GlobalStyling.styleNormalBlack,
+                ),
+              ),
+            ],
           ),
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                AppLocalizations.of(context).translate('resp6'),
-                style: GlobalStyling.styleNormalBlack,
-              ),
+          ExpansionTile(
+            title: Text(
+              AppLocalizations.of(context).translate('faq5'),
+              style: GlobalStyling.styleTitleWhite,
             ),
-          ],
-        ),
-      ],
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
+                child: Text(
+                  AppLocalizations.of(context).translate('resp5'),
+                  style: GlobalStyling.styleNormalBlack,
+                ),
+              ),
+            ],
+          ),
+          ExpansionTile(
+            title: Text(
+              AppLocalizations.of(context).translate('faq6'),
+              style: GlobalStyling.styleTitleWhite,
+            ),
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
+                child: Text(
+                  AppLocalizations.of(context).translate('resp6'),
+                  style: GlobalStyling.styleNormalBlack,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

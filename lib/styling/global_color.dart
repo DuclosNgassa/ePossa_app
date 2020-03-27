@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class GlobalColor {
-  static Color colorDeepPurple300 = Colors.deepPurple[300]; //Color(0xFF95E08E);
-  static Color colorDeepPurple400 = Colors.deepPurple[400]; //Color(0xFF33BBB5);
-  static Color colorDeepPurple500 = Colors.deepPurple[500]; //Color(0xFF00AA12);
   static Color backgroundColor = Color(0xFFEFEEF5);
   static Color colorRed = Colors.redAccent;
   static Color colorWhite = Colors.white;
@@ -13,4 +10,6 @@ class GlobalColor {
   static Color colorGrey400 = Colors.grey;
   static Color colorGrey300 = Colors.grey[300];
   static Color colorGrey100 = Colors.grey[100];
+  static Color colorPrimary = Color.fromRGBO(112, 139, 245, 1);
+  static Color colorButtonPrimary = Color.fromRGBO(51, 51, 153, 1);
 }

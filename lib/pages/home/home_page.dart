@@ -1,5 +1,6 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
+import 'package:epossa_app/styling/global_styling.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -26,10 +27,7 @@ class _HomePageState extends State<HomePage> {
               1.3,
               Text(
                 AppLocalizations.of(context).translate('home'),
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold),
+                style: GlobalStyling.styleHeaderWhite,
               ),
             ),
           ],

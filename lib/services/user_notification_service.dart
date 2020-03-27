@@ -98,10 +98,8 @@ class UserNotificationService {
       if (responseBody["result"] == "ok") {
         return true;
       }
-    } else {
-      throw Exception(
-          'Failed to delete a UserNotification. Error: ${response.toString()}');
     }
+    return false;
   }
 
   Future<void> sendNotificationAsEmail(

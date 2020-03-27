@@ -18,9 +18,9 @@ class TransferManager {
 
     TransferWrapper transferWrapper = new TransferWrapper();
     transferWrapper.transferSentList =
-        await _transferService.sortDescending(transferSentList);
+        _transferService.sortDescending(transferSentList);
     transferWrapper.transferReceivedList =
-        await _transferService.sortDescending(transferReceivedList);
+        _transferService.sortDescending(transferReceivedList);
 
     yield transferWrapper;
   }

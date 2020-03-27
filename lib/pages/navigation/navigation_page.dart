@@ -7,6 +7,7 @@ import 'package:epossa_app/pages/popup/controller/popup_content.dart';
 import 'package:epossa_app/pages/popup/controller/popup_layout.dart';
 import 'package:epossa_app/pages/popup/payment_popup.dart';
 import 'package:epossa_app/pages/popup/receive_popup.dart';
+import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boom_menu/flutter_boom_menu.dart';
@@ -39,7 +40,7 @@ class _NavigationPageState extends State<NavigationPage> {
     SizeConfig().init(context);
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(112, 139, 245, 1),
+      backgroundColor: GlobalColor.colorPrimary,
       body: Container(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -76,48 +77,58 @@ class _NavigationPageState extends State<NavigationPage> {
             ),
           ),
         ],
-        type: BottomNavigationBarType.shifting,
+        type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
-        selectedItemColor: Color.fromRGBO(51, 51, 153, 1),
-        unselectedItemColor: Color.fromRGBO(112, 139, 245, 1),
+        selectedItemColor: GlobalColor.colorButtonPrimary,
+        unselectedItemColor: GlobalColor.colorPrimary,
         onTap: _onItemTapped,
       ),
-      floatingActionButton: BoomMenu(
-        animatedIcon: AnimatedIcons.menu_close,
-        animatedIconTheme: IconThemeData(size: 22.0),
-        backgroundColor: Color.fromRGBO(51, 51, 153, 1),
-        onOpen: () => print('OPENING DIAL'),
-        onClose: () => print('DIAL CLOSED'),
-        scrollVisible: true,
-        overlayColor: Colors.black,
-        overlayOpacity: 0.7,
-        children: [
-          MenuItem(
-            child: Icon(Icons.account_balance_wallet, color: Colors.white),
-            title: AppLocalizations.of(context).translate('pay'),
-            titleColor: Colors.white,
-            subtitle: AppLocalizations.of(context).translate('pay_service'),
-            subTitleColor: Colors.white,
-            backgroundColor: Colors.purple,
-            onTap: () => showPopup(
-              context,
-              PaymentPopup(),
-              AppLocalizations.of(context).translate('pay_service'),
-            ),
+      floatingActionButton: buildBoomMenu(),
+    );
+  }
+
+  buildBoomMenu() {
+    return BoomMenu(
+/*
+      marginRight:
+          (SizeConfig.screenWidth / 2) - SizeConfig.blockSizeHorizontal * 7,
+*/
+      //marginBottom: - SizeConfig.blockSizeHorizontal * 3,
+      animatedIcon: AnimatedIcons.menu_close,
+      animatedIconTheme:
+          IconThemeData(size: SizeConfig.blockSizeHorizontal * 8),
+      backgroundColor: GlobalColor.colorButtonPrimary,
+      onOpen: () => print('OPENING DIAL'),
+      onClose: () => print('DIAL CLOSED'),
+      scrollVisible: true,
+      overlayColor: Colors.black,
+      overlayOpacity: 0.7,
+      children: [
+        MenuItem(
+          child: Icon(Icons.account_balance_wallet, color: Colors.white),
+          title: AppLocalizations.of(context).translate('pay'),
+          titleColor: Colors.white,
+          subtitle: AppLocalizations.of(context).translate('pay_service'),
+          subTitleColor: Colors.white,
+          backgroundColor: Colors.purple,
+          onTap: () => showPopup(
+            context,
+            PaymentPopup(),
+            AppLocalizations.of(context).translate('pay_service'),
           ),
-          MenuItem(
-            child: Icon(Icons.exit_to_app, color: Colors.white),
-            title: AppLocalizations.of(context).translate('receive_money'),
-            titleColor: Colors.white,
-            subtitle: AppLocalizations.of(context)
-                .translate('monetize_your_services'),
-            subTitleColor: Colors.white,
-            backgroundColor: Colors.cyan,
-            onTap: () => showPopup(context, ReceivePopup(),
-                AppLocalizations.of(context).translate('receive_money')),
-          ),
-        ],
-      ),
+        ),
+        MenuItem(
+          child: Icon(Icons.exit_to_app, color: Colors.white),
+          title: AppLocalizations.of(context).translate('receive_money'),
+          titleColor: Colors.white,
+          subtitle:
+              AppLocalizations.of(context).translate('monetize_your_services'),
+          subTitleColor: Colors.white,
+          backgroundColor: Colors.cyan,
+          onTap: () => showPopup(context, ReceivePopup(),
+              AppLocalizations.of(context).translate('receive_money')),
+        ),
+      ],
     );
   }
 
@@ -133,7 +144,7 @@ class _NavigationPageState extends State<NavigationPage> {
         child: PopupContent(
           content: Scaffold(
             appBar: AppBar(
-              backgroundColor: Color.fromRGBO(112, 139, 245, 1),
+              backgroundColor: GlobalColor.colorPrimary,
               title: Text(title),
               leading: new Builder(builder: (context) {
                 return IconButton(

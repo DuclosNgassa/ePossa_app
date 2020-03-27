@@ -1,9 +1,11 @@
+import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/pages/contact/contact_page.dart';
 import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/global_styling.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'faq_page.dart';
 
@@ -25,53 +27,108 @@ class _HelpPageState extends State<HelpPage> with TickerProviderStateMixin {
     SizeConfig().init(context);
     GlobalStyling().init(context);
 
-    return new Scaffold(
-      appBar: new AppBar(
-        backgroundColor: GlobalColor.colorDeepPurple300,
-        title: _buildTitle(),
-        automaticallyImplyLeading: false,
+    return Scaffold(
+      backgroundColor: GlobalColor.colorPrimary,
+      body: Container(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+                left: SizeConfig.blockSizeHorizontal * 5,
+                right: SizeConfig.blockSizeHorizontal * 5,
+                top: SizeConfig.blockSizeVertical * 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding:
+                      EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5),
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      _buildTitle(),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding:
+                      EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 8),
+                  child: new Container(
+                    constraints: BoxConstraints.expand(
+                        height: SizeConfig.screenHeight * 0.70),
+                    child: buildListTile(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
-      body: buildListTile(),
     );
   }
 
-  _buildTitle() {
-    return Text(AppLocalizations.of(context).translate('how_it_works'));
+  Widget _buildTitle() {
+    return FadeAnimation(
+      1.3,
+      Padding(
+        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
+        child: Text(
+          AppLocalizations.of(context).translate('how_it_works'),
+          style: GlobalStyling.styleHeaderWhite,
+        ),
+      ),
+    );
   }
 
   Widget buildListTile() {
     return Container(
       child: ListView(
         children: <Widget>[
-          Container(
-            height: SizeConfig.screenHeight * 0.6,
-            child: Image.asset(
-              "assets/gif/help.gif",
+          FadeAnimation(
+            1.5,
+            Container(
+              height: SizeConfig.screenHeight * 0.4,
+              child: Image.asset(
+                "assets/gif/help.gif",
+              ),
             ),
           ),
-          ListTile(
-            onTap: () => showFaqPage(),
-            leading: Icon(
-              Icons.help_outline,
-              color: GlobalColor.colorDeepPurple300,
-            ),
-            title: Text(AppLocalizations.of(context).translate('how_it_works')),
-            trailing: Icon(
-              Icons.arrow_forward_ios,
-              color: GlobalColor.colorGrey300,
+          FadeAnimation(
+            1.7,
+            ListTile(
+              onTap: () => showFaqPage(),
+              leading: Icon(
+                Icons.help_outline,
+                color: GlobalColor.colorWhite,
+              ),
+              title: Text(
+                AppLocalizations.of(context).translate('how_it_works'),
+                style: GlobalStyling.styleTitleWhite,
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                color: GlobalColor.colorWhite,
+              ),
             ),
           ),
           Divider(),
-          ListTile(
-            onTap: () => showContactPage(),
-            leading: Icon(
-              Icons.message,
-              color: GlobalColor.colorBlue,
-            ),
-            title: Text(AppLocalizations.of(context).translate('contact_us')),
-            trailing: Icon(
-              Icons.arrow_forward_ios,
-              color: GlobalColor.colorGrey300,
+          FadeAnimation(
+            1.5,
+            ListTile(
+              onTap: () => showContactPage(),
+              leading: Icon(
+                FontAwesomeIcons.comments,
+                color: GlobalColor.colorWhite,
+              ),
+              title: Text(
+                AppLocalizations.of(context).translate('contact_us'),
+                style: GlobalStyling.styleTitleWhite,
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                color: GlobalColor.colorWhite,
+              ),
             ),
           ),
         ],

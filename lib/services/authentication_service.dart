@@ -45,11 +45,11 @@ class AuthenticationService {
     HttpClientResponse response = await request.close();
 
     if (response.statusCode == HttpStatus.ok) {
-      List<String> response_tokens = response.headers[AUTHORIZATION_TOKEN];
+      List<String> responseTokens = response.headers[AUTHORIZATION_TOKEN];
 
-      if (response_tokens.length > 0) {
-        String jw_bearer_token = response_tokens[0];
-        _sharedPreferenceService.save(AUTHORIZATION_TOKEN, jw_bearer_token);
+      if (responseTokens.length > 0) {
+        String jwBearerToken = responseTokens[0];
+        _sharedPreferenceService.save(AUTHORIZATION_TOKEN, jwBearerToken);
         return true;
       }
     }

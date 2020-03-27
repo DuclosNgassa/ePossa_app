@@ -111,7 +111,7 @@ class ContactFormState extends State<ContactForm> {
               padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
               child: RaisedButton(
                 shape: const StadiumBorder(),
-                color: GlobalColor.colorDeepPurple400,
+                color: GlobalColor.colorPrimary,
                 child: Text(AppLocalizations.of(context).translate('send'),
                     style: GlobalStyling.styleButtonWhite),
                 onPressed: _submitForm,
@@ -146,28 +146,13 @@ class ContactFormState extends State<ContactForm> {
 
   Future<void> _saveUserNotifikation() async {
     String userEmail = await _sharedPreferenceService.read(USER_PHONE);
-    if (userEmail != null) {
-      _userNotification.created_at = DateTime.now();
-      _userNotification.useremail = userEmail;
+    _userNotification.created_at = DateTime.now();
+    _userNotification.useremail = userEmail;
 
-      Map<String, dynamic> userNotificationParams =
-          _userNotification.toMap(_userNotification);
-      await _notificationService.save(userNotificationParams);
-      await _notificationService.sendNotificationAsEmail(_userNotification);
-    } else {
-      MyNotification.showInfoFlushbar(
-          context,
-          AppLocalizations.of(context).translate('info'),
-          AppLocalizations.of(context)
-              .translate('connect_to_send_notification'),
-          Icon(
-            Icons.info_outline,
-            size: 28,
-            color: Colors.blue.shade300,
-          ),
-          Colors.blue.shade300,
-          2);
-    }
+    Map<String, dynamic> userNotificationParams =
+        _userNotification.toMap(_userNotification);
+    await _notificationService.save(userNotificationParams);
+    await _notificationService.sendNotificationAsEmail(_userNotification);
   }
 
   void showSuccessNotification() {

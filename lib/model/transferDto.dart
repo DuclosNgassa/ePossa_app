@@ -6,7 +6,6 @@ class TransferDTO {
 
   TransferDTO(this.sender, this.receiver, this.amount, this.description);
 
-  @override
   Map<String, dynamic> toJson() => {
         "sender": sender,
         "receiver": receiver,

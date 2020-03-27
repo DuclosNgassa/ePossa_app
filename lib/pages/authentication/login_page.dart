@@ -166,7 +166,9 @@ class _LoginPageState extends State<LoginPage> {
         child: Text(
           AppLocalizations.of(context).translate("login"),
           style: TextStyle(
-              color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
+              color: Colors.white,
+              fontSize: SizeConfig.blockSizeHorizontal * 9,
+              fontWeight: FontWeight.bold),
         ),
       ),
     );

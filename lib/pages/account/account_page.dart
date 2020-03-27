@@ -70,10 +70,7 @@ class _AccountPageState extends State<AccountPage> {
             Expanded(
               child: Text(
                 AppLocalizations.of(context).translate('my_account'),
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold),
+                style: GlobalStyling.styleHeaderWhite,
               ),
             ),
             SizedBox(
@@ -88,7 +85,7 @@ class _AccountPageState extends State<AccountPage> {
                 iconColor: Colors.white,
                 text: AppLocalizations.of(context).translate('logout'),
                 textStyle: TextStyle(
-                    color: Colors.white, fontSize: SizeConfig.BUTTON_FONT_SIZE),
+                    color: Colors.white, fontSize: SizeConfig.buttonFontSize),
                 onPressed: () => _logOut(),
               ),
             ),
@@ -127,12 +124,8 @@ class _AccountPageState extends State<AccountPage> {
                 Icons.attach_money,
                 color: Colors.white,
               ),
-              title: Text(
-                AppLocalizations.of(context).translate('my_finance'),
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
+              title: Text(AppLocalizations.of(context).translate('my_finance'),
+                  style: GlobalStyling.styleTitleWhite),
               trailing: Icon(
                 Icons.arrow_forward_ios,
                 color: Colors.white,
@@ -155,9 +148,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               title: Text(
                 AppLocalizations.of(context).translate('change_name'),
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+                style: GlobalStyling.styleTitleWhite,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
@@ -181,9 +172,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               title: Text(
                 AppLocalizations.of(context).translate('change_phonenumber'),
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+                style: GlobalStyling.styleTitleWhite,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
@@ -207,9 +196,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               title: Text(
                 AppLocalizations.of(context).translate('change_password'),
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+                style: GlobalStyling.styleTitleWhite,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
@@ -233,7 +220,7 @@ class _AccountPageState extends State<AccountPage> {
         child: PopupContent(
           content: Scaffold(
             appBar: AppBar(
-              backgroundColor: Color.fromRGBO(112, 139, 245, 1),
+              backgroundColor: GlobalColor.colorPrimary,
               title: Text(title),
               leading: new Builder(builder: (context) {
                 return IconButton(
