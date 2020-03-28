@@ -76,12 +76,6 @@ class _PaymentPopupState extends State<PaymentPopup> {
               height: SizeConfig.blockSizeVertical * 2,
             ),
             _buildQrCodeButton(),
-/*
-            SizedBox(
-              height: SizeConfig.blockSizeVertical * 2,
-            ),
-            _buildQrCodeGalleryButton(),
-*/
             SizedBox(
               height: SizeConfig.blockSizeVertical * 2,
             ),
@@ -108,7 +102,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
       Padding(
         padding: EdgeInsets.symmetric(
             horizontal: SizeConfig.blockSizeHorizontal * 5,
-            vertical: SizeConfig.blockSizeVertical),
+            vertical: SizeConfig.blockSizeVertical * 5),
         child: Form(
           key: _formKey,
           child: Container(
@@ -254,46 +248,6 @@ class _PaymentPopupState extends State<PaymentPopup> {
     );
   }
 
-/*
-  Widget _buildQrCodeGalleryButton() {
-    return Padding(
-      padding:
-          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 5),
-      child: FadeAnimation(
-        2,
-        Center(
-          child: Container(
-            //width: 120,
-            height: SizeConfig.blockSizeVertical * 6,
-            //padding: EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              gradient: LinearGradient(colors: [
-                Color.fromRGBO(143, 148, 251, 1),
-                Color.fromRGBO(143, 148, 251, 6),
-              ]),
-            ),
-            child: RawMaterialButton(
-              onPressed: () => _scanPhoto(),
-              child: Center(
-                child: Text(
-                  AppLocalizations.of(context)
-                      .translate('scan_qr_code_gallery'),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'OpenSans'),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-*/
-
   Widget _buildTransferButton() {
     return Padding(
       padding:
@@ -340,27 +294,22 @@ class _PaymentPopupState extends State<PaymentPopup> {
 
   Future _scan() async {
     String barcode = await BarcodeScanner.scan();
-    _phoneNumberController.text = barcode;
-    setState(() => this.barcode = barcode);
-
-/*
-    String barcode = await scanner.scan();
     setState(() {
       this.barcode = barcode;
-      _phoneNumberController.text = _getPhoneNumberFromQRCode(barcode);
+      _fillForm(barcode);
     });
-*/
   }
 
-/*
-  Future _scanPhoto() async {
-    String barcode = await scanner.scanPhoto();
-    setState(() {
-      this.barcode = barcode;
+  void _fillForm(String barcode) {
+    if(barcode.contains(stars)) {
       _phoneNumberController.text = _getPhoneNumberFromQRCode(barcode);
-    });
+      String amount = _getAmountFromQRCode(barcode).toString();
+      _amountController.text = amount.isEmpty ? "0" : amount;
+    }
+    else{
+      _phoneNumberController.text = barcode;
+    }
   }
-*/
 
   Future _submit() async {
     final FormState form = _formKey.currentState;
@@ -414,13 +363,13 @@ class _PaymentPopupState extends State<PaymentPopup> {
     return phoneNumbers[1];
   }
 
-  int _getAmountFromQRCode(String qrCode) {
+  String _getAmountFromQRCode(String qrCode) {
     List<String> amounts = qrCode.split(stars);
     if (amounts.isEmpty || amounts.length < 2) {
-      return 0;
+      return "";
     }
 
-    return int.parse(amounts[2]);
+    return amounts[2];
   }
 
   _fieldFocusChange(FocusNode currentFocus, FocusNode nextFocus) {
@@ -443,10 +392,5 @@ class _PaymentPopupState extends State<PaymentPopup> {
 
     Transfer savedTransfer = await _transferService.create(transfer);
     return savedTransfer;
-  }
-
-  Future scan() async {
-    String barcode = await BarcodeScanner.scan();
-    setState(() => this.barcode = barcode);
   }
 }

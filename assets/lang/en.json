@@ -42,7 +42,7 @@
   "scan_qr_code":"Scan QR-Code",
   "scan_qr_code_gallery":"Scan QR-Code from gallery",
   "scan_for_transfer": "Scan receiver´s QR-Code to make a transfer",
-  "qr_code_with_amount":"QR-Code with amount",
+  "qr_code_with_amount":"Generate the QR-Code with amount",
   "scan_qrcode_to_receive_money":"Have your QR-Code scanned to receive your money",
   "history": "History",
   "receiving": "Receiving",
