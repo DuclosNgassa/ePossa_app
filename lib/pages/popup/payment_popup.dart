@@ -301,12 +301,11 @@ class _PaymentPopupState extends State<PaymentPopup> {
   }
 
   void _fillForm(String barcode) {
-    if(barcode.contains(stars)) {
+    if (barcode.contains(stars)) {
       _phoneNumberController.text = _getPhoneNumberFromQRCode(barcode);
       String amount = _getAmountFromQRCode(barcode).toString();
       _amountController.text = amount.isEmpty ? "0" : amount;
-    }
-    else{
+    } else {
       _phoneNumberController.text = barcode;
     }
   }
