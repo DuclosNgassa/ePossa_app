@@ -6,6 +6,7 @@ import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/global_styling.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'about_us_page.dart';
 import 'help_page.dart';
@@ -33,6 +34,7 @@ class _InfoPageState extends State<InfoPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+/*
             Padding(
               padding:
                   EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5),
@@ -44,6 +46,7 @@ class _InfoPageState extends State<InfoPage> {
                 ],
               ),
             ),
+*/
             Padding(
               padding: EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 4),
               child: new Container(
@@ -79,17 +82,22 @@ class _InfoPageState extends State<InfoPage> {
             1.5,
             Container(
               height: SizeConfig.screenHeight * 0.25,
-              child: Image.asset(
-                "assets/images/info.png",
+              child: Icon(
+                FontAwesomeIcons.info,
+                color: GlobalColor.colorWhite,
+                size: SizeConfig.screenHeight * 0.2,
               ),
             ),
+          ),
+          SizedBox(
+            height: SizeConfig.blockSizeVertical * 6,
           ),
           FadeAnimation(
             1.7,
             ListTile(
               onTap: () => showHelpPage(),
               leading: Icon(
-                Icons.help,
+                Icons.help_outline,
                 color: GlobalColor.colorWhite,
               ),
               title: Text(

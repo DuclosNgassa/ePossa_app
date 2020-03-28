@@ -40,6 +40,7 @@ class _HelpPageState extends State<HelpPage> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
+/*
                 Padding(
                   padding:
                       EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5),
@@ -51,6 +52,7 @@ class _HelpPageState extends State<HelpPage> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
+*/
                 Padding(
                   padding:
                       EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 8),
@@ -88,18 +90,20 @@ class _HelpPageState extends State<HelpPage> with TickerProviderStateMixin {
           FadeAnimation(
             1.5,
             Container(
-              height: SizeConfig.screenHeight * 0.4,
-              child: Image.asset(
-                "assets/gif/help.gif",
-              ),
+              height: SizeConfig.screenHeight * 0.25,
+              child: Icon(FontAwesomeIcons.questionCircle, color: GlobalColor.colorWhite,
+                  size: SizeConfig.screenHeight * 0.2)
             ),
+          ),
+          SizedBox(
+            height: SizeConfig.blockSizeVertical * 10,
           ),
           FadeAnimation(
             1.7,
             ListTile(
               onTap: () => showFaqPage(),
               leading: Icon(
-                Icons.help_outline,
+                Icons.help,
                 color: GlobalColor.colorWhite,
               ),
               title: Text(
