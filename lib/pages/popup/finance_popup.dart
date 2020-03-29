@@ -30,37 +30,35 @@ class _FinancePopupState extends State<FinancePopup> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 4),
-          child: FadeAnimation(
-            1.3,
-            Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 2),
-              height: SizeConfig.screenHeight * 0.4,
-              //margin: new EdgeInsets.fromLTRB(76.0, 16.0, 16.0, 16.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromRGBO(143, 148, 251, .3),
-                    blurRadius: 20.0,
-                    offset: Offset(0.0, 10.0),
-                  )
-                ],
-                color: Color.fromRGBO(128, 212, 255, .3),
-
-                //color: new Color(0xFF333366),
+    return Center(
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 4),
+            child: FadeAnimation(
+              1.3,
+              Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 2),
+                height: SizeConfig.screenHeight * 0.4,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(143, 148, 251, .3),
+                      blurRadius: 20.0,
+                      offset: Offset(0.0, 10.0),
+                    )
+                  ],
+                  color: Color.fromRGBO(128, 212, 255, .3),
+                ),
+                child: _buildCard(),
               ),
-              child: _buildCard(),
             ),
           ),
-        ),
-        _buildFooterMessage()
-      ],
+          //_buildFooterMessage()
+        ],
+      ),
     );
   }
 
@@ -71,6 +69,9 @@ class _FinancePopupState extends State<FinancePopup> {
         if (snapshot.hasData) {
           TransferBilan transferBilan = snapshot.data;
           return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+
             children: <Widget>[
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 3,
@@ -140,22 +141,6 @@ class _FinancePopupState extends State<FinancePopup> {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildFooterMessage() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: SizeConfig.blockSizeHorizontal * 5,
-          vertical: SizeConfig.blockSizeVertical * 2),
-      child: FadeAnimation(
-        1.6,
-        Center(
-          child: Text(
-            AppLocalizations.of(context).translate('my_finance_status'),
-          ),
-        ),
-      ),
     );
   }
 

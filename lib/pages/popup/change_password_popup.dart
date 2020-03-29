@@ -69,13 +69,13 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
           ),
           _buildInputForm(),
           SizedBox(
-            height: SizeConfig.blockSizeVertical * 8,
+            height: SizeConfig.blockSizeVertical * 6,
           ),
           _buildSaveButtons(),
           SizedBox(
             height: SizeConfig.blockSizeVertical * 2,
           ),
-          _buildFooterMessage(),
+          //_buildFooterMessage(),
         ],
       ),
     );
@@ -227,22 +227,6 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                 ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFooterMessage() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: SizeConfig.blockSizeHorizontal * 5,
-          vertical: SizeConfig.blockSizeVertical * 4),
-      child: FadeAnimation(
-        2.3,
-        Center(
-          child: Text(
-            AppLocalizations.of(context).translate('new_password_please'),
           ),
         ),
       ),

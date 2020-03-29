@@ -49,7 +49,7 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
     SizeConfig().init(context);
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           _buildInputForm(),
@@ -60,7 +60,7 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
           SizedBox(
             height: SizeConfig.blockSizeVertical * 5,
           ),
-          _buildFooterMessage(),
+          //_buildFooterMessage(),
         ],
       ),
     );
@@ -155,22 +155,6 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
                 ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFooterMessage() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: SizeConfig.blockSizeHorizontal * 5,
-          vertical: SizeConfig.blockSizeVertical * 4),
-      child: FadeAnimation(
-        2.3,
-        Center(
-          child: Text(
-            AppLocalizations.of(context).translate('new_phonenumber'),
           ),
         ),
       ),

@@ -44,12 +44,9 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
         Expanded(
           child: buildListFaq(),
         ),
-        Divider(
-          height: SizeConfig.blockSizeVertical * 2,
-        ),
         buildContactButton(),
         Divider(
-          height: SizeConfig.blockSizeVertical * 2,
+          height: SizeConfig.blockSizeVertical * 8,
         ),
       ],
     );

@@ -60,7 +60,7 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
           SizedBox(
             height: SizeConfig.blockSizeVertical * 5,
           ),
-          _buildFooterMessage(),
+         // _buildFooterMessage(),
         ],
       ),
     );
@@ -151,22 +151,6 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
                 ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFooterMessage() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: SizeConfig.blockSizeHorizontal * 5,
-          vertical: SizeConfig.blockSizeVertical * 4),
-      child: FadeAnimation(
-        2.3,
-        Center(
-          child: Text(
-            AppLocalizations.of(context).translate('new_name'),
           ),
         ),
       ),

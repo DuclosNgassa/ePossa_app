@@ -34,41 +34,15 @@ class _InfoPageState extends State<InfoPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-/*
             Padding(
-              padding:
-                  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5),
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  _buildTitle(),
-                ],
-              ),
-            ),
-*/
-            Padding(
-              padding: EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 4),
+              padding: EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 2),
               child: new Container(
                 constraints: BoxConstraints.expand(
-                    height: SizeConfig.screenHeight * 0.70),
+                    height: SizeConfig.screenHeight * 0.85),
                 child: buildListTile(),
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTitle() {
-    return FadeAnimation(
-      1.3,
-      Padding(
-        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
-        child: new Text(
-          AppLocalizations.of(context).translate('infos'),
-          style: GlobalStyling.styleHeaderWhite,
         ),
       ),
     );
