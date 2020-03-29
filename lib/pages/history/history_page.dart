@@ -49,6 +49,7 @@ class _HistoryPageState extends State<HistoryPage>
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             _buildTitle(),
+            SizedBox(height: SizeConfig.blockSizeVertical * 2,),
             _buildTabs(),
             _buildTabBarView(),
           ],
@@ -72,6 +73,7 @@ class _HistoryPageState extends State<HistoryPage>
       1.6,
       Container(
           child: TabBar(
+            labelStyle: GlobalStyling.styleTitleWhite,
         controller: _tabController,
         tabs: <Widget>[
           Tab(
