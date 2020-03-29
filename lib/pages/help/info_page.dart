@@ -84,7 +84,7 @@ class _InfoPageState extends State<InfoPage> {
               height: SizeConfig.screenHeight * 0.25,
               child: Icon(
                 FontAwesomeIcons.info,
-                color: GlobalColor.colorWhite,
+                color: GlobalColor.colorWhiteOpacity,
                 size: SizeConfig.screenHeight * 0.2,
               ),
             ),
@@ -102,7 +102,7 @@ class _InfoPageState extends State<InfoPage> {
               ),
               title: Text(
                 AppLocalizations.of(context).translate('how_it_works'),
-                style: GlobalStyling.styleTitleWhite,
+                style: GlobalStyling.styleNormalWhite,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
@@ -123,7 +123,7 @@ class _InfoPageState extends State<InfoPage> {
               ),
               title: Text(
                 AppLocalizations.of(context).translate('inform_friends'),
-                style: GlobalStyling.styleTitleWhite,
+                style: GlobalStyling.styleNormalWhite,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
@@ -144,7 +144,7 @@ class _InfoPageState extends State<InfoPage> {
               ),
               title: Text(
                 AppLocalizations.of(context).translate('who_are_we'),
-                style: GlobalStyling.styleTitleWhite,
+                style: GlobalStyling.styleNormalWhite,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
@@ -163,7 +163,7 @@ class _InfoPageState extends State<InfoPage> {
               ),
               title: Text(
                 AppLocalizations.of(context).translate('privacy_policy'),
-                style: GlobalStyling.styleTitleWhite,
+                style: GlobalStyling.styleNormalWhite,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,

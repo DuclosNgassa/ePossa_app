@@ -70,11 +70,11 @@ class _TransferCardState extends State<TransferCard> {
         ),
         new Text(
           AppLocalizations.of(context).translate('amount'),
-          style: GlobalStyling.headerTextStyle,
+          style: GlobalStyling.styleHeaderText,
         ),
         new Text(
           widget.transfer.amount.toString() + ' FCFA',
-          style: GlobalStyling.subHeaderTextStyle,
+          style: GlobalStyling.styleSubHeaderText,
         ),
         new Container(
           margin: new EdgeInsets.symmetric(vertical: 8.0),
@@ -87,12 +87,12 @@ class _TransferCardState extends State<TransferCard> {
         ),
         new Text(
           widget.isReceiver ? _senderTitle : _receiverTitle,
-          style: GlobalStyling.headerTextStyle,
+          style: GlobalStyling.styleHeaderText,
         ),
         SizedBox(height: 5),
         new Text(
           widget.isReceiver ? _sender : _receiver,
-          style: GlobalStyling.subHeaderTextStyle,
+          style: GlobalStyling.styleSubHeaderText,
         ),
         new Container(
           margin: new EdgeInsets.symmetric(vertical: 8.0),
@@ -102,7 +102,7 @@ class _TransferCardState extends State<TransferCard> {
         ),
         new Text(
           AppLocalizations.of(context).translate('transfer_date'),
-          style: GlobalStyling.headerTextStyle,
+          style: GlobalStyling.styleHeaderText,
         ),
         SizedBox(height: 5),
         new Row(
@@ -115,7 +115,7 @@ class _TransferCardState extends State<TransferCard> {
             new Text(
               DateConverter.convertToString(
                   widget.transfer.created_at, context),
-              style: GlobalStyling.subHeaderTextStyle,
+              style: GlobalStyling.styleSubHeaderText,
             ),
           ],
         ),
@@ -133,7 +133,7 @@ class _TransferCardState extends State<TransferCard> {
         isSendingAndDescriptionNotEmpty()
             ? Text(
                 AppLocalizations.of(context).translate('description'),
-                style: GlobalStyling.headerTextStyle,
+                style: GlobalStyling.styleHeaderText,
               )
             : Container(
                 width: 0,
@@ -159,7 +159,7 @@ class _TransferCardState extends State<TransferCard> {
     return Expanded(
       child: new Text(
         widget.transfer.description,
-        style: GlobalStyling.subHeaderTextStyle,
+        style: GlobalStyling.styleSubHeaderText,
       ),
     );
   }

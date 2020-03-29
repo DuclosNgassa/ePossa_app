@@ -69,8 +69,8 @@ class _AccountPageState extends State<AccountPage> {
           children: <Widget>[
             Expanded(
               child: Text(
-                AppLocalizations.of(context).translate('my_account'),
-                style: GlobalStyling.styleHeaderWhite,
+                AppLocalizations.of(context).translate('my_account_header'),
+                style: GlobalStyling.styleOpacityWhite,
               ),
             ),
             SizedBox(
@@ -80,7 +80,7 @@ class _AccountPageState extends State<AccountPage> {
               padding: EdgeInsets.all(5),
               child: CustomButton(
                 fillColor: GlobalColor.colorRed,
-                icon: FontAwesomeIcons.signOutAlt,
+                icon: FontAwesomeIcons.powerOff,
                 splashColor: GlobalColor.colorWhite,
                 iconColor: GlobalColor.colorWhite,
                 text: AppLocalizations.of(context).translate('logout'),
@@ -125,7 +125,7 @@ class _AccountPageState extends State<AccountPage> {
                 color: GlobalColor.colorWhite,
               ),
               title: Text(AppLocalizations.of(context).translate('my_finance'),
-                  style: GlobalStyling.styleTitleWhite),
+                  style: GlobalStyling.styleNormalWhite),
               trailing: Icon(
                 Icons.arrow_forward_ios,
                 color: GlobalColor.colorWhite,
@@ -148,7 +148,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               title: Text(
                 AppLocalizations.of(context).translate('change_name'),
-                style: GlobalStyling.styleTitleWhite,
+                style: GlobalStyling.styleNormalWhite,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
@@ -172,7 +172,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               title: Text(
                 AppLocalizations.of(context).translate('change_phonenumber'),
-                style: GlobalStyling.styleTitleWhite,
+                style: GlobalStyling.styleNormalWhite,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
@@ -196,7 +196,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               title: Text(
                 AppLocalizations.of(context).translate('change_password'),
-                style: GlobalStyling.styleTitleWhite,
+                style: GlobalStyling.styleNormalWhite,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,

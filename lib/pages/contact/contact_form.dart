@@ -1,3 +1,4 @@
+import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/user_notification.dart';
 import 'package:epossa_app/notification/notification.dart';
@@ -57,67 +58,112 @@ class ContactFormState extends State<ContactForm> {
     return Form(
       key: _formKey,
       autovalidate: false,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.blockSizeHorizontal * 2),
+      child: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            TextFormField(
-              textCapitalization: TextCapitalization.sentences,
-              style: GlobalStyling.styleFormGrey,
-              textInputAction: TextInputAction.next,
-              focusNode: _subjectFocusNode,
-              onFieldSubmitted: (term) {
-                Util.fieldFocusChange(
-                    context, _subjectFocusNode, _messageFocusNode);
-              },
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).translate('give_title'),
-                labelText: AppLocalizations.of(context).translate('title'),
-                labelStyle: GlobalStyling.styleFormBlack,
-              ),
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(30),
-              ],
-              onSaved: (val) => _userNotification.title = val,
-            ),
-            TextFormField(
-              textCapitalization: TextCapitalization.sentences,
-              style: GlobalStyling.styleFormGrey,
-              textInputAction: TextInputAction.newline,
-              keyboardType: TextInputType.multiline,
-              focusNode: _messageFocusNode,
-              onFieldSubmitted: (value) {
-                _messageFocusNode.unfocus();
-                _submitForm();
-              },
-              maxLines: 10,
-              decoration: InputDecoration(
-                hintText:
-                    AppLocalizations.of(context).translate('give_your_message'),
-                labelText: AppLocalizations.of(context).translate('message'),
-                labelStyle: GlobalStyling.styleFormBlack,
-              ),
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(500),
-              ],
-              validator: (val) => formValidator.isEmptyText(val)
-                  ? AppLocalizations.of(context).translate('give_your_message')
-                  : null,
-              onSaved: (val) => _userNotification.message = val,
-            ),
-            Container(
-              width: SizeConfig.screenWidth * 0.9,
-              padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
-              child: RaisedButton(
-                shape: const StadiumBorder(),
-                color: GlobalColor.colorPrimary,
-                child: Text(AppLocalizations.of(context).translate('send'),
-                    style: GlobalStyling.styleButtonWhite),
-                onPressed: _submitForm,
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.blockSizeHorizontal * 2),
+              child: Column(
+                children: <Widget>[
+                  buildInputForm(),
+                  SizedBox(
+                    height: SizeConfig.blockSizeVertical * 2,
+                  ),
+                  buildSubmitButton(),
+                ],
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildInputForm() {
+    return FadeAnimation(
+        1.3,
+        Container(
+          child: Column(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.grey[300]),
+                  ),
+                ),
+                child: TextFormField(
+                  autofocus: true,
+                  textCapitalization: TextCapitalization.sentences,
+                  style: GlobalStyling.styleFormGrey,
+                  textInputAction: TextInputAction.next,
+                  focusNode: _subjectFocusNode,
+                  onFieldSubmitted: (term) {
+                    Util.fieldFocusChange(
+                        context, _subjectFocusNode, _messageFocusNode);
+                  },
+                  decoration: InputDecoration(
+                    hintText:
+                        AppLocalizations.of(context).translate('give_title'),
+                    hintStyle: GlobalStyling.styleHintText,
+                  ),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(30),
+                  ],
+                  onSaved: (val) => _userNotification.title = val,
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.grey[300]),
+                  ),
+                ),
+                child: TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  style: GlobalStyling.styleFormGrey,
+                  textInputAction: TextInputAction.newline,
+                  keyboardType: TextInputType.multiline,
+                  focusNode: _messageFocusNode,
+                  onFieldSubmitted: (value) {
+                    _messageFocusNode.unfocus();
+                    _submitForm();
+                  },
+                  maxLines: 10,
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)
+                        .translate('give_your_message'),
+                    hintStyle: GlobalStyling.styleHintText,
+                  ),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(500),
+                  ],
+                  validator: (val) => formValidator.isEmptyText(val)
+                      ? AppLocalizations.of(context)
+                          .translate('give_your_message')
+                      : null,
+                  onSaved: (val) => _userNotification.message = val,
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  Widget buildSubmitButton() {
+    return FadeAnimation(
+      1.5,
+      Container(
+        width: SizeConfig.screenWidth * 0.9,
+        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
+        child: RaisedButton(
+          shape: const StadiumBorder(),
+          color: GlobalColor.colorButtonPrimary,
+          child: Text(AppLocalizations.of(context).translate('send'),
+              style: GlobalStyling.styleButtonWhite),
+          onPressed: _submitForm,
         ),
       ),
     );

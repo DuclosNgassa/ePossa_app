@@ -25,6 +25,13 @@ class CustomButton extends StatelessWidget {
     SizeConfig().init(context);
     GlobalStyling().init(context);
 
+    if (icon != null) {
+      return buildButtonWithIcon();
+    }
+    return buildButtonWithoutIcon();
+  }
+
+  Widget buildButtonWithoutIcon() {
     return Container(
       width: SizeConfig.blockSizeHorizontal * 25,
       child: RawMaterialButton(
@@ -35,16 +42,34 @@ class CustomButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            icon != null
-                ? Padding(
-                    padding:
-                        EdgeInsets.only(right: SizeConfig.blockSizeHorizontal),
-                    child: Icon(
-                      icon,
-                      color: iconColor,
-                    ),
-                  )
-                : Container(),
+            Text(
+              text,
+              style: textStyle,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildButtonWithIcon() {
+    return Container(
+      width: SizeConfig.blockSizeHorizontal * 25,
+      child: RawMaterialButton(
+        onPressed: onPressed,
+        fillColor: fillColor,
+        splashColor: splashColor,
+        shape: const StadiumBorder(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: SizeConfig.blockSizeHorizontal),
+              child: Icon(
+                icon,
+                color: iconColor,
+              ),
+            ),
             Text(
               text,
               style: textStyle,

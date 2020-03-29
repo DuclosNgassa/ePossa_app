@@ -91,7 +91,7 @@ class _HelpPageState extends State<HelpPage> with TickerProviderStateMixin {
             1.5,
             Container(
               height: SizeConfig.screenHeight * 0.25,
-              child: Icon(FontAwesomeIcons.questionCircle, color: GlobalColor.colorWhite,
+              child: Icon(FontAwesomeIcons.questionCircle, color: GlobalColor.colorWhiteOpacity,
                   size: SizeConfig.screenHeight * 0.2)
             ),
           ),
@@ -108,7 +108,7 @@ class _HelpPageState extends State<HelpPage> with TickerProviderStateMixin {
               ),
               title: Text(
                 AppLocalizations.of(context).translate('how_it_works'),
-                style: GlobalStyling.styleTitleWhite,
+                style: GlobalStyling.styleNormalWhite,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
@@ -127,7 +127,7 @@ class _HelpPageState extends State<HelpPage> with TickerProviderStateMixin {
               ),
               title: Text(
                 AppLocalizations.of(context).translate('contact_us'),
-                style: GlobalStyling.styleTitleWhite,
+                style: GlobalStyling.styleNormalWhite,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,

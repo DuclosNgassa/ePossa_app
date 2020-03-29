@@ -12,6 +12,7 @@ class GlobalStyling {
   static TextStyle stylePriceCard;
   static TextStyle styleHeaderWhite;
   static TextStyle styleTitleWhite;
+  static TextStyle styleOpacityWhite;
   static TextStyle styleNormalWhite;
   static TextStyle styleNormalBlack;
   static TextStyle styleNormalBlackBold;
@@ -19,10 +20,11 @@ class GlobalStyling {
   static TextStyle styleNormalBlack3;
   static TextStyle styleButtonWhite;
   static TextStyle styleFormGrey;
-  static TextStyle baseTextStyle;
-  static TextStyle headerTextStyle;
-  static TextStyle regularTextStyle;
-  static TextStyle subHeaderTextStyle;
+  static TextStyle styleBaseText;
+  static TextStyle styleHeaderText;
+  static TextStyle styleRegularText;
+  static TextStyle styleSubHeaderText;
+  static TextStyle styleHintText;
 
   static const TextStyle styleFormBlack = const TextStyle(
     color: Colors.black,
@@ -72,10 +74,15 @@ class GlobalStyling {
         fontSize: SizeConfig.blockSizeHorizontal * 9,
         fontWeight: FontWeight.bold);
 
+    styleOpacityWhite = new TextStyle(
+        color: GlobalColor.colorWhite.withOpacity(.7),
+        height: 1.4,
+        fontSize: SizeConfig.blockSizeHorizontal * 5);
+
     styleNormalWhite = new TextStyle(
-      color: GlobalColor.colorWhite,
-      fontSize: SizeConfig.safeBlockHorizontal * 4,
-    );
+        color: GlobalColor.colorWhite,
+        height: 1.4,
+        fontSize: SizeConfig.blockSizeHorizontal * 5);
 
     styleNormalBlack = new TextStyle(
       color: Colors.black,
@@ -135,12 +142,16 @@ class GlobalStyling {
       fontSize: SizeConfig.safeBlockHorizontal * 3,
     );
 
-    baseTextStyle = TextStyle(fontFamily: 'Poppins');
+    styleHintText = TextStyle(
+      color: Colors.grey.withOpacity(.8),
+    );
 
-    headerTextStyle = baseTextStyle.copyWith(
+    styleBaseText = TextStyle(fontFamily: 'Poppins');
+
+    styleHeaderText = styleBaseText.copyWith(
         color: GlobalColor.colorWhite, fontSize: 20.0, fontWeight: FontWeight.w600);
 
-    regularTextStyle = baseTextStyle.copyWith(
+    styleRegularText = styleBaseText.copyWith(
         color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w400);
   }
 }

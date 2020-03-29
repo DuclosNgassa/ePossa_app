@@ -1,5 +1,6 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/styling/global_color.dart';
+import 'package:epossa_app/styling/global_styling.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -130,6 +131,7 @@ class _StartScreenState extends State<StartScreen>
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     SizeConfig().init(context);
+    GlobalStyling().init(context);
 
     return Scaffold(
       backgroundColor: Color.fromRGBO(102, 0, 204, 50),
@@ -206,10 +208,7 @@ class _StartScreenState extends State<StartScreen>
                     1.3,
                     Text(
                       AppLocalizations.of(context).translate('slash_message'),
-                      style: TextStyle(
-                          color: GlobalColor.colorWhite.withOpacity(.7),
-                          height: 1.4,
-                          fontSize: 20),
+                      style: GlobalStyling.styleOpacityWhite,
                     ),
                   ),
                   SizedBox(

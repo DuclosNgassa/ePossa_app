@@ -24,7 +24,7 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
       backgroundColor: GlobalColor.colorPrimary,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate('how_it_works')),
-        backgroundColor: GlobalColor.colorPrimary,
+        backgroundColor: GlobalColor.colorSecondary,
       ),
       body: buildListTile(),
     );
@@ -45,7 +45,7 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
           height: SizeConfig.blockSizeVertical * 2,
         ),
         Container(
-          width: SizeConfig.screenWidth * 0.9,
+          width: SizeConfig.screenWidth * 0.8,
           child: Padding(
             padding: EdgeInsets.symmetric(
                 vertical: SizeConfig.blockSizeVertical * 2),
@@ -77,7 +77,7 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
           ExpansionTile(
             title: Text(
               AppLocalizations.of(context).translate('faq1'),
-              style: GlobalStyling.styleTitleWhite,
+              style: GlobalStyling.styleNormalWhite,
             ),
             children: <Widget>[
               Padding(
@@ -92,7 +92,7 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
           ExpansionTile(
             title: Text(
               AppLocalizations.of(context).translate('faq2'),
-              style: GlobalStyling.styleTitleWhite,
+              style: GlobalStyling.styleNormalWhite,
             ),
             children: <Widget>[
               Padding(
@@ -107,7 +107,7 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
           ExpansionTile(
             title: Text(
               AppLocalizations.of(context).translate('faq3'),
-              style: GlobalStyling.styleTitleWhite,
+              style: GlobalStyling.styleNormalWhite,
             ),
             children: <Widget>[
               Padding(
@@ -122,7 +122,7 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
           ExpansionTile(
             title: Text(
               AppLocalizations.of(context).translate('faq4'),
-              style: GlobalStyling.styleTitleWhite,
+              style: GlobalStyling.styleNormalWhite,
             ),
             children: <Widget>[
               Padding(
@@ -137,7 +137,7 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
           ExpansionTile(
             title: Text(
               AppLocalizations.of(context).translate('faq5'),
-              style: GlobalStyling.styleTitleWhite,
+              style: GlobalStyling.styleNormalWhite,
             ),
             children: <Widget>[
               Padding(
@@ -152,7 +152,7 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
           ExpansionTile(
             title: Text(
               AppLocalizations.of(context).translate('faq6'),
-              style: GlobalStyling.styleTitleWhite,
+              style: GlobalStyling.styleNormalWhite,
             ),
             children: <Widget>[
               Padding(

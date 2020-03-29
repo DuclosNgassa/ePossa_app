@@ -67,19 +67,19 @@ class _LoginPageState extends State<LoginPage> {
                             horizontal: SizeConfig.blockSizeVertical * 5),
                         child: Column(
                           children: <Widget>[
-                            _buildLoginInput(context),
+                            _buildLoginInput(),
                             SizedBox(
                               height: SizeConfig.blockSizeVertical * 2,
                             ),
-                            _buildLoginButton(context),
+                            _buildLoginButton(),
                             SizedBox(
                               height: SizeConfig.blockSizeVertical * 2,
                             ),
-                            _buildSignInButton(context),
+                            _buildSignInButton(),
                             SizedBox(
                               height: SizeConfig.blockSizeVertical * 3,
                             ),
-                            _buildPasswordForgottenButton(context),
+                            _buildPasswordForgottenButton(),
                           ],
                         ),
                       ),
@@ -175,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildLoginInput(BuildContext context) {
+  Widget _buildLoginInput() {
     return FadeAnimation(
       2.2,
       Container(
@@ -194,7 +194,7 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey[300]))),
+                  border: Border(bottom: BorderSide(color: Colors.grey[300]),),),
               child: TextFormField(
                 autofocus: true,
                 keyboardType: TextInputType.phone,
@@ -251,7 +251,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildLoginButton(BuildContext context) {
+  Widget _buildLoginButton() {
     return FadeAnimation(
       2.5,
       GestureDetector(
@@ -280,11 +280,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildSignInButton(BuildContext context) {
+  Widget _buildSignInButton() {
     return FadeAnimation(
       2.8,
       GestureDetector(
-        onTap: () => _signIn(context),
+        onTap: () => _signIn(),
         child: RichText(
           text: TextSpan(children: [
             TextSpan(
@@ -307,7 +307,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildPasswordForgottenButton(BuildContext context) {
+  Widget _buildPasswordForgottenButton() {
     return FadeAnimation(
       3.1,
       GestureDetector(
@@ -376,7 +376,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _signIn(BuildContext context) {
+  _signIn() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => SignInPage()),

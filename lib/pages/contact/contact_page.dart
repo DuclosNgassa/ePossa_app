@@ -23,7 +23,7 @@ class _ContactPageState extends State<ContactPage> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate('contact_us')),
-        backgroundColor: GlobalColor.colorPrimary,
+        backgroundColor: GlobalColor.colorSecondary,
       ),
       body: SafeArea(
         top: false,

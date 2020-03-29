@@ -45,11 +45,12 @@ class _HistoryPageState extends State<HistoryPage>
             right: SizeConfig.blockSizeHorizontal * 5,
             top: SizeConfig.blockSizeVertical * 5),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            _buildTitle(),
             SizedBox(height: SizeConfig.blockSizeVertical * 2,),
+            _buildTitle(),
+            SizedBox(height: SizeConfig.blockSizeVertical * 4,),
             _buildTabs(),
             _buildTabBarView(),
           ],
@@ -62,8 +63,8 @@ class _HistoryPageState extends State<HistoryPage>
     return FadeAnimation(
       1.3,
       Text(
-        AppLocalizations.of(context).translate('history'),
-        style: GlobalStyling.styleHeaderWhite,
+        AppLocalizations.of(context).translate('history_header'),
+        style: GlobalStyling.styleOpacityWhite,
       ),
     );
   }
