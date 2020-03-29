@@ -44,40 +44,16 @@ class _SharePageState extends State<SharePage> {
               children: <Widget>[
                 Padding(
                   padding:
-                      EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5),
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      _buildTitle(),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding:
                       EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 8),
                   child: new Container(
                     constraints: BoxConstraints.expand(
-                        height: SizeConfig.screenHeight * 0.70),
+                        height: SizeConfig.screenHeight * 0.90),
                     child: buildListTile(),
                   ),
                 ),
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTitle() {
-    return FadeAnimation(
-      1.3,
-      Padding(
-        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
-        child: Text(
-          AppLocalizations.of(context).translate('share'),
-          style: GlobalStyling.styleHeaderWhite,
         ),
       ),
     );
@@ -97,7 +73,7 @@ class _SharePageState extends State<SharePage> {
             ),
           ),
           SizedBox(
-            height: SizeConfig.blockSizeVertical * 2,
+            height: SizeConfig.blockSizeVertical * 5,
           ),
           FadeAnimation(
             1.5,
@@ -109,7 +85,7 @@ class _SharePageState extends State<SharePage> {
               ),
               title: Text(
                 "Whatsapp",
-                style: GlobalStyling.styleTitleWhite,
+                style: GlobalStyling.styleNormalWhite,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
@@ -128,7 +104,7 @@ class _SharePageState extends State<SharePage> {
               ),
               title: Text(
                 AppLocalizations.of(context).translate('others'),
-                style: GlobalStyling.styleTitleWhite,
+                style: GlobalStyling.styleNormalWhite,
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
