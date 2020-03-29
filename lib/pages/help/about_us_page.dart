@@ -40,21 +40,10 @@ class _AboutUsPageState extends State<AboutUsPage> {
               children: <Widget>[
                 Padding(
                   padding:
-                      EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5),
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      _buildTitle(),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 8),
+                      EdgeInsets.only(top: SizeConfig.blockSizeHorizontal),
                   child: new Container(
                     constraints: BoxConstraints.expand(
-                        height: SizeConfig.screenHeight * 0.70),
+                        height: SizeConfig.screenHeight * 0.80),
                     child: buildListTile(),
                   ),
                 ),
@@ -101,12 +90,12 @@ class _AboutUsPageState extends State<AboutUsPage> {
                   EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 3),
               child: Text(
                 AppLocalizations.of(context).translate('about_us_text'),
-                style: GlobalStyling.styleTitleWhite,
+                style: GlobalStyling.styleNormalWhite,
               ),
             ),
           ),
           SizedBox(
-            height: SizeConfig.blockSizeVertical * 4,
+            height: SizeConfig.blockSizeVertical * 10,
           ),
           FadeAnimation(
             1.9,
