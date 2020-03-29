@@ -39,11 +39,10 @@ class _AboutUsPageState extends State<AboutUsPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding:
-                      EdgeInsets.only(top: SizeConfig.blockSizeHorizontal),
+                  padding: EdgeInsets.only(top: SizeConfig.blockSizeHorizontal),
                   child: new Container(
                     constraints: BoxConstraints.expand(
-                        height: SizeConfig.screenHeight * 0.80),
+                        height: SizeConfig.screenHeight * 0.9),
                     child: buildListTile(),
                   ),
                 ),
@@ -61,44 +60,69 @@ class _AboutUsPageState extends State<AboutUsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          FadeAnimation(
-            1.3,
-            Container(
-              height: SizeConfig.screenHeight * 0.4,
-              child: Image.asset(
-                "assets/images/kmerconsulting.png",
-              ),
-            ),
-          ),
-          FadeAnimation(
-            1.5,
-            Padding(
-              padding:
-                  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 3),
-              child: Text(
-                AppLocalizations.of(context).translate('about_us_text'),
-                style: GlobalStyling.styleNormalWhite,
-              ),
-            ),
-          ),
+          buildIcon(),
           SizedBox(
-            height: SizeConfig.blockSizeVertical * 10,
+            height: SizeConfig.blockSizeVertical * 4,
           ),
-          FadeAnimation(
-            1.7,
-            Container(
-              child: RaisedButton(
-                shape: const StadiumBorder(),
-                color: GlobalColor.colorButtonPrimary,
-                child: Text(
-                  AppLocalizations.of(context).translate('visit_us'),
-                  style: GlobalStyling.styleButtonWhite,
-                ),
-                onPressed: () => launch(SITE_WEB),
-              ),
-            ),
+          Expanded(
+            child: buildAboutUsText(),
+          ),
+          buildVisitUsButton(),
+          SizedBox(
+            height: SizeConfig.blockSizeVertical * 2,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildIcon() {
+    return FadeAnimation(
+      1.3,
+      Container(
+        //height: SizeConfig.screenHeight * 0.4,
+        child: Image.asset(
+          "assets/images/kmerconsulting.png",
+        ),
+      ),
+    );
+  }
+
+  Widget buildAboutUsText() {
+    return FadeAnimation(
+      1.5,
+      Padding(
+        padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 3),
+        child: Text(
+          AppLocalizations.of(context).translate('about_us_text'),
+          style: GlobalStyling.styleNormalWhite,
+        ),
+      ),
+    );
+  }
+
+  Widget buildVisitUsButton() {
+    return FadeAnimation(
+      1.7,
+      Container(
+        height: SizeConfig.blockSizeVertical * 8,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: GlobalColor.colorButtonPrimary,
+        ),
+        child: RawMaterialButton(
+          onPressed: () => launch(SITE_WEB),
+          child: Center(
+            child: Text(
+              AppLocalizations.of(context).translate('visit_us'),
+              style: TextStyle(
+                  color: GlobalColor.colorWhite,
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans'),
+            ),
+          ),
+        ),
       ),
     );
   }
