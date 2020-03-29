@@ -198,7 +198,9 @@ class _StartScreenState extends State<StartScreen>
                     1,
                     Text(
                       "ePossa",
-                      style: TextStyle(color: GlobalColor.colorWhite, fontSize: SizeConfig.blockSizeHorizontal * 10),
+                      style: TextStyle(
+                          color: GlobalColor.colorWhite,
+                          fontSize: SizeConfig.blockSizeHorizontal * 10),
                     ),
                   ),
                   SizedBox(
@@ -227,7 +229,8 @@ class _StartScreenState extends State<StartScreen>
                               width: _widthAnimation.value,
                               height: SizeConfig.blockSizeVertical * 10.5,
                               padding: EdgeInsets.symmetric(
-                                horizontal: SizeConfig.blockSizeHorizontal * 3,
+                                horizontal:
+                                    SizeConfig.blockSizeHorizontal * 4.5,
                                 vertical: SizeConfig.blockSizeVertical * 1,
                               ),
                               decoration: BoxDecoration(
@@ -256,12 +259,14 @@ class _StartScreenState extends State<StartScreen>
                                                 SizeConfig.blockSizeVertical *
                                                     8.5,
                                             decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.blue),
+                                              shape: BoxShape.circle,
+                                              color: Colors.blue,
+                                            ),
                                             child: hideIcon == false
                                                 ? Icon(
                                                     Icons.arrow_forward,
-                                                    color: GlobalColor.colorWhite,
+                                                    color:
+                                                        GlobalColor.colorWhite,
                                                   )
                                                 : Container(),
                                           ),

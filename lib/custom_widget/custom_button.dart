@@ -33,7 +33,6 @@ class CustomButton extends StatelessWidget {
 
   Widget buildButtonWithoutIcon() {
     return Container(
-      width: SizeConfig.blockSizeHorizontal * 25,
       child: RawMaterialButton(
         onPressed: onPressed,
         fillColor: fillColor,
@@ -54,27 +53,29 @@ class CustomButton extends StatelessWidget {
 
   Widget buildButtonWithIcon() {
     return Container(
-      width: SizeConfig.blockSizeHorizontal * 25,
       child: RawMaterialButton(
         onPressed: onPressed,
         fillColor: fillColor,
         splashColor: splashColor,
         shape: const StadiumBorder(),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: SizeConfig.blockSizeHorizontal),
-              child: Icon(
-                icon,
-                color: iconColor,
+        child: Padding(
+          padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(right: SizeConfig.blockSizeHorizontal),
+                child: Icon(
+                  icon,
+                  color: iconColor,
+                ),
               ),
-            ),
-            Text(
-              text,
-              style: textStyle,
-            )
-          ],
+              Text(
+                text,
+                style: textStyle,
+              )
+            ],
+          ),
         ),
       ),
     );

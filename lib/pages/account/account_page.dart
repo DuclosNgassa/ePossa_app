@@ -74,20 +74,17 @@ class _AccountPageState extends State<AccountPage> {
               ),
             ),
             SizedBox(
-              width: SizeConfig.blockSizeHorizontal,
+              width: SizeConfig.blockSizeHorizontal * 2,
             ),
-            Padding(
-              padding: EdgeInsets.all(5),
-              child: CustomButton(
-                fillColor: GlobalColor.colorRed,
-                icon: FontAwesomeIcons.powerOff,
-                splashColor: GlobalColor.colorWhite,
-                iconColor: GlobalColor.colorWhite,
-                text: AppLocalizations.of(context).translate('logout'),
-                textStyle: TextStyle(
-                    color: GlobalColor.colorWhite, fontSize: SizeConfig.buttonFontSize),
-                onPressed: () => _logOut(),
-              ),
+            CustomButton(
+              fillColor: GlobalColor.colorRed,
+              icon: FontAwesomeIcons.powerOff,
+              splashColor: GlobalColor.colorWhite,
+              iconColor: GlobalColor.colorWhite,
+              text: AppLocalizations.of(context).translate('logout'),
+              textStyle: TextStyle(
+                  color: GlobalColor.colorWhite, fontSize: SizeConfig.buttonFontSize),
+              onPressed: () => _logOut(),
             ),
           ],
         ),

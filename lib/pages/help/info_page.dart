@@ -29,7 +29,7 @@ class _InfoPageState extends State<InfoPage> {
         padding: EdgeInsets.only(
             left: SizeConfig.blockSizeHorizontal * 5,
             right: SizeConfig.blockSizeHorizontal * 5,
-            top: SizeConfig.blockSizeVertical * 5),
+            top: SizeConfig.blockSizeVertical * 2),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -64,7 +64,7 @@ class _InfoPageState extends State<InfoPage> {
             ),
           ),
           SizedBox(
-            height: SizeConfig.blockSizeVertical * 6,
+            height: SizeConfig.blockSizeVertical * 4,
           ),
           FadeAnimation(
             1.7,

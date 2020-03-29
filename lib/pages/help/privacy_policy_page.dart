@@ -26,7 +26,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
 
     return new Scaffold(
       appBar: new AppBar(
-        backgroundColor: GlobalColor.colorPrimary,
+        backgroundColor: GlobalColor.colorSecondary,
         title: _buildTitle(),
         automaticallyImplyLeading: false,
       ),
