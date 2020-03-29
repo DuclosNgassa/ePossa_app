@@ -9,6 +9,7 @@ class PopupLayout extends ModalRoute {
   double right;
   Color bgColor;
   final Widget child;
+  bool standardsize;
 
   @override
   Duration get transitionDuration => Duration(milliseconds: 300);
@@ -36,7 +37,8 @@ class PopupLayout extends ModalRoute {
       this.top,
       this.bottom,
       this.left,
-      this.right});
+      this.right,
+      this.standardsize = false});
 
   @override
   Widget buildPage(
@@ -72,7 +74,7 @@ class PopupLayout extends ModalRoute {
   Widget _buildOverlayContent(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          bottom: SizeConfig.screenHeight * 0.3,
+          bottom: standardsize ? this.bottom : SizeConfig.screenHeight * 0.3,
           left: this.left,
           right: this.right,
           top: this.top),

@@ -148,6 +148,7 @@ class _NavigationPageState extends State<NavigationPage> {
         left: SizeConfig.blockSizeHorizontal * 6,
         right: SizeConfig.blockSizeHorizontal * 6,
         bottom: SizeConfig.blockSizeVertical * 6,
+        standardsize:true,
         child: PopupContent(
           content: Scaffold(
             appBar: AppBar(
