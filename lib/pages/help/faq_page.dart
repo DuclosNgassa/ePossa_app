@@ -1,5 +1,4 @@
 import 'package:epossa_app/animations/fade_animation.dart';
-import 'package:epossa_app/custom_widget/custom_button.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/pages/contact/contact_page.dart';
 import 'package:epossa_app/styling/global_color.dart';
@@ -26,7 +25,11 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
         title: Text(AppLocalizations.of(context).translate('how_it_works')),
         backgroundColor: GlobalColor.colorSecondary,
       ),
-      body: buildListTile(),
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.blockSizeHorizontal * 2),
+        child: buildListTile(),
+      ),
     );
   }
 
@@ -44,26 +47,9 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
         Divider(
           height: SizeConfig.blockSizeVertical * 2,
         ),
-        Container(
-          width: SizeConfig.screenWidth * 0.8,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: SizeConfig.blockSizeVertical * 2),
-            child: FadeAnimation(
-              1.5,
-              CustomButton(
-                fillColor: GlobalColor.colorButtonPrimary,
-                splashColor: GlobalColor.colorWhite,
-                iconColor: GlobalColor.colorWhite,
-                text:
-                    AppLocalizations.of(context).translate('other_questions') +
-                        ' ' +
-                        AppLocalizations.of(context).translate('contact_us'),
-                textStyle: GlobalStyling.styleButtonWhite,
-                onPressed: () => showContactPage(),
-              ),
-            ),
-          ),
+        buildContactButton(),
+        Divider(
+          height: SizeConfig.blockSizeVertical * 2,
         ),
       ],
     );
@@ -165,6 +151,34 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildContactButton() {
+    return FadeAnimation(
+      1.5,
+      Container(
+        height: SizeConfig.blockSizeVertical * 8,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: GlobalColor.colorButtonPrimary,
+        ),
+        child: RawMaterialButton(
+          onPressed: () => showContactPage(),
+          child: Center(
+            child: Text(
+              AppLocalizations.of(context).translate('other_questions') +
+                  ' ' +
+                  AppLocalizations.of(context).translate('contact_us'),
+              style: TextStyle(
+                  color: GlobalColor.colorWhite,
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans'),
+            ),
+          ),
+        ),
       ),
     );
   }

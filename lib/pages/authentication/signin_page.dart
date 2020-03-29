@@ -344,7 +344,7 @@ class _SignInPageState extends State<SignInPage> {
               AppLocalizations.of(context).translate("signin").toUpperCase(),
               style: TextStyle(
                   color: GlobalColor.colorWhite,
-                  fontSize: 18.0,
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'OpenSans'),
             ),
@@ -366,14 +366,14 @@ class _SignInPageState extends State<SignInPage> {
                   AppLocalizations.of(context).translate("already_registered"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
-                  fontSize: 18.0,
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
                   fontWeight: FontWeight.w400),
             ),
             TextSpan(
               text: AppLocalizations.of(context).translate("to_login"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
-                  fontSize: 18.0,
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
                   fontWeight: FontWeight.bold),
             ),
           ]),
@@ -470,7 +470,7 @@ class _SignInPageState extends State<SignInPage> {
               text: AppLocalizations.of(context).translate("forgot_password"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
-                  fontSize: 18.0,
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
                   fontWeight: FontWeight.w400),
             )
           ]),

@@ -270,7 +270,7 @@ class _LoginPageState extends State<LoginPage> {
               AppLocalizations.of(context).translate("login").toUpperCase(),
               style: TextStyle(
                   color: GlobalColor.colorWhite,
-                  fontSize: 18.0,
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'OpenSans'),
             ),
@@ -291,14 +291,14 @@ class _LoginPageState extends State<LoginPage> {
               text: AppLocalizations.of(context).translate("no_account"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
-                  fontSize: 18.0,
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
                   fontWeight: FontWeight.w400),
             ),
             TextSpan(
               text: AppLocalizations.of(context).translate("create_account"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
-                  fontSize: 18.0,
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
                   fontWeight: FontWeight.bold),
             ),
           ]),
@@ -318,7 +318,7 @@ class _LoginPageState extends State<LoginPage> {
               text: AppLocalizations.of(context).translate("forgot_password"),
               style: TextStyle(
                   color: Color.fromRGBO(143, 148, 251, 1),
-                  fontSize: 18.0,
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
                   fontWeight: FontWeight.w400),
             )
           ]),

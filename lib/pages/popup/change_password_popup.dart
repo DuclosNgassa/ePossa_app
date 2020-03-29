@@ -221,7 +221,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                   AppLocalizations.of(context).translate('save'),
                   style: TextStyle(
                       color: GlobalColor.colorWhite,
-                      fontSize: 18.0,
+                      fontSize: SizeConfig.blockSizeHorizontal * 4,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'OpenSans'),
                 ),

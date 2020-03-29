@@ -156,14 +156,23 @@ class ContactFormState extends State<ContactForm> {
     return FadeAnimation(
       1.5,
       Container(
-        width: SizeConfig.screenWidth * 0.9,
-        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 2),
-        child: RaisedButton(
-          shape: const StadiumBorder(),
+        height: SizeConfig.blockSizeVertical * 8,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
           color: GlobalColor.colorButtonPrimary,
-          child: Text(AppLocalizations.of(context).translate('send'),
-              style: GlobalStyling.styleButtonWhite),
-          onPressed: _submitForm,
+        ),
+        child: RawMaterialButton(
+          onPressed: () => _submitForm(),
+          child: Center(
+            child: Text(
+              AppLocalizations.of(context).translate('send'),
+              style: TextStyle(
+                  color: GlobalColor.colorWhite,
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans'),
+            ),
+          ),
         ),
       ),
     );
