@@ -55,19 +55,6 @@ class _AboutUsPageState extends State<AboutUsPage> {
     );
   }
 
-  Widget _buildTitle() {
-    return FadeAnimation(
-      1.3,
-      Padding(
-        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
-        child: Text(
-          AppLocalizations.of(context).translate('about_us'),
-          style: GlobalStyling.styleHeaderWhite,
-        ),
-      ),
-    );
-  }
-
   Widget buildListTile() {
     return Padding(
       padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
@@ -75,7 +62,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           FadeAnimation(
-            1.5,
+            1.3,
             Container(
               height: SizeConfig.screenHeight * 0.4,
               child: Image.asset(
@@ -84,7 +71,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
             ),
           ),
           FadeAnimation(
-            1.7,
+            1.5,
             Padding(
               padding:
                   EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 3),
@@ -98,7 +85,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
             height: SizeConfig.blockSizeVertical * 10,
           ),
           FadeAnimation(
-            1.9,
+            1.7,
             Container(
               child: RaisedButton(
                 shape: const StadiumBorder(),
