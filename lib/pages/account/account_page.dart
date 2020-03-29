@@ -81,11 +81,11 @@ class _AccountPageState extends State<AccountPage> {
               child: CustomButton(
                 fillColor: GlobalColor.colorRed,
                 icon: FontAwesomeIcons.signOutAlt,
-                splashColor: Colors.white,
-                iconColor: Colors.white,
+                splashColor: GlobalColor.colorWhite,
+                iconColor: GlobalColor.colorWhite,
                 text: AppLocalizations.of(context).translate('logout'),
                 textStyle: TextStyle(
-                    color: Colors.white, fontSize: SizeConfig.buttonFontSize),
+                    color: GlobalColor.colorWhite, fontSize: SizeConfig.buttonFontSize),
                 onPressed: () => _logOut(),
               ),
             ),
@@ -97,12 +97,12 @@ class _AccountPageState extends State<AccountPage> {
         Text(
           userName,
           style: TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+              color: GlobalColor.colorWhite, fontSize: SizeConfig.safeBlockHorizontal * 8, fontWeight: FontWeight.bold),
         ),
         Text(
           phone,
           style: TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+              color: GlobalColor.colorWhite, fontSize: SizeConfig.safeBlockHorizontal * 8, fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -122,13 +122,13 @@ class _AccountPageState extends State<AccountPage> {
               ),
               leading: Icon(
                 Icons.attach_money,
-                color: Colors.white,
+                color: GlobalColor.colorWhite,
               ),
               title: Text(AppLocalizations.of(context).translate('my_finance'),
                   style: GlobalStyling.styleTitleWhite),
               trailing: Icon(
                 Icons.arrow_forward_ios,
-                color: Colors.white,
+                color: GlobalColor.colorWhite,
               ),
             ),
           ),
@@ -144,7 +144,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               leading: Icon(
                 Icons.person,
-                color: Colors.white,
+                color: GlobalColor.colorWhite,
               ),
               title: Text(
                 AppLocalizations.of(context).translate('change_name'),
@@ -152,7 +152,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
-                color: Colors.white,
+                color: GlobalColor.colorWhite,
               ),
             ),
           ),
@@ -168,7 +168,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               leading: Icon(
                 Icons.phone_iphone,
-                color: Colors.white,
+                color: GlobalColor.colorWhite,
               ),
               title: Text(
                 AppLocalizations.of(context).translate('change_phonenumber'),
@@ -176,7 +176,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
-                color: Colors.white,
+                color: GlobalColor.colorWhite,
               ),
             ),
           ),
@@ -192,7 +192,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               leading: Icon(
                 Icons.lock,
-                color: Colors.white,
+                color: GlobalColor.colorWhite,
               ),
               title: Text(
                 AppLocalizations.of(context).translate('change_password'),
@@ -200,7 +200,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
-                color: Colors.white,
+                color: GlobalColor.colorWhite,
               ),
             ),
           ),

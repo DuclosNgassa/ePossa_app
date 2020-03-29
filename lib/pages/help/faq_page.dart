@@ -53,8 +53,8 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
               1.5,
               CustomButton(
                 fillColor: GlobalColor.colorButtonPrimary,
-                splashColor: Colors.white,
-                iconColor: Colors.white,
+                splashColor: GlobalColor.colorWhite,
+                iconColor: GlobalColor.colorWhite,
                 text:
                     AppLocalizations.of(context).translate('other_questions') +
                         ' ' +

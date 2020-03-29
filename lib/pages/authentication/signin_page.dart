@@ -2,10 +2,12 @@ import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/user.dart';
 import 'package:epossa_app/model/userDto.dart';
+import 'package:epossa_app/model/userRole.dart';
 import 'package:epossa_app/model/user_status.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/login_page.dart';
 import 'package:epossa_app/services/authentication_service.dart';
+import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -52,7 +54,7 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: GlobalColor.colorWhite,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Container(
@@ -173,7 +175,7 @@ class _SignInPageState extends State<SignInPage> {
         child: Text(
           AppLocalizations.of(context).translate("signin"),
           style: TextStyle(
-              color: Colors.white,
+              color: GlobalColor.colorWhite,
               fontSize: SizeConfig.blockSizeHorizontal * 9,
               fontWeight: FontWeight.bold),
         ),
@@ -195,7 +197,7 @@ class _SignInPageState extends State<SignInPage> {
                 offset: Offset(0, 10),
               )
             ],
-            color: Colors.white),
+            color: GlobalColor.colorWhite),
         child: Column(
           children: <Widget>[
             Container(
@@ -341,7 +343,7 @@ class _SignInPageState extends State<SignInPage> {
             child: Text(
               AppLocalizations.of(context).translate("signin").toUpperCase(),
               style: TextStyle(
-                  color: Colors.white,
+                  color: GlobalColor.colorWhite,
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'OpenSans'),
@@ -404,6 +406,7 @@ class _SignInPageState extends State<SignInPage> {
             _password1Controller.text,
             "deviceToken" + _nameController.text,
             UserStatus.active,
+            UserRole.user,
             0,
             3);
         UserDTO createdUser = await _authenticationService.signin(user);

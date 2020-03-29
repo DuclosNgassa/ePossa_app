@@ -64,13 +64,16 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          SizedBox(
+            height: SizeConfig.blockSizeVertical * 3,
+          ),
           _buildInputForm(),
           SizedBox(
             height: SizeConfig.blockSizeVertical * 8,
           ),
           _buildSaveButtons(),
           SizedBox(
-            height: SizeConfig.blockSizeVertical * 5,
+            height: SizeConfig.blockSizeVertical * 2,
           ),
           _buildFooterMessage(),
         ],
@@ -97,7 +100,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                     offset: Offset(0, 10),
                   )
                 ],
-                color: Colors.white),
+                color: GlobalColor.colorWhite),
             child: Column(
               children: <Widget>[
                 Container(
@@ -217,7 +220,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                 child: Text(
                   AppLocalizations.of(context).translate('save'),
                   style: TextStyle(
-                      color: Colors.white,
+                      color: GlobalColor.colorWhite,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'OpenSans'),

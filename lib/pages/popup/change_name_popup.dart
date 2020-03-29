@@ -85,7 +85,7 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
                     offset: Offset(0, 10),
                   )
                 ],
-                color: Colors.white),
+                color: GlobalColor.colorWhite),
             child: Column(
               children: <Widget>[
                 Container(
@@ -144,7 +144,7 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
                 child: Text(
                   AppLocalizations.of(context).translate('save'),
                   style: TextStyle(
-                      color: Colors.white,
+                      color: GlobalColor.colorWhite,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'OpenSans'),

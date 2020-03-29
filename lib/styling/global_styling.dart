@@ -63,17 +63,17 @@ class GlobalStyling {
         fontSize: SizeConfig.safeBlockHorizontal * 3);
 
     styleTitleWhite = new TextStyle(
-        color: Colors.white,
+        color: GlobalColor.colorWhite,
         fontWeight: FontWeight.bold,
         fontSize: SizeConfig.safeBlockHorizontal * 5);
 
     styleHeaderWhite = new TextStyle(
-        color: Colors.white,
+        color: GlobalColor.colorWhite,
         fontSize: SizeConfig.blockSizeHorizontal * 9,
         fontWeight: FontWeight.bold);
 
     styleNormalWhite = new TextStyle(
-      color: Colors.white,
+      color: GlobalColor.colorWhite,
       fontSize: SizeConfig.safeBlockHorizontal * 4,
     );
 
@@ -98,7 +98,7 @@ class GlobalStyling {
     );
 
     styleButtonWhite = new TextStyle(
-      color: Colors.white,
+      color: GlobalColor.colorWhite,
       fontSize: SizeConfig.safeBlockHorizontal * 4,
     );
 
@@ -118,7 +118,7 @@ class GlobalStyling {
     );
 
     styleSubtitleWhite = new TextStyle(
-      color: Colors.white,
+      color: GlobalColor.colorWhite,
       fontStyle: FontStyle.italic,
       fontSize: SizeConfig.safeBlockHorizontal * 4,
     );
@@ -138,7 +138,7 @@ class GlobalStyling {
     baseTextStyle = TextStyle(fontFamily: 'Poppins');
 
     headerTextStyle = baseTextStyle.copyWith(
-        color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w600);
+        color: GlobalColor.colorWhite, fontSize: 20.0, fontWeight: FontWeight.w600);
 
     regularTextStyle = baseTextStyle.copyWith(
         color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w400);

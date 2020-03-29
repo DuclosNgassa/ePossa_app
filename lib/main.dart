@@ -1,4 +1,5 @@
 import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -195,7 +196,7 @@ class _StartScreenState extends State<StartScreen>
                     1,
                     Text(
                       "ePossa",
-                      style: TextStyle(color: Colors.white, fontSize: 50),
+                      style: TextStyle(color: GlobalColor.colorWhite, fontSize: SizeConfig.blockSizeHorizontal * 10),
                     ),
                   ),
                   SizedBox(
@@ -206,7 +207,7 @@ class _StartScreenState extends State<StartScreen>
                     Text(
                       AppLocalizations.of(context).translate('slash_message'),
                       style: TextStyle(
-                          color: Colors.white.withOpacity(.7),
+                          color: GlobalColor.colorWhite.withOpacity(.7),
                           height: 1.4,
                           fontSize: 20),
                     ),
@@ -261,7 +262,7 @@ class _StartScreenState extends State<StartScreen>
                                             child: hideIcon == false
                                                 ? Icon(
                                                     Icons.arrow_forward,
-                                                    color: Colors.white,
+                                                    color: GlobalColor.colorWhite,
                                                   )
                                                 : Container(),
                                           ),

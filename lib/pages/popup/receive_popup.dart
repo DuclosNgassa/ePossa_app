@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
+import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:epossa_app/util/constant_field.dart';
 import 'package:flutter/cupertino.dart';
@@ -104,7 +105,7 @@ class _ReceivePopupState extends State<ReceivePopup> {
                     offset: Offset(0, 10),
                   )
                 ],
-                color: Colors.white),
+                color: GlobalColor.colorWhite),
             child: Container(
               child: TextFormField(
                 controller: amountController,
@@ -146,7 +147,7 @@ class _ReceivePopupState extends State<ReceivePopup> {
                 child: Text(
                   AppLocalizations.of(context).translate('qr_code_with_amount'),
                   style: TextStyle(
-                      color: Colors.white,
+                      color: GlobalColor.colorWhite,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'OpenSans'),

@@ -72,7 +72,7 @@ class PopupLayout extends ModalRoute {
   Widget _buildOverlayContent(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          bottom: this.bottom,
+          bottom: SizeConfig.screenHeight * 0.3,
           left: this.left,
           right: this.right,
           top: this.top),

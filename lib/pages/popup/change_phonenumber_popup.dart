@@ -49,7 +49,7 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
     SizeConfig().init(context);
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           _buildInputForm(),
@@ -70,8 +70,10 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
     return FadeAnimation(
       1.5,
       Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: SizeConfig.blockSizeHorizontal * 5,
+        padding: EdgeInsets.only(
+          top: SizeConfig.blockSizeHorizontal * 8,
+          right: SizeConfig.blockSizeHorizontal * 5,
+          left: SizeConfig.blockSizeHorizontal * 5,
         ),
         child: Form(
           key: _formKey,
@@ -85,7 +87,7 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
                     offset: Offset(0, 10),
                   )
                 ],
-                color: Colors.white),
+                color: GlobalColor.colorWhite),
             child: Column(
               children: <Widget>[
                 Container(
@@ -146,7 +148,7 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
                 child: Text(
                   AppLocalizations.of(context).translate('save'),
                   style: TextStyle(
-                      color: Colors.white,
+                      color: GlobalColor.colorWhite,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'OpenSans'),

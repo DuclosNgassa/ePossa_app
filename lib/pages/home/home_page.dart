@@ -13,6 +13,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    GlobalStyling().init(context);
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(

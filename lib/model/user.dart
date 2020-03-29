@@ -1,4 +1,6 @@
+import 'package:epossa_app/model/userRole.dart';
 import 'package:epossa_app/model/user_status.dart';
+import 'package:epossa_app/util/util.dart';
 
 class User {
   String name;
@@ -6,10 +8,11 @@ class User {
   String password;
   String device;
   UserStatus status;
+  UserRole role;
   double balance;
   int rating;
 
-  User(this.name, this.phone, this.password, this.device, this.status,
+  User(this.name, this.phone, this.password, this.device, this.status,this.role,
       this.balance, this.rating);
 
   Map<String, dynamic> toJson() => {
@@ -17,7 +20,8 @@ class User {
         'phone': phone,
         'password': password,
         'device': device,
-        'status': convertStatusToString(status),
+        'status': Util.convertStatusToString(status),
+        'role': Util.convertRoleToString(role),
         'balance': balance.toString(),
         'rating': rating.toString(),
       };
@@ -28,41 +32,11 @@ class User {
       json["phone"],
       json["password"],
       json["device"],
-      convertStringToStatus(json["status"]),
+      Util.convertStringToStatus(json["status"]),
+      Util.convertStringToRole(json["role"]),
       json["balance"],
       json["rating"],
     );
   }
 
-  static String convertStatusToString(UserStatus value) {
-    switch (value) {
-      case UserStatus.active:
-        {
-          return 'active';
-        }
-        break;
-      case UserStatus.blocked:
-        {
-          return 'blocked';
-        }
-        break;
-    }
-    return 'blocked';
-  }
-
-  static UserStatus convertStringToStatus(String value) {
-    switch (value) {
-      case 'active':
-        {
-          return UserStatus.active;
-        }
-        break;
-      case 'blocked':
-        {
-          return UserStatus.blocked;
-        }
-        break;
-    }
-    return UserStatus.blocked;
-  }
 }

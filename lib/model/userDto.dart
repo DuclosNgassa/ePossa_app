@@ -1,4 +1,6 @@
+import 'package:epossa_app/model/userRole.dart';
 import 'package:epossa_app/model/user_status.dart';
+import 'package:epossa_app/util/util.dart';
 import 'package:intl/intl.dart';
 
 import 'basis_dto.dart';
@@ -22,7 +24,7 @@ class UserDTO extends BasisDTO {
         'name': name,
         'phone': phone,
         'device': device,
-        'status': convertStatusToString(status),
+        'status': Util.convertStatusToString(status),
         'balance': balance.toString(),
         'rating': rating.toString(),
       };
@@ -36,7 +38,7 @@ class UserDTO extends BasisDTO {
       json["name"],
       json["phone"],
       json["device"],
-      convertStringToStatus(json["status"]),
+      Util.convertStringToStatus(json["status"]),
       json["balance"],
       json["rating"],
     );
@@ -51,41 +53,11 @@ class UserDTO extends BasisDTO {
       json["name"],
       json["phone"],
       json["device"],
-      convertStringToStatus(json["status"]),
+      Util.convertStringToStatus(json["status"]),
       double.parse(json["balance"]),
       int.parse(json["rating"]),
     );
   }
 
-  static String convertStatusToString(UserStatus value) {
-    switch (value) {
-      case UserStatus.active:
-        {
-          return 'active';
-        }
-        break;
-      case UserStatus.blocked:
-        {
-          return 'blocked';
-        }
-        break;
-    }
-    return 'blocked';
-  }
 
-  static UserStatus convertStringToStatus(String value) {
-    switch (value) {
-      case 'active':
-        {
-          return UserStatus.active;
-        }
-        break;
-      case 'blocked':
-        {
-          return UserStatus.blocked;
-        }
-        break;
-    }
-    return UserStatus.blocked;
-  }
 }

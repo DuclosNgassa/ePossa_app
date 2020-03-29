@@ -115,7 +115,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
                     offset: Offset(0, 10),
                   )
                 ],
-                color: Colors.white),
+                color: GlobalColor.colorWhite),
             child: Column(
               children: <Widget>[
                 Container(
@@ -235,7 +235,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
                 child: Text(
                   AppLocalizations.of(context).translate('scan_qr_code'),
                   style: TextStyle(
-                      color: Colors.white,
+                      color: GlobalColor.colorWhite,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'OpenSans'),
@@ -268,7 +268,7 @@ class _PaymentPopupState extends State<PaymentPopup> {
                 child: Text(
                   AppLocalizations.of(context).translate('transfer'),
                   style: TextStyle(
-                      color: Colors.white,
+                      color: GlobalColor.colorWhite,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'OpenSans'),

@@ -6,6 +6,7 @@ import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/transfer.dart';
 import 'package:epossa_app/model/transfer_wrapper.dart';
 import 'package:epossa_app/notification/notification.dart';
+import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/global_styling.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
@@ -186,7 +187,7 @@ class _HistoryPageState extends State<HistoryPage>
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.white),
+                    color: GlobalColor.colorWhite),
                 child: ExpansionTile(
                   key: PageStorageKey<String>(
                       receives.elementAt(index).receiver),
@@ -247,7 +248,7 @@ class _HistoryPageState extends State<HistoryPage>
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.white),
+                    color: GlobalColor.colorWhite),
                 child: ExpansionTile(
                   leading: new Text(
                     DateConverter.convertToString(

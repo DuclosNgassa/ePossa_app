@@ -3,6 +3,7 @@ import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/transfer_bilan.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/services/transfer_service.dart';
+import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class _FinancePopupState extends State<FinancePopup> {
   static final baseTextStyle = const TextStyle(fontFamily: 'Poppins');
 
   final headerTextStyle = baseTextStyle.copyWith(
-      color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w600);
+      color: GlobalColor.colorWhite, fontSize: 20.0, fontWeight: FontWeight.w600);
 
   static final regularTextStyle = baseTextStyle.copyWith(
       color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w400);
@@ -72,7 +73,7 @@ class _FinancePopupState extends State<FinancePopup> {
           return Column(
             children: <Widget>[
               SizedBox(
-                height: SizeConfig.blockSizeVertical,
+                height: SizeConfig.blockSizeVertical * 3,
               ),
               new Text(
                 AppLocalizations.of(context).translate('total_received_amount'),
@@ -146,7 +147,7 @@ class _FinancePopupState extends State<FinancePopup> {
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: SizeConfig.blockSizeHorizontal * 5,
-          vertical: SizeConfig.blockSizeVertical * 4),
+          vertical: SizeConfig.blockSizeVertical * 2),
       child: FadeAnimation(
         1.6,
         Center(

@@ -1,3 +1,5 @@
+import 'package:epossa_app/model/userRole.dart';
+import 'package:epossa_app/model/user_status.dart';
 import 'package:flutter/material.dart';
 
 class Util {
@@ -7,12 +9,67 @@ class Util {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-/*
-  static List<Post> sortPostDescending(List<Post> posts) {
-    posts.sort((post1, post2) => post2.updated_at.compareTo(post1.updated_at));
-
-    return posts;
+  static String convertStatusToString(UserStatus value) {
+    switch (value) {
+      case UserStatus.active:
+        {
+          return 'active';
+        }
+        break;
+      case UserStatus.blocked:
+        {
+          return 'blocked';
+        }
+        break;
+    }
+    return 'blocked';
   }
-*/
 
+  static UserStatus convertStringToStatus(String value) {
+    switch (value) {
+      case 'active':
+        {
+          return UserStatus.active;
+        }
+        break;
+      case 'blocked':
+        {
+          return UserStatus.blocked;
+        }
+        break;
+    }
+    return UserStatus.blocked;
+  }
+
+  static String convertRoleToString(UserRole value) {
+    switch (value) {
+      case UserRole.admin:
+        {
+          return 'admin';
+        }
+        break;
+      case UserRole.user:
+        {
+          return 'user';
+        }
+        break;
+    }
+    return 'user';
+  }
+
+  static UserRole convertStringToRole(String value) {
+    switch (value) {
+      case 'admin':
+        {
+          return UserRole.admin;
+        }
+        break;
+      case 'user':
+        {
+          return UserRole.user;
+        }
+        break;
+    }
+    return UserRole.user;
+  }
 }

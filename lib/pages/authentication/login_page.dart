@@ -6,6 +6,7 @@ import 'package:epossa_app/pages/authentication/signin_page.dart';
 import 'package:epossa_app/pages/navigation/navigation_page.dart';
 import 'package:epossa_app/services/authentication_service.dart';
 import 'package:epossa_app/services/user_service.dart';
+import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -44,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: GlobalColor.colorWhite,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Center(
@@ -60,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      _buildBackground(context),
+                      _buildBackground(),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: SizeConfig.blockSizeVertical * 5),
@@ -93,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildBackground(BuildContext context) {
+  Widget _buildBackground() {
     return Container(
       height: SizeConfig.screenHeight * 0.5,
       decoration: BoxDecoration(
@@ -166,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Text(
           AppLocalizations.of(context).translate("login"),
           style: TextStyle(
-              color: Colors.white,
+              color: GlobalColor.colorWhite,
               fontSize: SizeConfig.blockSizeHorizontal * 9,
               fontWeight: FontWeight.bold),
         ),
@@ -188,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                 offset: Offset(0, 10),
               )
             ],
-            color: Colors.white),
+            color: GlobalColor.colorWhite),
         child: Column(
           children: <Widget>[
             Container(
@@ -268,7 +269,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Text(
               AppLocalizations.of(context).translate("login").toUpperCase(),
               style: TextStyle(
-                  color: Colors.white,
+                  color: GlobalColor.colorWhite,
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'OpenSans'),

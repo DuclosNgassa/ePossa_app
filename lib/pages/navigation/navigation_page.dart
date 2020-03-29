@@ -19,14 +19,21 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white);
+  static TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: GlobalColor.colorWhite);
 
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     HistoryPage(),
     AccountPage(),
     InfoPage(),
+  ];
+
+  static List<Color> _colorOptions = <Color>[
+    GlobalColor.colorPrimary,
+    GlobalColor.colorPrimary,
+    GlobalColor.colorPrimary,
+    GlobalColor.colorPrimary,
   ];
 
   void _onItemTapped(int index) {
@@ -40,7 +47,7 @@ class _NavigationPageState extends State<NavigationPage> {
     SizeConfig().init(context);
 
     return Scaffold(
-      backgroundColor: GlobalColor.colorPrimary,
+      backgroundColor: _colorOptions.elementAt(_selectedIndex),
       body: Container(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -105,11 +112,11 @@ class _NavigationPageState extends State<NavigationPage> {
       overlayOpacity: 0.7,
       children: [
         MenuItem(
-          child: Icon(Icons.account_balance_wallet, color: Colors.white),
+          child: Icon(Icons.account_balance_wallet, color: GlobalColor.colorWhite),
           title: AppLocalizations.of(context).translate('pay'),
-          titleColor: Colors.white,
+          titleColor: GlobalColor.colorWhite,
           subtitle: AppLocalizations.of(context).translate('pay_service'),
-          subTitleColor: Colors.white,
+          subTitleColor: GlobalColor.colorWhite,
           backgroundColor: Colors.purple,
           onTap: () => showPopup(
             context,
@@ -118,12 +125,12 @@ class _NavigationPageState extends State<NavigationPage> {
           ),
         ),
         MenuItem(
-          child: Icon(Icons.exit_to_app, color: Colors.white),
+          child: Icon(Icons.exit_to_app, color: GlobalColor.colorWhite),
           title: AppLocalizations.of(context).translate('receive_money'),
-          titleColor: Colors.white,
+          titleColor: GlobalColor.colorWhite,
           subtitle:
               AppLocalizations.of(context).translate('monetize_your_services'),
-          subTitleColor: Colors.white,
+          subTitleColor: GlobalColor.colorWhite,
           backgroundColor: Colors.cyan,
           onTap: () => showPopup(context, ReceivePopup(),
               AppLocalizations.of(context).translate('receive_money')),
