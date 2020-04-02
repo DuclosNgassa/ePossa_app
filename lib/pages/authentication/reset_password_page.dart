@@ -22,12 +22,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import 'login_page.dart';
 
-class PasswordResetPage extends StatefulWidget {
+class ResetPasswordPage extends StatefulWidget {
   @override
-  _PasswordResetPageState createState() => _PasswordResetPageState();
+  _ResetPasswordPageState createState() => _ResetPasswordPageState();
 }
 
-class _PasswordResetPageState extends State<PasswordResetPage> {
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final int minvalue = 100000;
   final int maxvalue = 999999;
@@ -316,7 +316,9 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
             controller: _phoneNumberController,
             textInputAction: TextInputAction.next,
             focusNode: _phoneNumberFocusNode,
-            onFieldSubmitted: (term) {},
+            onFieldSubmitted: (term) {
+              _fieldFocusChange(_phoneNumberFocusNode, _emailFocusNode);
+            },
             decoration: InputDecoration(
               border: InputBorder.none,
               hintStyle: TextStyle(
@@ -482,8 +484,8 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
 
     bool resultOtp = _flutterOtp.resultChecker(int.parse(enteredCode));
     if (resultOtp) {
-      PasswordReset resetPassword =
-          new PasswordReset(_phoneNumber, _emailController.text, enteredCode);
+      ResetPassword resetPassword =
+          new ResetPassword(_phoneNumber, _emailController.text.trim(), enteredCode);
       bool passwordReseted =
           await _authenticationService.resetPassword(resetPassword);
 
@@ -499,8 +501,8 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
             ),
             Colors.blue.shade300,
             10);
-        // log user in to receive jwt and make update on user status
-        await doLogin(enteredCode);
+
+        navigateToLogin();
       } else {
         MyNotification.showInfoFlushbar(
             context,
@@ -528,25 +530,6 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
           ),
           Colors.red.shade300,
           3);
-    }
-  }
-
-  Future doLogin(String tempPassword) async {
-    // log user in to receive jwt and make update on user status
-    bool login = await _authenticationService.login(_phoneNumber, tempPassword);
-
-    //Sometime the first login doesnt work
-    if (!login) {
-      login = await _authenticationService.login(_phoneNumber, tempPassword);
-    }
-    if (login) {
-      UserDTO userDTO = await _userService.readByPhoneNumber(_phoneNumber);
-      await _sharedPreferenceService.saveUser(userDTO);
-
-      _navigateToStartPage();
-    } else {
-      // automatic login not possible for some reason. Let the user login manually
-      navigateToLogin();
     }
   }
 
@@ -591,13 +574,6 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => SignInPage()),
-    );
-  }
-
-  _navigateToStartPage() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => NavigationPage()),
     );
   }
 

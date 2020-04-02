@@ -7,7 +7,7 @@ import 'package:epossa_app/model/userDto.dart';
 import 'package:epossa_app/model/user_status.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/one_time_password_page.dart';
-import 'package:epossa_app/pages/authentication/password_reset_page.dart';
+import 'package:epossa_app/pages/authentication/reset_password_page.dart';
 import 'package:epossa_app/pages/authentication/signin_page.dart';
 import 'package:epossa_app/pages/navigation/navigation_page.dart';
 import 'package:epossa_app/services/authentication_service.dart';
@@ -541,7 +541,7 @@ class _LoginPageState extends State<LoginPage> {
   _navigateToPasswordReset() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => PasswordResetPage()),
+      MaterialPageRoute(builder: (context) => ResetPasswordPage()),
     );
   }
 

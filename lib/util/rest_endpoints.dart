@@ -15,7 +15,7 @@ const URL_SIGNIN = URL_USERS + "/signin";
 const URL_USERS_BY_PHONE = URL_USERS + "/phone/";
 const URL_LOGIN = SERVER_URL + "/login";
 
-const URL_PASSWORD_RESET = URL_USERS + "/resetpassword";
+const URL_RESET_PASSWORD = URL_USERS + "/resetpassword";
 
 const URL_TRANSFERS = API_URL + "/transfers";
 const URL_TRANSFERS_BY_SENDER = URL_TRANSFERS + "/sender/";

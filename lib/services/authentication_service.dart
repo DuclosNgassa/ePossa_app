@@ -57,21 +57,15 @@ class AuthenticationService {
     return false;
   }
 
-  Future<bool> resetPassword(PasswordReset resetPassword) async {
+  Future<bool> resetPassword(ResetPassword resetPassword) async {
     HttpClientRequest request =
-        await HttpClient().postUrl(Uri.parse('$URL_PASSWORD_RESET'))
+        await HttpClient().putUrl(Uri.parse('$URL_RESET_PASSWORD'))
           ..headers.contentType = ContentType.json
           ..write(jsonEncode(resetPassword));
     HttpClientResponse response = await request.close();
 
     if (response.statusCode == HttpStatus.ok) {
-      List<String> responseTokens = response.headers[AUTHORIZATION_TOKEN];
-
-      if (responseTokens.length > 0) {
-        String jwBearerToken = responseTokens[0];
-        _sharedPreferenceService.save(AUTHORIZATION_TOKEN, jwBearerToken);
-        return true;
-      }
+      return true;
     }
     return false;
   }
