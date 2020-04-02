@@ -7,14 +7,16 @@ import 'basis_dto.dart';
 
 class UserDTO extends BasisDTO {
   var formatter = new DateFormat('yyyy-MM-dd HH:mm');
+  var birthdateformatter = new DateFormat('yyyy-MM-dd');
   String name;
+  String email;
   String phone;
   String device;
   UserStatus status;
   double balance;
   int rating;
 
-  UserDTO(id, created_at, this.name, this.phone, this.device, this.status,
+  UserDTO(id, created_at, this.name, this.email, this.phone, this.device, this.status,
       this.balance, this.rating)
       : super(id, created_at);
 
@@ -22,6 +24,7 @@ class UserDTO extends BasisDTO {
         'id': id,
         'created_at': formatter.format(created_at),
         'name': name,
+        'email': email,
         'phone': phone,
         'device': device,
         'status': Util.convertStatusToString(status),
@@ -36,6 +39,7 @@ class UserDTO extends BasisDTO {
       DateTime.parse(
           formatterFactory.format(DateTime.parse(json["created_at"]))),
       json["name"],
+      json["email"],
       json["phone"],
       json["device"],
       Util.convertStringToStatus(json["status"]),
@@ -51,6 +55,7 @@ class UserDTO extends BasisDTO {
       DateTime.parse(
           formatterFactory.format(DateTime.parse(json["created_at"]))),
       json["name"],
+      json["email"],
       json["phone"],
       json["device"],
       Util.convertStringToStatus(json["status"]),

@@ -8,9 +8,13 @@ import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/login_page.dart';
 import 'package:epossa_app/services/authentication_service.dart';
 import 'package:epossa_app/styling/global_color.dart';
+import 'package:epossa_app/styling/global_styling.dart';
 import 'package:epossa_app/styling/size_config.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'otp_page.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -18,12 +22,18 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  AuthenticationService _authenticationService = new AuthenticationService();
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   TextEditingController _nameController = new TextEditingController();
   TextEditingController _phoneNumberController = new TextEditingController();
   TextEditingController _password1Controller = new TextEditingController();
   TextEditingController _password2Controller = new TextEditingController();
 
-  AuthenticationService _authenticationService = new AuthenticationService();
+  TextEditingController _codeController = new TextEditingController();
+
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   FocusNode _nameFocusNode;
@@ -47,12 +57,15 @@ class _SignInPageState extends State<SignInPage> {
     _phoneNumberController.dispose();
     _password1Controller.dispose();
     _password2Controller.dispose();
+    _codeController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    GlobalStyling().init(context);
+
     return Scaffold(
       backgroundColor: GlobalColor.colorWhite,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -70,25 +83,25 @@ class _SignInPageState extends State<SignInPage> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    _buildBackground(context),
+                    _buildBackground(),
                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: SizeConfig.blockSizeVertical * 5),
                       child: Column(
                         children: <Widget>[
-                          _buildSigninInput(context),
+                          _buildSigninInput(),
                           SizedBox(
                             height: SizeConfig.blockSizeVertical * 2,
                           ),
-                          _buildSigninButton(context),
+                          _buildSigninButton(),
                           SizedBox(
                             height: SizeConfig.blockSizeVertical * 2,
                           ),
-                          _buildLoginButton(context),
+                          _buildLoginButton(),
                           SizedBox(
                             height: SizeConfig.blockSizeVertical * 2,
                           ),
-                          _buildPasswordForgottenButton(context),
+                          _buildPasswordForgottenButton(),
                         ],
                       ),
                     ),
@@ -102,7 +115,7 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Container _buildBackground(BuildContext context) {
+  Container _buildBackground() {
     return Container(
       height: SizeConfig.screenHeight * 0.4,
       decoration: BoxDecoration(
@@ -160,7 +173,7 @@ class _SignInPageState extends State<SignInPage> {
           Positioned(
             child: Container(
               margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 10),
-              child: _buildFormTitle(context),
+              child: _buildFormTitle(),
             ),
           ),
         ],
@@ -168,7 +181,7 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget _buildFormTitle(BuildContext context) {
+  Widget _buildFormTitle() {
     return FadeAnimation(
       1.9,
       Center(
@@ -183,7 +196,7 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget _buildSigninInput(BuildContext context) {
+  Widget _buildSigninInput() {
     return FadeAnimation(
       2.2,
       Container(
@@ -325,7 +338,7 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget _buildSigninButton(BuildContext context) {
+  Widget _buildSigninButton() {
     return FadeAnimation(
       2.5,
       GestureDetector(
@@ -354,7 +367,7 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget _buildLoginButton(BuildContext context) {
+  Widget _buildLoginButton() {
     return FadeAnimation(
       2.8,
       GestureDetector(
@@ -382,6 +395,26 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
+  Widget _buildPasswordForgottenButton() {
+    return FadeAnimation(
+      3.1,
+      GestureDetector(
+        onTap: () => print("Password forgotten..."),
+        child: RichText(
+          text: TextSpan(children: [
+            TextSpan(
+              text: AppLocalizations.of(context).translate("forgot_password"),
+              style: TextStyle(
+                  color: Color.fromRGBO(143, 148, 251, 1),
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
+                  fontWeight: FontWeight.w400),
+            )
+          ]),
+        ),
+      ),
+    );
+  }
+
   _signIn() async {
     final FormState form = _formKey.currentState;
 
@@ -401,28 +434,28 @@ class _SignInPageState extends State<SignInPage> {
       //Validate password
       if (_password1Controller.text == _password2Controller.text) {
         User user = new User(
-            _nameController.text,
-            _phoneNumberController.text,
+            _nameController.text.trim(),
+            _nameController.text.trim(),
+            _phoneNumberController.text.trim(),
             _password1Controller.text,
             "deviceToken" + _nameController.text,
-            UserStatus.active,
+            UserStatus.pending,
             UserRole.user,
             0,
             3);
         UserDTO createdUser = await _authenticationService.signin(user);
+
         if (createdUser != null) {
-          MyNotification.showInfoFlushbar(
-              context,
-              AppLocalizations.of(context).translate('info'),
-              AppLocalizations.of(context).translate('signin_success'),
-              Icon(
-                Icons.info_outline,
-                size: 28,
-                color: Colors.blue.shade300,
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OTPPage(
+                mobileNumber: _phoneNumberController.text.trim(),
+                password: _password1Controller.text.trim(),
               ),
-              Colors.blue.shade300,
-              2);
-          _login();
+            ),
+          );
+          //await loginUser(createdUser.phone);
         } else {
           MyNotification.showInfoFlushbar(
               context,
@@ -459,24 +492,27 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget _buildPasswordForgottenButton(BuildContext context) {
-    return FadeAnimation(
-      3.1,
-      GestureDetector(
-        onTap: () => print("Password forgotten..."),
-        child: RichText(
-          text: TextSpan(children: [
-            TextSpan(
-              text: AppLocalizations.of(context).translate("forgot_password"),
-              style: TextStyle(
-                  color: Color.fromRGBO(143, 148, 251, 1),
-                  fontSize: SizeConfig.blockSizeHorizontal * 4,
-                  fontWeight: FontWeight.w400),
-            )
-          ]),
-        ),
-      ),
-    );
+  Future<FirebaseUser> _handleGoogleSignIn() async {
+    // hold the instance of the authenticated user
+    FirebaseUser user;
+    // Flag to check whether we are signed in already
+    bool isSignedIn = await _googleSignIn.isSignedIn();
+    if(isSignedIn){
+      user = await _auth.currentUser();
+    }
+    else{
+      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      // get the credential to (access / id token)
+      // to sign in via Firebase Authentication
+      final AuthCredential credential = GoogleAuthProvider.getCredential(idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+
+      user = (await _auth.signInWithCredential(credential)).user;
+    }
+
+    return user;
   }
 
   _fieldFocusChange(FocusNode currentFocus, FocusNode nextFocus) {

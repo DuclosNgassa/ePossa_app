@@ -1,15 +1,19 @@
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/userDto.dart';
+import 'package:epossa_app/model/user_status.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/signin_page.dart';
 import 'package:epossa_app/pages/navigation/navigation_page.dart';
 import 'package:epossa_app/services/authentication_service.dart';
+import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/services/user_service.dart';
 import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'otp_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -22,6 +26,8 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   AuthenticationService _authenticationService = new AuthenticationService();
   UserService _userService = new UserService();
+  SharedPreferenceService _sharedPreferenceService =
+      new SharedPreferenceService();
 
   FocusNode _phoneNumberFocusNode;
   FocusNode _passwordFocusNode;
@@ -194,7 +200,10 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey[300]),),),
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey[300]),
+                ),
+              ),
               child: TextFormField(
                 autofocus: true,
                 keyboardType: TextInputType.phone,
@@ -347,9 +356,53 @@ class _LoginPageState extends State<LoginPage> {
           _phoneNumberController.text, _passwordController.text);
 
       if (login) {
-        UserDTO user =
+        UserDTO userDTO =
             await _userService.readByPhoneNumber(_phoneNumberController.text);
-        _navigateToStartPage();
+        if(isUserActive(userDTO)) {
+          await _sharedPreferenceService.saveUser(userDTO);
+          _navigateToStartPage();
+        }
+        else if(isUserPending(userDTO)){
+          MyNotification.showInfoFlushbar(
+              context,
+              AppLocalizations.of(context).translate('info'),
+              AppLocalizations.of(context).translate('validate_phone_number'),
+              Icon(
+                Icons.info,
+                size: 28,
+                color: Colors.blue.shade300,
+              ),
+              Colors.blue.shade300,
+              3);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OTPPage(
+                mobileNumber: _phoneNumberController.text,
+              ),
+            ),
+          );
+        }else{
+          MyNotification.showInfoFlushbar(
+              context,
+              AppLocalizations.of(context).translate('error'),
+              AppLocalizations.of(context).translate('account_blocked'),
+              Icon(
+                Icons.info,
+                size: 28,
+                color: Colors.red.shade300,
+              ),
+              Colors.red.shade300,
+              5);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OTPPage(
+                mobileNumber: _phoneNumberController.text,
+              ),
+            ),
+          );
+        }
       } else {
         //TODO implements count number of try and if > 3 block account for 30Min
         MyNotification.showInfoFlushbar(
@@ -386,5 +439,13 @@ class _LoginPageState extends State<LoginPage> {
   _fieldFocusChange(FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  bool isUserActive(UserDTO userDTO) {
+    return userDTO.status == UserStatus.active;
+  }
+
+  bool isUserPending(UserDTO userDTO) {
+    return userDTO.status == UserStatus.pending;
   }
 }

@@ -1,1 +1,1 @@
-enum UserStatus { active, blocked }
+enum UserStatus { pending, active, blocked }

@@ -3,6 +3,8 @@
   "change_name": "Change name",
   "name_please": "Please enter your name",
   "new_name":"Enter your new name",
+  "code": "Code",
+  "code_please":"Enter the code received by sms to complete your registration please",
   "phonenumber": "Phone number",
   "change_phonenumber": "Change phone number",
   "new_phonenumber":"Enter your new phone number",
@@ -111,5 +113,7 @@
   "resp6": "It's easy, just click on the icon 'Account' at the bottom of your screen. There you will have all the informations about your account.",
   "help": "Help",
   "share": "Share",
-  "others": "Other"
+  "others": "Other",
+  "validate_phone_number": "Please validate your phone number with the code we sent to you",
+  "account_blocked": "Your account is blocked. Please contact our administrator +4915251614281"
 }

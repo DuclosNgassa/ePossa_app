@@ -184,6 +184,7 @@ class _ChangePhonenumberPopupState extends State<ChangePhonenumberPopup> {
           logedUser.id,
           logedUser.created_at,
           logedUser.name,
+          logedUser.email,
           _phoneController.text,
           logedUser.device,
           logedUser.status,

@@ -3,6 +3,8 @@
   "change_name": "Changer de nom",
   "name_please": "Entrez votre nom s´il vous plaît",
   "new_name":"Entrez votre nouveau nom.",
+  "code": "Code",
+  "code_please":"Entrez le code recu par sms pour terminer votre enregistrement s´il vous plaît",
   "phonenumber": "Numéro de téléphone",
   "change_phonenumber": "Changer de numéro",
   "new_phonenumber":"Entrez votre nouveau numero de téléphone",
@@ -111,5 +113,7 @@
   "resp6": "C´est facil, cliquez simplement sur l´icône 'Compte' au bas de votre ecran. Là vous aurez toutes les informations sur votre compte.",
   "help": "Aide",
   "share": "Partage",
-  "others": "Autres"
+  "others": "Autres",
+  "validate_phone_number": "Veuillez valider votre numéro de téléphone avec le code que nous vous avons envoyé",
+  "account_blocked": "Votre compte est bloqué. Veuillez contacter notre administrateur +4915251614281"
 }

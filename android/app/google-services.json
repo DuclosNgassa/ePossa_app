@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "61914891468",
+    "firebase_url": "https://epossa-b1fa9.firebaseio.com",
+    "project_id": "epossa-b1fa9",
+    "storage_bucket": "epossa-b1fa9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61914891468:android:ac7563d210d12fef09ae69",
+        "android_client_info": {
+          "package_name": "com.kmerconsulting.epossa_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "61914891468-kcc2teatflgdv51ncsgn4k6j08ia6apq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kmerconsulting.epossa_app",
+            "certificate_hash": "69da95fcc11443819438e2e026c4955bae364c27"
+          }
+        },
+        {
+          "client_id": "61914891468-hear0o7p74tde0ij7o3lqc9rf5id98aq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5QbrNeMxoRYWAGIdCv40oRsNhKLfeZxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "61914891468-hear0o7p74tde0ij7o3lqc9rf5id98aq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

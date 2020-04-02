@@ -180,6 +180,7 @@ class _ChangeNamePopupState extends State<ChangeNamePopup> {
           logedUser.id,
           logedUser.created_at,
           _nameController.text,
+          logedUser.email,
           logedUser.phone,
           logedUser.device,
           logedUser.status,

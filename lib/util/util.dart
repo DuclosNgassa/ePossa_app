@@ -21,6 +21,11 @@ class Util {
           return 'blocked';
         }
         break;
+      case UserStatus.pending:
+        {
+          return 'pending';
+        }
+        break;
     }
     return 'blocked';
   }
@@ -35,6 +40,11 @@ class Util {
       case 'blocked':
         {
           return UserStatus.blocked;
+        }
+        break;
+      case 'pending':
+        {
+          return UserStatus.pending;
         }
         break;
     }
