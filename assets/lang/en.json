@@ -58,6 +58,7 @@
   "error_signin": "Error during registration. Try again, please",
   "try_again": "Please try again",
   "error_login_data": "The phone number and or the password is incorrect",
+  "error_validating_otp": "Error validating OTP",
   "correct_form_errors": "Please correct the errors in your form",
   "error_changing_name": "Error when changing name",
   "error_changing_password": "Error when changing password",

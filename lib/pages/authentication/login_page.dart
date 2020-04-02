@@ -1,8 +1,12 @@
+import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_picker_dropdown.dart';
+import 'package:country_pickers/utils/utils.dart';
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/userDto.dart';
 import 'package:epossa_app/model/user_status.dart';
 import 'package:epossa_app/notification/notification.dart';
+import 'package:epossa_app/pages/authentication/one_time_password_page.dart';
 import 'package:epossa_app/pages/authentication/signin_page.dart';
 import 'package:epossa_app/pages/navigation/navigation_page.dart';
 import 'package:epossa_app/services/authentication_service.dart';
@@ -12,8 +16,7 @@ import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'otp_page.dart';
+import 'package:flutter_otp/flutter_otp.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -28,6 +31,10 @@ class _LoginPageState extends State<LoginPage> {
   UserService _userService = new UserService();
   SharedPreferenceService _sharedPreferenceService =
       new SharedPreferenceService();
+  FlutterOtp _flutterOtp = new FlutterOtp();
+  Country _countryChoosed;
+  bool obscurePassword;
+  String _phoneNumber;
 
   FocusNode _phoneNumberFocusNode;
   FocusNode _passwordFocusNode;
@@ -37,6 +44,9 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     _phoneNumberFocusNode = new FocusNode();
     _passwordFocusNode = new FocusNode();
+    obscurePassword = true;
+    _countryChoosed = CountryPickerUtils.getCountryByIsoCode('CM');
+    _phoneNumber = "";
   }
 
   @override
@@ -68,27 +78,6 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       _buildBackground(),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: SizeConfig.blockSizeVertical * 5),
-                        child: Column(
-                          children: <Widget>[
-                            _buildLoginInput(),
-                            SizedBox(
-                              height: SizeConfig.blockSizeVertical * 2,
-                            ),
-                            _buildLoginButton(),
-                            SizedBox(
-                              height: SizeConfig.blockSizeVertical * 2,
-                            ),
-                            _buildSignInButton(),
-                            SizedBox(
-                              height: SizeConfig.blockSizeVertical * 3,
-                            ),
-                            _buildPasswordForgottenButton(),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -102,17 +91,29 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildBackground() {
     return Container(
-      height: SizeConfig.screenHeight * 0.5,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/background.png'),
-              fit: BoxFit.fill)),
+      height: SizeConfig.screenHeight,
       child: Stack(
         children: <Widget>[
           Positioned(
+            left: 0,
+            width: SizeConfig.screenWidth,
+            height: SizeConfig.blockSizeVertical * 35,
+            child: FadeAnimation(
+              1.3,
+              Container(
+                height: SizeConfig.screenHeight * 0.4,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/background.png'),
+                      fit: BoxFit.fill),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
             left: SizeConfig.blockSizeHorizontal * 6,
             width: SizeConfig.blockSizeHorizontal * 20,
-            height: SizeConfig.blockSizeVertical * 35,
+            height: SizeConfig.blockSizeVertical * 20,
             child: FadeAnimation(
               1,
               Container(
@@ -127,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
           Positioned(
             left: SizeConfig.blockSizeHorizontal * 35,
             width: SizeConfig.blockSizeHorizontal * 25,
-            height: SizeConfig.blockSizeVertical * 22,
+            height: SizeConfig.blockSizeVertical * 15,
             child: FadeAnimation(
               1.3,
               Container(
@@ -143,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
             right: SizeConfig.blockSizeHorizontal * 10,
             top: SizeConfig.blockSizeVertical * 5,
             width: SizeConfig.blockSizeHorizontal * 25,
-            height: SizeConfig.blockSizeVertical * 22,
+            height: SizeConfig.blockSizeVertical * 10,
             child: FadeAnimation(
               1.6,
               Container(
@@ -157,16 +158,40 @@ class _LoginPageState extends State<LoginPage> {
           ),
           Positioned(
             child: Container(
-              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 10),
-              child: _buildFormTitle(context),
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 20),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeVertical * 5),
+                child: Column(
+                  children: <Widget>[
+                    _buildFormTitle(),
+                    SizedBox(
+                      height: SizeConfig.blockSizeVertical * 8,
+                    ),
+                    _buildLoginInput(),
+                    SizedBox(
+                      height: SizeConfig.blockSizeVertical * 2,
+                    ),
+                    _buildLoginButton(),
+                    SizedBox(
+                      height: SizeConfig.blockSizeVertical * 2,
+                    ),
+                    _buildSignInButton(),
+                    SizedBox(
+                      height: SizeConfig.blockSizeVertical * 3,
+                    ),
+                    _buildPasswordForgottenButton(),
+                  ],
+                ),
+              ),
             ),
-          ),
+          )
         ],
       ),
     );
   }
 
-  Widget _buildFormTitle(BuildContext context) {
+  Widget _buildFormTitle() {
     return FadeAnimation(
       1.9,
       Center(
@@ -204,36 +229,16 @@ class _LoginPageState extends State<LoginPage> {
                   bottom: BorderSide(color: Colors.grey[300]),
                 ),
               ),
-              child: TextFormField(
-                autofocus: true,
-                keyboardType: TextInputType.phone,
-                controller: _phoneNumberController,
-                textInputAction: TextInputAction.next,
-                focusNode: _phoneNumberFocusNode,
-                onFieldSubmitted: (term) {
-                  _fieldFocusChange(_phoneNumberFocusNode, _passwordFocusNode);
-                },
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.phone_iphone),
-                  hintStyle: TextStyle(
-                    color: Colors.grey.withOpacity(.8),
-                  ),
-                  hintText:
-                      AppLocalizations.of(context).translate("phonenumber"),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: SizeConfig.blockSizeHorizontal * 4,
                 ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return AppLocalizations.of(context)
-                        .translate('phonenumber_please');
-                  }
-                  return null;
-                },
+                child: _buildCountryPickerDropdown(),
               ),
             ),
             Container(
               child: TextFormField(
-                obscureText: true,
+                obscureText: obscurePassword,
                 controller: _passwordController,
                 focusNode: _passwordFocusNode,
                 onFieldSubmitted: (term) {
@@ -242,6 +247,7 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   prefixIcon: Icon(Icons.lock),
+                  suffixIcon: getPasswordSuffixIcon(),
                   hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
                   hintText: AppLocalizations.of(context).translate("password"),
                 ),
@@ -257,6 +263,100 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCountryPickerDropdown(
+      {bool filtered = true,
+      bool sortedByIsoCode = true,
+      bool hasPriorityList = false}) {
+    return Row(
+      children: <Widget>[
+        CountryPickerDropdown(
+          initialValue: 'CM',
+          itemBuilder: _buildDropdownItem,
+          itemFilter: filtered ? (c) => ['CM', 'DE'].contains(c.isoCode) : null,
+          priorityList: hasPriorityList
+              ? [
+                  CountryPickerUtils.getCountryByIsoCode('CM'),
+                  CountryPickerUtils.getCountryByIsoCode('DE'),
+                ]
+              : null,
+          sortComparator: sortedByIsoCode
+              ? (Country a, Country b) => a.isoCode.compareTo(b.isoCode)
+              : null,
+          onValuePicked: (Country country) {
+            _countryChoosed = country;
+            print("${_countryChoosed.iso3Code + " " + _countryChoosed.name}");
+          },
+        ),
+        SizedBox(
+          width: SizeConfig.blockSizeHorizontal,
+        ),
+        Expanded(
+          child: TextFormField(
+            autofocus: true,
+            keyboardType: TextInputType.phone,
+            controller: _phoneNumberController,
+            textInputAction: TextInputAction.next,
+            focusNode: _phoneNumberFocusNode,
+            onFieldSubmitted: (term) {
+              _fieldFocusChange(_phoneNumberFocusNode, _passwordFocusNode);
+            },
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintStyle: TextStyle(
+                color: Colors.grey.withOpacity(.8),
+              ),
+              hintText: AppLocalizations.of(context).translate("phonenumber"),
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return AppLocalizations.of(context)
+                    .translate('phonenumber_please');
+              }
+              return null;
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildDropdownItem(Country country) {
+    return Container(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            width: SizeConfig.blockSizeHorizontal * 6,
+            child: CountryPickerUtils.getDefaultFlagImage(country),
+          ),
+          SizedBox(
+            width: SizeConfig.blockSizeHorizontal * 2,
+          ),
+          Container(
+            width: SizeConfig.blockSizeHorizontal * 20,
+            child: Text("+${country.phoneCode}(${country.isoCode})"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getPasswordSuffixIcon() {
+    return IconButton(
+      icon: Icon(
+        // Based on obscurePassword1 state choose the icon
+        obscurePassword ? Icons.visibility : Icons.visibility_off,
+        color: Theme.of(context).primaryColorDark,
+      ),
+      onPressed: () {
+        // Update the state i.e. toogle the state of obscurePassword1 variable
+        setState(() {
+          obscurePassword = !obscurePassword;
+        });
+      },
     );
   }
 
@@ -320,7 +420,7 @@ class _LoginPageState extends State<LoginPage> {
     return FadeAnimation(
       3.1,
       GestureDetector(
-        onTap: () => print("Password forgotten..."),
+        onTap: () => openPasswordForgotten(),
         child: RichText(
           text: TextSpan(children: [
             TextSpan(
@@ -338,6 +438,8 @@ class _LoginPageState extends State<LoginPage> {
 
   _login() async {
     final FormState form = _formKey.currentState;
+    _phoneNumber =
+        "+" + _countryChoosed.phoneCode + _phoneNumberController.text.trim();
 
     if (!form.validate()) {
       MyNotification.showInfoFlushbar(
@@ -353,16 +455,14 @@ class _LoginPageState extends State<LoginPage> {
           2);
     } else {
       bool login = await _authenticationService.login(
-          _phoneNumberController.text, _passwordController.text);
+          _phoneNumber, _passwordController.text);
 
       if (login) {
-        UserDTO userDTO =
-            await _userService.readByPhoneNumber(_phoneNumberController.text);
-        if(isUserActive(userDTO)) {
+        UserDTO userDTO = await _userService.readByPhoneNumber(_phoneNumber);
+        if (isUserActive(userDTO)) {
           await _sharedPreferenceService.saveUser(userDTO);
           _navigateToStartPage();
-        }
-        else if(isUserPending(userDTO)){
+        } else if (isUserPending(userDTO)) {
           MyNotification.showInfoFlushbar(
               context,
               AppLocalizations.of(context).translate('info'),
@@ -374,15 +474,14 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Colors.blue.shade300,
               3);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OTPPage(
-                mobileNumber: _phoneNumberController.text,
-              ),
-            ),
-          );
-        }else{
+
+          _flutterOtp.sendOtp(_phoneNumberController.text.trim(), null, 100000,
+              999999, "+" + _countryChoosed.phoneCode);
+
+          showOneTimePasswordPage("+" +
+              _countryChoosed.phoneCode +
+              _phoneNumberController.text.trim());
+        } else {
           MyNotification.showInfoFlushbar(
               context,
               AppLocalizations.of(context).translate('error'),
@@ -397,7 +496,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => OTPPage(
+              builder: (context) => OneTimePasswordPage(
                 mobileNumber: _phoneNumberController.text,
               ),
             ),
@@ -447,5 +546,79 @@ class _LoginPageState extends State<LoginPage> {
 
   bool isUserPending(UserDTO userDTO) {
     return userDTO.status == UserStatus.pending;
+  }
+
+  Future showOneTimePasswordPage(String phonenumber) async {
+    String enteredCode = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return OneTimePasswordPage(
+            mobileNumber: phonenumber,
+          );
+        },
+      ),
+    );
+
+    bool resultOtp = _flutterOtp.resultChecker(int.parse(enteredCode));
+    if (resultOtp) {
+      // log user in to receive jwt and make update on user status
+      await LoginAndActivateUser();
+    } else {
+      MyNotification.showInfoFlushbar(
+          context,
+          AppLocalizations.of(context).translate('error'),
+          AppLocalizations.of(context).translate('error_validating_otp') +
+              "\n" +
+              AppLocalizations.of(context).translate('try_again'),
+          Icon(
+            Icons.error,
+            size: 28,
+            color: Colors.red.shade300,
+          ),
+          Colors.red.shade300,
+          3);
+    }
+  }
+
+  Future LoginAndActivateUser() async {
+    // log user in to receive jwt and make update on user status
+    bool login = await _authenticationService.login(
+        _phoneNumber, _passwordController.text);
+    //Sometime the first login doesnt work
+    if (!login) {
+      login = await _authenticationService.login(
+          _phoneNumber, _passwordController.text);
+    }
+    if (login) {
+      await updateUser(_phoneNumber);
+      _navigateToStartPage();
+    } else {
+      MyNotification.showInfoFlushbar(
+          context,
+          AppLocalizations.of(context).translate('error'),
+          AppLocalizations.of(context).translate('error_login_data') +
+              "\n" +
+              AppLocalizations.of(context).translate('try_again'),
+          Icon(
+            Icons.error,
+            size: 28,
+            color: Colors.red.shade300,
+          ),
+          Colors.red.shade300,
+          3);
+    }
+  }
+
+  Future updateUser(String phoneNumber) async {
+    UserDTO userDTO = await _userService.readByPhoneNumber(phoneNumber);
+    await _sharedPreferenceService.saveUser(userDTO);
+
+    userDTO.status = UserStatus.active;
+
+    UserDTO updatedUser = await _userService.update(userDTO);
+  }
+
+  openPasswordForgotten() {
+    //TODO implements me please
   }
 }
