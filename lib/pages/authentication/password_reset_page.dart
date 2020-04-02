@@ -3,11 +3,10 @@ import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/utils/utils.dart';
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
+import 'package:epossa_app/model/reset_password.dart';
 import 'package:epossa_app/model/userDto.dart';
-import 'package:epossa_app/model/user_status.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/one_time_password_page.dart';
-import 'package:epossa_app/pages/authentication/password_reset_page.dart';
 import 'package:epossa_app/pages/authentication/signin_page.dart';
 import 'package:epossa_app/pages/navigation/navigation_page.dart';
 import 'package:epossa_app/services/authentication_service.dart';
@@ -15,40 +14,50 @@ import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/services/user_service.dart';
 import 'package:epossa_app/styling/global_color.dart';
 import 'package:epossa_app/styling/size_config.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_otp/flutter_otp.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-class LoginPage extends StatefulWidget {
+import 'login_page.dart';
+
+class PasswordResetPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _PasswordResetPageState createState() => _PasswordResetPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _PasswordResetPageState extends State<PasswordResetPage> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final int minvalue = 100000;
   final int maxvalue = 999999;
 
-  TextEditingController _phoneNumberController = new TextEditingController();
-  TextEditingController _passwordController = new TextEditingController();
   AuthenticationService _authenticationService = new AuthenticationService();
   UserService _userService = new UserService();
   SharedPreferenceService _sharedPreferenceService =
       new SharedPreferenceService();
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  FirebaseUser firebaseUser;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  TextEditingController _phoneNumberController = new TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
+
   FlutterOtp _flutterOtp = new FlutterOtp();
+
   Country _countryChoosed;
-  bool obscurePassword;
   String _phoneNumber;
 
   FocusNode _phoneNumberFocusNode;
-  FocusNode _passwordFocusNode;
+  FocusNode _emailFocusNode;
 
   @override
   void initState() {
     super.initState();
     _phoneNumberFocusNode = new FocusNode();
-    _passwordFocusNode = new FocusNode();
-    obscurePassword = true;
+    _emailFocusNode = new FocusNode();
+
     _countryChoosed = CountryPickerUtils.getCountryByIsoCode('CM');
     _phoneNumber = "";
   }
@@ -57,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     //Clean up the controller when the widget is disposed
     _phoneNumberController.dispose();
-    _passwordController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
@@ -172,19 +181,19 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: SizeConfig.blockSizeVertical * 8,
                     ),
-                    _buildLoginInput(),
+                    _buildPasswordResetInput(),
+                    SizedBox(
+                      height: SizeConfig.blockSizeVertical * 2,
+                    ),
+                    _buildPasswordResetButton(),
                     SizedBox(
                       height: SizeConfig.blockSizeVertical * 2,
                     ),
                     _buildLoginButton(),
                     SizedBox(
-                      height: SizeConfig.blockSizeVertical * 2,
-                    ),
-                    _buildSignInButton(),
-                    SizedBox(
                       height: SizeConfig.blockSizeVertical * 3,
                     ),
-                    _buildPasswordForgottenButton(),
+                    _buildSignInButton(),
                   ],
                 ),
               ),
@@ -200,7 +209,7 @@ class _LoginPageState extends State<LoginPage> {
       1.9,
       Center(
         child: Text(
-          AppLocalizations.of(context).translate("login"),
+          AppLocalizations.of(context).translate("reset_password"),
           style: TextStyle(
               color: GlobalColor.colorWhite,
               fontSize: SizeConfig.blockSizeHorizontal * 9,
@@ -210,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildLoginInput() {
+  Widget _buildPasswordResetInput() {
     return FadeAnimation(
       2.2,
       Container(
@@ -242,23 +251,26 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Container(
               child: TextFormField(
-                obscureText: obscurePassword,
-                controller: _passwordController,
-                focusNode: _passwordFocusNode,
+                onTap: () => onGoogleSignIn(),
+                autofocus: true,
+                keyboardType: TextInputType.text,
+                controller: _emailController,
+                textInputAction: TextInputAction.next,
+                focusNode: _emailFocusNode,
                 onFieldSubmitted: (term) {
-                  //TODO doLogin()
                 },
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  prefixIcon: Icon(Icons.lock),
-                  suffixIcon: getPasswordSuffixIcon(),
-                  hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
-                  hintText: AppLocalizations.of(context).translate("password"),
+                  prefixIcon: Icon(Icons.email),
+                  hintStyle: TextStyle(
+                    color: Colors.grey.withOpacity(.8),
+                  ),
+                  hintText: AppLocalizations.of(context).translate("email"),
                 ),
                 validator: (value) {
                   if (value.isEmpty) {
                     return AppLocalizations.of(context)
-                        .translate('password_please');
+                        .translate('email_please');
                   }
                   return null;
                 },
@@ -304,9 +316,7 @@ class _LoginPageState extends State<LoginPage> {
             controller: _phoneNumberController,
             textInputAction: TextInputAction.next,
             focusNode: _phoneNumberFocusNode,
-            onFieldSubmitted: (term) {
-              _fieldFocusChange(_phoneNumberFocusNode, _passwordFocusNode);
-            },
+            onFieldSubmitted: (term) {},
             decoration: InputDecoration(
               border: InputBorder.none,
               hintStyle: TextStyle(
@@ -348,27 +358,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget getPasswordSuffixIcon() {
-    return IconButton(
-      icon: Icon(
-        // Based on obscurePassword1 state choose the icon
-        obscurePassword ? Icons.visibility : Icons.visibility_off,
-        color: Theme.of(context).primaryColorDark,
-      ),
-      onPressed: () {
-        // Update the state i.e. toogle the state of obscurePassword1 variable
-        setState(() {
-          obscurePassword = !obscurePassword;
-        });
-      },
-    );
-  }
-
-  Widget _buildLoginButton() {
+  Widget _buildPasswordResetButton() {
     return FadeAnimation(
       2.5,
       GestureDetector(
-        onTap: () => _login(),
+        onTap: () => resetPassword(),
         child: Container(
           //width: 120,
           height: SizeConfig.blockSizeVertical * 8,
@@ -380,7 +374,9 @@ class _LoginPageState extends State<LoginPage> {
               ])),
           child: Center(
             child: Text(
-              AppLocalizations.of(context).translate("login").toUpperCase(),
+              AppLocalizations.of(context)
+                  .translate("reset_password")
+                  .toUpperCase(),
               style: TextStyle(
                   color: GlobalColor.colorWhite,
                   fontSize: SizeConfig.blockSizeHorizontal * 4,
@@ -388,6 +384,34 @@ class _LoginPageState extends State<LoginPage> {
                   fontFamily: 'OpenSans'),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoginButton() {
+    return FadeAnimation(
+      2.7,
+      GestureDetector(
+        onTap: () => navigateToLogin(),
+        child: RichText(
+          text: TextSpan(children: [
+            TextSpan(
+              text:
+                  AppLocalizations.of(context).translate("already_registered"),
+              style: TextStyle(
+                  color: Color.fromRGBO(143, 148, 251, 1),
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
+                  fontWeight: FontWeight.w400),
+            ),
+            TextSpan(
+              text: AppLocalizations.of(context).translate("to_login"),
+              style: TextStyle(
+                  color: Color.fromRGBO(143, 148, 251, 1),
+                  fontSize: SizeConfig.blockSizeHorizontal * 4,
+                  fontWeight: FontWeight.bold),
+            ),
+          ]),
         ),
       ),
     );
@@ -420,29 +444,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildPasswordForgottenButton() {
-    return FadeAnimation(
-      3.1,
-      GestureDetector(
-        onTap: () => _navigateToPasswordReset(),
-        child: RichText(
-          text: TextSpan(children: [
-            TextSpan(
-              text: AppLocalizations.of(context).translate("forgot_password"),
-              style: TextStyle(
-                  color: Color.fromRGBO(143, 148, 251, 1),
-                  fontSize: SizeConfig.blockSizeHorizontal * 4,
-                  fontWeight: FontWeight.w400),
-            )
-          ]),
-        ),
-      ),
-    );
-  }
-
-  _login() async {
+  resetPassword() async {
     final FormState form = _formKey.currentState;
-
     if (!form.validate()) {
       MyNotification.showInfoFlushbar(
           context,
@@ -459,103 +462,11 @@ class _LoginPageState extends State<LoginPage> {
       _phoneNumber =
           "+" + _countryChoosed.phoneCode + _phoneNumberController.text.trim();
 
-      bool login = await _authenticationService.login(
-          _phoneNumber, _passwordController.text);
+      _flutterOtp.sendOtp(_phoneNumberController.text.trim(), null, minvalue,
+          maxvalue, "+" + _countryChoosed.phoneCode);
 
-      if (login) {
-        UserDTO userDTO = await _userService.readByPhoneNumber(_phoneNumber);
-        if (isUserActive(userDTO)) {
-          await _sharedPreferenceService.saveUser(userDTO);
-          _navigateToStartPage();
-        } else if (isUserPending(userDTO)) {
-          MyNotification.showInfoFlushbar(
-              context,
-              AppLocalizations.of(context).translate('info'),
-              AppLocalizations.of(context).translate('validate_phone_number'),
-              Icon(
-                Icons.info,
-                size: 28,
-                color: Colors.blue.shade300,
-              ),
-              Colors.blue.shade300,
-              3);
-
-          _flutterOtp.sendOtp(_phoneNumberController.text.trim(), null, minvalue,
-              maxvalue, "+" + _countryChoosed.phoneCode);
-
-          showOneTimePasswordPage(_phoneNumber);
-        } else {
-          MyNotification.showInfoFlushbar(
-              context,
-              AppLocalizations.of(context).translate('error'),
-              AppLocalizations.of(context).translate('account_blocked'),
-              Icon(
-                Icons.info,
-                size: 28,
-                color: Colors.red.shade300,
-              ),
-              Colors.red.shade300,
-              5);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OneTimePasswordPage(
-                mobileNumber: _phoneNumberController.text,
-              ),
-            ),
-          );
-        }
-      } else {
-        //TODO implements count number of try and if > 3 block account for 30Min
-        MyNotification.showInfoFlushbar(
-            context,
-            AppLocalizations.of(context).translate('error'),
-            AppLocalizations.of(context).translate('error_login_data') +
-                "\n" +
-                AppLocalizations.of(context).translate('try_again'),
-            Icon(
-              Icons.error,
-              size: 28,
-              color: Colors.red.shade300,
-            ),
-            Colors.red.shade300,
-            3);
-      }
+      showOneTimePasswordPage(_phoneNumber);
     }
-  }
-
-  _navigateToStartPage() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => NavigationPage()),
-    );
-  }
-
-  navigateToSignIn() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => SignInPage()),
-    );
-  }
-
-  _navigateToPasswordReset() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => PasswordResetPage()),
-    );
-  }
-
-  _fieldFocusChange(FocusNode currentFocus, FocusNode nextFocus) {
-    currentFocus.unfocus();
-    FocusScope.of(context).requestFocus(nextFocus);
-  }
-
-  bool isUserActive(UserDTO userDTO) {
-    return userDTO.status == UserStatus.active;
-  }
-
-  bool isUserPending(UserDTO userDTO) {
-    return userDTO.status == UserStatus.pending;
   }
 
   Future showOneTimePasswordPage(String phonenumber) async {
@@ -571,8 +482,38 @@ class _LoginPageState extends State<LoginPage> {
 
     bool resultOtp = _flutterOtp.resultChecker(int.parse(enteredCode));
     if (resultOtp) {
-      // log user in to receive jwt and make update on user status
-      await LoginAndActivateUser();
+      ResetPassword resetPassword =
+          new ResetPassword(_phoneNumber, _emailController.text, enteredCode);
+      bool passwordReseted =
+          await _authenticationService.resetPassword(resetPassword);
+
+      if (passwordReseted) {
+        MyNotification.showInfoFlushbar(
+            context,
+            AppLocalizations.of(context).translate('info'),
+            AppLocalizations.of(context).translate('password_reseted_success'),
+            Icon(
+              Icons.info,
+              size: 28,
+              color: Colors.blue.shade300,
+            ),
+            Colors.blue.shade300,
+            10);
+        // log user in to receive jwt and make update on user status
+        await doLogin(enteredCode);
+      } else {
+        MyNotification.showInfoFlushbar(
+            context,
+            AppLocalizations.of(context).translate('error'),
+            AppLocalizations.of(context).translate('password_reseted_error'),
+            Icon(
+              Icons.error,
+              size: 28,
+              color: Colors.red.shade300,
+            ),
+            Colors.red.shade300,
+            3);
+      }
     } else {
       MyNotification.showInfoFlushbar(
           context,
@@ -590,42 +531,78 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future LoginAndActivateUser() async {
+  Future doLogin(String tempPassword) async {
     // log user in to receive jwt and make update on user status
-    bool login = await _authenticationService.login(
-        _phoneNumber, _passwordController.text);
+    bool login = await _authenticationService.login(_phoneNumber, tempPassword);
+
     //Sometime the first login doesnt work
     if (!login) {
-      login = await _authenticationService.login(
-          _phoneNumber, _passwordController.text);
+      login = await _authenticationService.login(_phoneNumber, tempPassword);
     }
     if (login) {
-      await updateUser(_phoneNumber);
+      UserDTO userDTO = await _userService.readByPhoneNumber(_phoneNumber);
+      await _sharedPreferenceService.saveUser(userDTO);
+
       _navigateToStartPage();
     } else {
-      MyNotification.showInfoFlushbar(
-          context,
-          AppLocalizations.of(context).translate('error'),
-          AppLocalizations.of(context).translate('error_login_data') +
-              "\n" +
-              AppLocalizations.of(context).translate('try_again'),
-          Icon(
-            Icons.error,
-            size: 28,
-            color: Colors.red.shade300,
-          ),
-          Colors.red.shade300,
-          3);
+      // automatic login not possible for some reason. Let the user login manually
+      navigateToLogin();
     }
   }
 
-  Future updateUser(String phoneNumber) async {
-    UserDTO userDTO = await _userService.readByPhoneNumber(phoneNumber);
-    await _sharedPreferenceService.saveUser(userDTO);
-
-    userDTO.status = UserStatus.active;
-
-    UserDTO updatedUser = await _userService.update(userDTO);
+  void onGoogleSignIn() async {
+    firebaseUser = await _handleGoogleSignIn();
+    _emailController.text = firebaseUser.email;
+    setState(() {});
   }
 
+  Future<FirebaseUser> _handleGoogleSignIn() async {
+    // hold the instance of the authenticated user
+    FirebaseUser user;
+    // Flag to check whether we are signed in already
+    bool isSignedIn = await _googleSignIn.isSignedIn();
+    if (isSignedIn) {
+      user = await _auth.currentUser();
+    } else {
+      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // get the credential to (access / id token)
+      // to sign in via Firebase Authentication
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+          idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+
+      user = (await _auth.signInWithCredential(credential)).user;
+    }
+
+    return user;
+  }
+
+  navigateToLogin() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
+  navigateToSignIn() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => SignInPage()),
+    );
+  }
+
+  _navigateToStartPage() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => NavigationPage()),
+    );
+  }
+
+  _fieldFocusChange(FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
+  }
 }

@@ -1,8 +1,8 @@
-class LoginViewModel {
+class Login {
   String phone;
   String password;
 
-  LoginViewModel(this.phone, this.password);
+  Login(this.phone, this.password);
 
   Map<String, dynamic> toJson() => {
         'username': phone,
@@ -10,8 +10,8 @@ class LoginViewModel {
       };
 
   @override
-  factory LoginViewModel.fromJson(Map<String, dynamic> json) {
-    return LoginViewModel(
+  factory Login.fromJson(Map<String, dynamic> json) {
+    return Login(
       json["username"],
       json["password"],
     );

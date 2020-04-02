@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:epossa_app/model/LoginViewModel.dart';
+import 'package:epossa_app/model/login_model.dart';
+import 'package:epossa_app/model/reset_password.dart';
 import 'package:epossa_app/model/user.dart';
 import 'package:epossa_app/model/userDto.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
@@ -33,15 +34,34 @@ class AuthenticationService {
   }
 
   Future<bool> login(String phone, String password) async {
-    LoginViewModel loginViewModel = new LoginViewModel(phone, password);
+    Login loginViewModel = new Login(phone, password);
     return await _login(loginViewModel);
   }
 
-  Future<bool> _login(LoginViewModel loginViewModel) async {
+  Future<bool> _login(Login loginViewModel) async {
     HttpClientRequest request =
         await HttpClient().postUrl(Uri.parse('$URL_LOGIN'))
           ..headers.contentType = ContentType.json
           ..write(jsonEncode(loginViewModel));
+    HttpClientResponse response = await request.close();
+
+    if (response.statusCode == HttpStatus.ok) {
+      List<String> responseTokens = response.headers[AUTHORIZATION_TOKEN];
+
+      if (responseTokens.length > 0) {
+        String jwBearerToken = responseTokens[0];
+        _sharedPreferenceService.save(AUTHORIZATION_TOKEN, jwBearerToken);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<bool> resetPassword(ResetPassword resetPassword) async {
+    HttpClientRequest request =
+        await HttpClient().postUrl(Uri.parse('$URL_PASSWORD_RESET'))
+          ..headers.contentType = ContentType.json
+          ..write(jsonEncode(resetPassword));
     HttpClientResponse response = await request.close();
 
     if (response.statusCode == HttpStatus.ok) {

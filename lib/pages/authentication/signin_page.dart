@@ -9,6 +9,7 @@ import 'package:epossa_app/model/userRole.dart';
 import 'package:epossa_app/model/user_status.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/login_page.dart';
+import 'package:epossa_app/pages/authentication/password_reset_page.dart';
 import 'package:epossa_app/pages/navigation/navigation_page.dart';
 import 'package:epossa_app/services/authentication_service.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
@@ -458,7 +459,7 @@ class _SignInPageState extends State<SignInPage> {
     return FadeAnimation(
       2.7,
       GestureDetector(
-        onTap: () => _login(),
+        onTap: () => navigateToLogin(),
         child: RichText(
           text: TextSpan(children: [
             TextSpan(
@@ -486,7 +487,7 @@ class _SignInPageState extends State<SignInPage> {
     return FadeAnimation(
       2.9,
       GestureDetector(
-        onTap: () => print("Password forgotten..."),
+        onTap: () => _navigateToPasswordReset(),
         child: RichText(
           text: TextSpan(children: [
             TextSpan(
@@ -539,9 +540,7 @@ class _SignInPageState extends State<SignInPage> {
           _flutterOtp.sendOtp(_phoneNumberController.text.trim(), null, 100000,
               999999, "+" + _countryChoosed.phoneCode);
 
-          showOneTimePasswordPage("+" +
-              _countryChoosed.phoneCode +
-              _phoneNumberController.text.trim());
+          showOneTimePasswordPage(_phoneNumber);
         } else {
           MyNotification.showInfoFlushbar(
               context,
@@ -571,7 +570,7 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
-  _login() {
+  navigateToLogin() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
@@ -759,6 +758,13 @@ class _SignInPageState extends State<SignInPage> {
           builder: (context) => NavigationPage(),
         ),
         (Route<dynamic> route) => false);
+  }
+
+  _navigateToPasswordReset() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => PasswordResetPage()),
+    );
   }
 
   Future updateUser(String phoneNumber) async {
