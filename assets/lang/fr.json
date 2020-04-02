@@ -1,7 +1,9 @@
 {
   "name": "Nom",
+  "email": "Email",
   "change_name": "Changer de nom",
   "name_please": "Entrez votre nom s´il vous plaît",
+  "email_please": "Entrez votre email s´il vous plaît",
   "new_name":"Entrez votre nouveau nom.",
   "code": "Code",
   "code_please":"Entrez le code recu par sms pour terminer votre enregistrement s´il vous plaît",

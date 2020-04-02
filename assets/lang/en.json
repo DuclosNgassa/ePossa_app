@@ -1,7 +1,9 @@
 {
   "name": "Name",
+  "email": "Email",
   "change_name": "Change name",
   "name_please": "Please enter your name",
+  "email_please": "Please enter your email",
   "new_name":"Enter your new name",
   "code": "Code",
   "code_please":"Enter the code received by sms to complete your registration please",

@@ -26,8 +26,10 @@ class _SignInPageState extends State<SignInPage> {
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseUser firebaseUser;
 
   TextEditingController _nameController = new TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
   TextEditingController _phoneNumberController = new TextEditingController();
   TextEditingController _password1Controller = new TextEditingController();
   TextEditingController _password2Controller = new TextEditingController();
@@ -37,6 +39,7 @@ class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   FocusNode _nameFocusNode;
+  FocusNode _emailFocusNode;
   FocusNode _phoneNumberFocusNode;
   FocusNode _password1FocusNode;
   FocusNode _password2FocusNode;
@@ -45,6 +48,7 @@ class _SignInPageState extends State<SignInPage> {
   void initState() {
     super.initState();
     _nameFocusNode = new FocusNode();
+    _emailFocusNode = new FocusNode();
     _phoneNumberFocusNode = new FocusNode();
     _password1FocusNode = new FocusNode();
     _password2FocusNode = new FocusNode();
@@ -54,6 +58,7 @@ class _SignInPageState extends State<SignInPage> {
   void dispose() {
     //Clean up the controller when the widget is disposed
     _nameController.dispose();
+    _emailController.dispose();
     _phoneNumberController.dispose();
     _password1Controller.dispose();
     _password2Controller.dispose();
@@ -226,7 +231,7 @@ class _SignInPageState extends State<SignInPage> {
                 textInputAction: TextInputAction.next,
                 focusNode: _nameFocusNode,
                 onFieldSubmitted: (term) {
-                  _fieldFocusChange(_nameFocusNode, _phoneNumberFocusNode);
+                  _fieldFocusChange(_nameFocusNode, _emailFocusNode);
                 },
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -240,6 +245,39 @@ class _SignInPageState extends State<SignInPage> {
                   if (value.isEmpty) {
                     return AppLocalizations.of(context)
                         .translate('name_please');
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey[300]),
+                ),
+              ),
+              child: TextFormField(
+                onTap: () => onGoogleSignIn(),
+                autofocus: true,
+                keyboardType: TextInputType.text,
+                controller: _emailController,
+                textInputAction: TextInputAction.next,
+                focusNode: _emailFocusNode,
+                onFieldSubmitted: (term) {
+                  _fieldFocusChange(_emailFocusNode, _phoneNumberFocusNode);
+                },
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.email),
+                  hintStyle: TextStyle(
+                    color: Colors.grey.withOpacity(.8),
+                  ),
+                  hintText: AppLocalizations.of(context).translate("email"),
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return AppLocalizations.of(context)
+                        .translate('email_please');
                   }
                   return null;
                 },
@@ -435,7 +473,7 @@ class _SignInPageState extends State<SignInPage> {
       if (_password1Controller.text == _password2Controller.text) {
         User user = new User(
             _nameController.text.trim(),
-            _nameController.text.trim(),
+            _emailController.text.trim(),
             _phoneNumberController.text.trim(),
             _password1Controller.text,
             "deviceToken" + _nameController.text,
@@ -513,6 +551,13 @@ class _SignInPageState extends State<SignInPage> {
     }
 
     return user;
+  }
+
+  void onGoogleSignIn() async {
+    firebaseUser = await _handleGoogleSignIn();
+    _emailController.text = firebaseUser.email;
+    setState(() {
+    });
   }
 
   _fieldFocusChange(FocusNode currentFocus, FocusNode nextFocus) {
