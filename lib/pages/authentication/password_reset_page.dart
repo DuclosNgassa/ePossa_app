@@ -482,8 +482,8 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
 
     bool resultOtp = _flutterOtp.resultChecker(int.parse(enteredCode));
     if (resultOtp) {
-      ResetPassword resetPassword =
-          new ResetPassword(_phoneNumber, _emailController.text, enteredCode);
+      PasswordReset resetPassword =
+          new PasswordReset(_phoneNumber, _emailController.text, enteredCode);
       bool passwordReseted =
           await _authenticationService.resetPassword(resetPassword);
 

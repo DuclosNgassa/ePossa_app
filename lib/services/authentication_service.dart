@@ -57,7 +57,7 @@ class AuthenticationService {
     return false;
   }
 
-  Future<bool> resetPassword(ResetPassword resetPassword) async {
+  Future<bool> resetPassword(PasswordReset resetPassword) async {
     HttpClientRequest request =
         await HttpClient().postUrl(Uri.parse('$URL_PASSWORD_RESET'))
           ..headers.contentType = ContentType.json

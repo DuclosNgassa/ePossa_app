@@ -1,9 +1,9 @@
-class ResetPassword {
+class PasswordReset {
   String phone;
   String email;
   String temppassword;
 
-  ResetPassword(this.phone, this.email, this.temppassword);
+  PasswordReset(this.phone, this.email, this.temppassword);
 
   Map<String, dynamic> toJson() => {
         'username': phone,
@@ -12,8 +12,8 @@ class ResetPassword {
       };
 
   @override
-  factory ResetPassword.fromJson(Map<String, dynamic> json) {
-    return ResetPassword(
+  factory PasswordReset.fromJson(Map<String, dynamic> json) {
+    return PasswordReset(
       json["username"],
       json["email"],
       json["temppassword"],
