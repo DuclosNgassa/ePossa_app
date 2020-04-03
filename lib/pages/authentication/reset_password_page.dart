@@ -4,11 +4,9 @@ import 'package:country_pickers/utils/utils.dart';
 import 'package:epossa_app/animations/fade_animation.dart';
 import 'package:epossa_app/localization/app_localizations.dart';
 import 'package:epossa_app/model/reset_password.dart';
-import 'package:epossa_app/model/userDto.dart';
 import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/one_time_password_page.dart';
 import 'package:epossa_app/pages/authentication/signin_page.dart';
-import 'package:epossa_app/pages/navigation/navigation_page.dart';
 import 'package:epossa_app/services/authentication_service.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/services/user_service.dart';
@@ -209,7 +207,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       1.9,
       Center(
         child: Text(
-          AppLocalizations.of(context).translate("reset_password"),
+          AppLocalizations.of(context).translate("forgotten_password"),
           style: TextStyle(
               color: GlobalColor.colorWhite,
               fontSize: SizeConfig.blockSizeHorizontal * 9,
@@ -257,8 +255,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 controller: _emailController,
                 textInputAction: TextInputAction.next,
                 focusNode: _emailFocusNode,
-                onFieldSubmitted: (term) {
-                },
+                onFieldSubmitted: (term) {},
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   prefixIcon: Icon(Icons.email),
@@ -484,8 +481,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
     bool resultOtp = _flutterOtp.resultChecker(int.parse(enteredCode));
     if (resultOtp) {
-      ResetPassword resetPassword =
-          new ResetPassword(_phoneNumber, _emailController.text.trim(), enteredCode);
+      String message = buildMessage(enteredCode);
+
+      _flutterOtp.sendOtp(_phoneNumberController.text.trim(), message, minvalue,
+          maxvalue, "+" + _countryChoosed.phoneCode);
+
+      ResetPassword resetPassword = new ResetPassword(
+          _phoneNumber, _emailController.text.trim(), enteredCode);
       bool passwordReseted =
           await _authenticationService.resetPassword(resetPassword);
 
@@ -500,7 +502,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
               color: Colors.blue.shade300,
             ),
             Colors.blue.shade300,
-            10);
+            20);
 
         navigateToLogin();
       } else {
@@ -531,6 +533,18 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
           Colors.red.shade300,
           3);
     }
+  }
+
+  String buildMessage(String tempPassword) {
+    return AppLocalizations.of(context).translate('temporary_password1') +
+        " " +
+        tempPassword +
+        "\n" +
+        "\n" +
+        AppLocalizations.of(context).translate('temporary_password2') +
+        "\n" +
+        "\n" +
+        AppLocalizations.of(context).translate('ePossa_signature');
   }
 
   void onGoogleSignIn() async {

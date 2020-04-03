@@ -73,6 +73,7 @@
   "no_account": "Pas encore de compte? ",
   "create_account": "Créez un compte",
   "forgot_password": "Mot de passe oublié?",
+  "forgotten_password": "Mot de passe oublié",
   "reset_password": "Reinitialiser le mot de passe",
   "pay": "Payer",
   "pay_service": "Payer un service",
@@ -121,5 +122,8 @@
   "validate_phone_number": "Veuillez valider votre numéro de téléphone avec le code que nous vous avons envoyé",
   "account_blocked": "Votre compte est bloqué. Veuillez contacter notre administrateur +4915251614281",
   "password_reseted_success": "Votre mot de passe a été reinitialisé avec succèss. Le code que vous avez recu pas SMS est votre mot de passe temporaire. Veuillez s´il vous plaît le changer dans votre compte",
-  "password_reseted_error": "Une érreur s´est produite lors de la réinitialisation de votre mot de passe. Veuillez rééssayer s´il vous plaît"
+  "password_reseted_error": "Une érreur s´est produite lors de la réinitialisation de votre mot de passe. Veuillez rééssayer s´il vous plaît",
+  "temporary_password1": "Mot de passe temporaire :",
+  "temporary_password2": "Changez le une fois connecté",
+  "ePossa_signature": "ePossa"
 }

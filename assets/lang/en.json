@@ -73,6 +73,7 @@
   "no_account": "No account yet? ",
   "create_account": "Create an account",
   "forgot_password": "Forgot your password?",
+  "forgotten_password": "Forgotten password",
   "reset_password": "Reset password",
   "pay": "Pay",
   "pay_service": "Pay for a service",
@@ -121,6 +122,8 @@
   "validate_phone_number": "Please validate your phone number with the code we sent to you",
   "account_blocked": "Your account is blocked. Please contact our administrator +4915251614281",
   "password_reseted_success": "Your password has been successfully reseted. The code you received by SMS is your temporary password. Please change it in your account",
-  "password_reseted_error": "An error occurred while resetting your password. Try again, please"
-
+  "password_reseted_error": "An error occurred while resetting your password. Try again, please",
+  "temporary_password1": "Temporary password :",
+  "temporary_password2": "Please change it as soon as you login",
+  "ePossa_signature": "ePossa"
 }
