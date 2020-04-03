@@ -168,11 +168,7 @@ class _FaqPageState extends State<FaqPage> with TickerProviderStateMixin {
               AppLocalizations.of(context).translate('other_questions') +
                   ' ' +
                   AppLocalizations.of(context).translate('contact_us'),
-              style: TextStyle(
-                  color: GlobalColor.colorWhite,
-                  fontSize: SizeConfig.blockSizeHorizontal * 4,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans'),
+              style: GlobalStyling.styleButtonPrimary,
             ),
           ),
         ),

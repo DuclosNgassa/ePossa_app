@@ -166,11 +166,7 @@ class ContactFormState extends State<ContactForm> {
           child: Center(
             child: Text(
               AppLocalizations.of(context).translate('send'),
-              style: TextStyle(
-                  color: GlobalColor.colorWhite,
-                  fontSize: SizeConfig.blockSizeHorizontal * 4,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans'),
+              style: GlobalStyling.styleButtonPrimary,
             ),
           ),
         ),

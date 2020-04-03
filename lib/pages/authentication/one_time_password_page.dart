@@ -1,7 +1,12 @@
-import 'package:epossa_app/pages/navigation/navigation_page.dart';
+import 'package:epossa_app/animations/fade_animation.dart';
+import 'package:epossa_app/localization/app_localizations.dart';
+import 'package:epossa_app/notification/notification.dart';
+import 'package:epossa_app/styling/global_color.dart';
+import 'package:epossa_app/styling/global_styling.dart';
+import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-import 'login_page.dart';
 import 'otp_input.dart';
 
 class OneTimePasswordPage extends StatefulWidget {
@@ -22,6 +27,8 @@ class _OneTimePasswordPage extends State<OneTimePasswordPage> {
   /// Decorate the outside of the Pin.
   PinDecoration _pinDecoration =
       UnderlineDecoration(enteredColor: Colors.black, hintText: 'XXXXXX');
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final int CODE_LENGTH = 6;
 
   @override
   void initState() {
@@ -30,122 +37,219 @@ class _OneTimePasswordPage extends State<OneTimePasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    GlobalStyling().init(context);
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0.0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-          ),
-          color: Colors.white,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        bottom: PreferredSize(
+      backgroundColor: GlobalColor.colorWhite,
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 0),
           child: Container(
-            padding: EdgeInsets.only(left: 16.0, bottom: 16, top: 4),
-            color: Colors.white,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "Verify Details",
-                      style: TextStyle(
-                          fontSize: 22.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      "OTP sent to ${widget.mobileNumber}",
-                      style: TextStyle(
-                          fontSize: 16.0, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          preferredSize: Size.fromHeight(100),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: PinInputTextField(
-                pinLength: 6,
-                decoration: _pinDecoration,
-                controller: _pinEditingController,
-                autoFocus: true,
-                textInputAction: TextInputAction.done,
-                onSubmit: (pin) {
-                  if (pin.length == 6) {
-                    _onFormSubmitted();
-                  } else {
-                    print("Invalid OTP");
-                    //showToast("Invalid OTP", Colors.red);
-                  }
-                },
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(16),
-              child: Center(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  child: RaisedButton(
-                    color: Theme.of(context).primaryColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0.0)),
-                    child: Text(
-                      "ENTER OTP",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: () {
-                      if (_pinEditingController.text.length == 6) {
-                        _onFormSubmitted();
-                      } else {
-                        print("Invalid OTP");
-                        //showToast("Invalid OTP", Colors.red);
-                      }
-                    },
-                    padding: EdgeInsets.all(16.0),
+            height: SizeConfig.screenHeight,
+            width: SizeConfig.screenWidth,
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Form(
+                key: _formKey,
+                autovalidate: false,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      _buildBackground(),
+                    ],
                   ),
                 ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  _navigateToLoginPage() {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginPage(),
-        ),
-        (Route<dynamic> route) => false);
+  Container _buildBackground() {
+    return Container(
+      height: SizeConfig.screenHeight,
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            left: 0,
+            width: SizeConfig.screenWidth,
+            height: SizeConfig.blockSizeVertical * 35,
+            child: FadeAnimation(
+              1.3,
+              Container(
+                height: SizeConfig.screenHeight * 0.4,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/background.png'),
+                      fit: BoxFit.fill),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            left: SizeConfig.blockSizeHorizontal * 6,
+            width: SizeConfig.blockSizeHorizontal * 20,
+            height: SizeConfig.blockSizeVertical * 20,
+            child: FadeAnimation(
+              1.5,
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/light-1.png'),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            left: SizeConfig.blockSizeHorizontal * 35,
+            width: SizeConfig.blockSizeHorizontal * 25,
+            height: SizeConfig.blockSizeVertical * 15,
+            child: FadeAnimation(
+              1.7,
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/light-2.png'),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: SizeConfig.blockSizeHorizontal * 10,
+            top: SizeConfig.blockSizeVertical * 5,
+            width: SizeConfig.blockSizeHorizontal * 25,
+            height: SizeConfig.blockSizeVertical * 10,
+            child: FadeAnimation(
+              1.9,
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/clock.png'),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            child: Container(
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 20),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.blockSizeVertical * 5,
+                ),
+                child: Column(
+                  children: <Widget>[
+                    _buildFormTitle(),
+                    SizedBox(
+                      height: SizeConfig.blockSizeVertical * 8,
+                    ),
+                    buildPinInputTextField(),
+                    SizedBox(
+                      height: SizeConfig.blockSizeVertical * 2,
+                    ),
+                    buildValidateButton(),
+                    SizedBox(
+                      height: SizeConfig.blockSizeVertical * 2,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
-  _navigateToStartPage() {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => NavigationPage(),
+  Widget buildPinInputTextField() {
+    return PinInputTextField(
+      pinLength: CODE_LENGTH,
+      decoration: _pinDecoration,
+      controller: _pinEditingController,
+      autoFocus: true,
+      textInputAction: TextInputAction.done,
+      onSubmit: (pin) => validateInput(pin.length),
+    );
+  }
+
+  Widget buildValidateButton() {
+    return FadeAnimation(
+      2.5,
+      GestureDetector(
+        onTap: () => validateInput(_pinEditingController.text.length),
+        child: Container(
+          //width: 120,
+          height: SizeConfig.blockSizeVertical * 8,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              gradient: LinearGradient(colors: [
+                Color.fromRGBO(143, 148, 251, 1),
+                Color.fromRGBO(143, 148, 251, 6),
+              ])),
+          child: Center(
+            child: Text(
+              AppLocalizations.of(context).translate("validate").toUpperCase(),
+              style: GlobalStyling.styleButtonPrimary,
+            ),
+          ),
         ),
-        (Route<dynamic> route) => false);
+      ),
+    );
+  }
+
+  void validateInput(int inputLength) {
+    if (inputLength == CODE_LENGTH) {
+      _onFormSubmitted();
+    } else {
+      MyNotification.showInfoFlushbar(
+        context,
+        AppLocalizations.of(context).translate('error'),
+        AppLocalizations.of(context).translate('code_invalid'),
+        Icon(
+          Icons.error,
+          size: 28,
+          color: Colors.red.shade300,
+        ),
+        Colors.red.shade300,
+        3,
+      );
+    }
+  }
+
+  Widget _buildFormTitle() {
+    return FadeAnimation(
+      2.1,
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                AppLocalizations.of(context).translate('code_verification'),
+                style: GlobalStyling.styleHeaderWhite,
+              ),
+              SizedBox(
+                height: SizeConfig.blockSizeVertical * 8,
+              ),
+              Text(
+                AppLocalizations.of(context).translate('code_sent_to') +
+                    " " +
+                    widget.mobileNumber,
+                style: GlobalStyling.styleTitleBlack,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   void _onFormSubmitted() {

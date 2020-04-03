@@ -19,6 +19,7 @@ class GlobalStyling {
   static TextStyle styleNormalBlackCard;
   static TextStyle styleNormalBlack3;
   static TextStyle styleButtonWhite;
+  static TextStyle styleButtonPrimary;
   static TextStyle styleFormGrey;
   static TextStyle styleBaseText;
   static TextStyle styleHeaderText;
@@ -109,6 +110,12 @@ class GlobalStyling {
       fontSize: SizeConfig.safeBlockHorizontal * 4,
     );
 
+    styleButtonPrimary = new TextStyle(
+        color: GlobalColor.colorWhite,
+        fontSize: SizeConfig.blockSizeHorizontal * 4,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'OpenSans');
+
     styleFormGrey = new TextStyle(
       color: Colors.black54,
       fontSize: SizeConfig.safeBlockHorizontal * 4,
@@ -149,9 +156,15 @@ class GlobalStyling {
     styleBaseText = TextStyle(fontFamily: 'Poppins');
 
     styleHeaderText = styleBaseText.copyWith(
-        color: GlobalColor.colorWhite, fontSize: 20.0, fontWeight: FontWeight.w600);
+      color: GlobalColor.colorWhite,
+      fontSize: 20.0,
+      fontWeight: FontWeight.w600,
+    );
 
     styleRegularText = styleBaseText.copyWith(
-        color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w400);
+      color: Colors.black87,
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+    );
   }
 }

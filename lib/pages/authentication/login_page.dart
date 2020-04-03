@@ -14,6 +14,7 @@ import 'package:epossa_app/services/authentication_service.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/services/user_service.dart';
 import 'package:epossa_app/styling/global_color.dart';
+import 'package:epossa_app/styling/global_styling.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -201,10 +202,7 @@ class _LoginPageState extends State<LoginPage> {
       Center(
         child: Text(
           AppLocalizations.of(context).translate("login"),
-          style: TextStyle(
-              color: GlobalColor.colorWhite,
-              fontSize: SizeConfig.blockSizeHorizontal * 9,
-              fontWeight: FontWeight.bold),
+          style: GlobalStyling.styleHeaderWhite,
         ),
       ),
     );
@@ -381,11 +379,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Center(
             child: Text(
               AppLocalizations.of(context).translate("login").toUpperCase(),
-              style: TextStyle(
-                  color: GlobalColor.colorWhite,
-                  fontSize: SizeConfig.blockSizeHorizontal * 4,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans'),
+              style: GlobalStyling.styleButtonPrimary,
             ),
           ),
         ),
@@ -569,7 +563,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
 
-    bool resultOtp = _flutterOtp.resultChecker(int.parse(enteredCode));
+    bool resultOtp = (enteredCode != null && enteredCode.isNotEmpty) ? _flutterOtp.resultChecker(int.parse(enteredCode)): false;
     if (resultOtp) {
       // log user in to receive jwt and make update on user status
       await LoginAndActivateUser();

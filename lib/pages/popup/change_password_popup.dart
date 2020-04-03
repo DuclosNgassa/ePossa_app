@@ -8,6 +8,7 @@ import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/services/sharedpreferences_service.dart';
 import 'package:epossa_app/services/user_service.dart';
 import 'package:epossa_app/styling/global_color.dart';
+import 'package:epossa_app/styling/global_styling.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:epossa_app/util/constant_field.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    GlobalStyling().init(context);
 
     return Center(
       child: Column(
@@ -219,11 +221,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
               child: Center(
                 child: Text(
                   AppLocalizations.of(context).translate('save'),
-                  style: TextStyle(
-                      color: GlobalColor.colorWhite,
-                      fontSize: SizeConfig.blockSizeHorizontal * 4,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'OpenSans'),
+                  style: GlobalStyling.styleButtonPrimary,
                 ),
               ),
             ),

@@ -1,4 +1,5 @@
 import 'package:epossa_app/styling/global_color.dart';
+import 'package:epossa_app/styling/global_styling.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class PopupHelper {
   static showPopup(BuildContext context, Widget widget, String title,
       {BuildContext popupContext}) {
     SizeConfig().init(context);
+    GlobalStyling().init(context);
 
     Navigator.push(
       context,

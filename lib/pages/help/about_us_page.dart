@@ -115,11 +115,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
           child: Center(
             child: Text(
               AppLocalizations.of(context).translate('visit_us'),
-              style: TextStyle(
-                  color: GlobalColor.colorWhite,
-                  fontSize: SizeConfig.blockSizeHorizontal * 4,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans'),
+              style: GlobalStyling.styleButtonPrimary,
             ),
           ),
         ),

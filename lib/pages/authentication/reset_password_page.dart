@@ -8,9 +8,8 @@ import 'package:epossa_app/notification/notification.dart';
 import 'package:epossa_app/pages/authentication/one_time_password_page.dart';
 import 'package:epossa_app/pages/authentication/signin_page.dart';
 import 'package:epossa_app/services/authentication_service.dart';
-import 'package:epossa_app/services/sharedpreferences_service.dart';
-import 'package:epossa_app/services/user_service.dart';
 import 'package:epossa_app/styling/global_color.dart';
+import 'package:epossa_app/styling/global_styling.dart';
 import 'package:epossa_app/styling/size_config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,9 +30,6 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   final int maxvalue = 999999;
 
   AuthenticationService _authenticationService = new AuthenticationService();
-  UserService _userService = new UserService();
-  SharedPreferenceService _sharedPreferenceService =
-      new SharedPreferenceService();
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   FirebaseUser firebaseUser;
@@ -71,6 +67,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    GlobalStyling().init(context);
     return Scaffold(
       backgroundColor: GlobalColor.colorWhite,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -208,10 +205,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       Center(
         child: Text(
           AppLocalizations.of(context).translate("forgotten_password"),
-          style: TextStyle(
-              color: GlobalColor.colorWhite,
-              fontSize: SizeConfig.blockSizeHorizontal * 9,
-              fontWeight: FontWeight.bold),
+          style: GlobalStyling.styleHeaderWhite,
         ),
       ),
     );
@@ -376,11 +370,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
               AppLocalizations.of(context)
                   .translate("reset_password")
                   .toUpperCase(),
-              style: TextStyle(
-                  color: GlobalColor.colorWhite,
-                  fontSize: SizeConfig.blockSizeHorizontal * 4,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans'),
+              style: GlobalStyling.styleButtonPrimary,
             ),
           ),
         ),

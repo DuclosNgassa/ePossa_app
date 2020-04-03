@@ -7,6 +7,9 @@
   "new_name":"Entrez votre nouveau nom.",
   "code": "Code",
   "code_please":"Entrez le code recu par sms pour terminer votre enregistrement s´il vous plaît",
+  "code_invalid":"Le code que vous avez saisi n´est pas correct. Saisissez le code recu par sms",
+  "code_verification": "Vérification code ",
+  "code_sent_to": "Code envoyé au numéro",
   "phonenumber": "Numéro de téléphone",
   "change_phonenumber": "Changer de numéro",
   "new_phonenumber":"Entrez votre nouveau numero de téléphone",
@@ -125,5 +128,6 @@
   "password_reseted_error": "Une érreur s´est produite lors de la réinitialisation de votre mot de passe. Veuillez rééssayer s´il vous plaît",
   "temporary_password1": "Mot de passe temporaire :",
   "temporary_password2": "Changez le une fois connecté",
-  "ePossa_signature": "ePossa"
+  "ePossa_signature": "ePossa",
+  "validate": "Valider"
 }

@@ -232,10 +232,7 @@ class _SignInPageState extends State<SignInPage> {
       Center(
         child: Text(
           AppLocalizations.of(context).translate("signin"),
-          style: TextStyle(
-              color: GlobalColor.colorWhite,
-              fontSize: SizeConfig.blockSizeHorizontal * 9,
-              fontWeight: FontWeight.bold),
+          style: GlobalStyling.styleHeaderWhite,
         ),
       ),
     );
@@ -443,11 +440,7 @@ class _SignInPageState extends State<SignInPage> {
           child: Center(
             child: Text(
               AppLocalizations.of(context).translate("signin").toUpperCase(),
-              style: TextStyle(
-                  color: GlobalColor.colorWhite,
-                  fontSize: SizeConfig.blockSizeHorizontal * 4,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans'),
+              style: GlobalStyling.styleButtonPrimary,
             ),
           ),
         ),

@@ -7,6 +7,9 @@
   "new_name":"Enter your new name",
   "code": "Code",
   "code_please":"Enter the code received by sms to complete your registration please",
+  "code_invalid":"The code you entered is not correct. Enter the code received by sms",
+  "code_verification": "Code verification",
+  "code_sent_to": "Code sent to number",
   "phonenumber": "Phone number",
   "change_phonenumber": "Change phone number",
   "new_phonenumber":"Enter your new phone number",
@@ -125,5 +128,6 @@
   "password_reseted_error": "An error occurred while resetting your password. Try again, please",
   "temporary_password1": "Temporary password :",
   "temporary_password2": "Please change it as soon as you login",
-  "ePossa_signature": "ePossa"
+  "ePossa_signature": "ePossa",
+  "validate": "Validate"
 }
