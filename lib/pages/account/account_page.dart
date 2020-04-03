@@ -130,7 +130,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
           SizedBox(
-            height: SizeConfig.blockSizeVertical * 1.5,
+            height: SizeConfig.blockSizeVertical,
           ),
           FadeAnimation(
             1.6,
@@ -154,7 +154,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
           SizedBox(
-            height: SizeConfig.blockSizeVertical * 1.5,
+            height: SizeConfig.blockSizeVertical,
           ),
           FadeAnimation(
             1.9,
@@ -178,7 +178,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
           SizedBox(
-            height: SizeConfig.blockSizeVertical * 1.5,
+            height: SizeConfig.blockSizeVertical,
           ),
           FadeAnimation(
             2.2,

@@ -55,24 +55,21 @@ class _AboutUsPageState extends State<AboutUsPage> {
   }
 
   Widget buildListTile() {
-    return Padding(
-      padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          buildIcon(),
-          SizedBox(
-            height: SizeConfig.blockSizeVertical * 4,
-          ),
-          Expanded(
-            child: buildAboutUsText(),
-          ),
-          buildVisitUsButton(),
-          SizedBox(
-            height: SizeConfig.blockSizeVertical * 2,
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        buildIcon(),
+        SizedBox(
+          height: SizeConfig.blockSizeVertical * 4,
+        ),
+        Expanded(
+          child: buildAboutUsText(),
+        ),
+        buildVisitUsButton(),
+        SizedBox(
+          height: SizeConfig.blockSizeVertical * 2,
+        ),
+      ],
     );
   }
 

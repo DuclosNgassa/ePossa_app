@@ -40,19 +40,6 @@ class _HelpPageState extends State<HelpPage> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-/*
-                Padding(
-                  padding:
-                      EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5),
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      _buildTitle(),
-                    ],
-                  ),
-                ),
-*/
                 Padding(
                   padding:
                       EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 8),
@@ -116,7 +103,9 @@ class _HelpPageState extends State<HelpPage> with TickerProviderStateMixin {
               ),
             ),
           ),
-          Divider(),
+          SizedBox(
+            height: SizeConfig.blockSizeVertical,
+          ),
           FadeAnimation(
             1.5,
             ListTile(

@@ -84,7 +84,7 @@ class _InfoPageState extends State<InfoPage> {
               ),
             ),
           ),
-          Divider(
+          SizedBox(
             height: SizeConfig.blockSizeVertical,
           ),
           FadeAnimation(
@@ -105,7 +105,7 @@ class _InfoPageState extends State<InfoPage> {
               ),
             ),
           ),
-          Divider(
+          SizedBox(
             height: SizeConfig.blockSizeVertical,
           ),
           FadeAnimation(
@@ -126,7 +126,7 @@ class _InfoPageState extends State<InfoPage> {
               ),
             ),
           ),
-          Divider(),
+          SizedBox(height: SizeConfig.blockSizeVertical,),
           FadeAnimation(
             2.3,
             ListTile(
@@ -145,7 +145,7 @@ class _InfoPageState extends State<InfoPage> {
               ),
             ),
           ),
-          Divider(),
+          SizedBox(),
         ],
       ),
     );

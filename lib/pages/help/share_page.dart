@@ -93,7 +93,9 @@ class _SharePageState extends State<SharePage> {
               ),
             ),
           ),
-          Divider(),
+          SizedBox(
+            height: SizeConfig.blockSizeVertical,
+          ),
           FadeAnimation(
             1.7,
             ListTile(
