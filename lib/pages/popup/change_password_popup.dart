@@ -36,12 +36,20 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
   FocusNode _newPassword2FocusNode;
   FocusNode _oldPasswordFocusNode;
 
+  bool obscureOldPassword;
+  bool obscurePassword1;
+  bool obscurePassword2;
+
   @override
   void initState() {
     super.initState();
     _newPassword1FocusNode = new FocusNode();
     _newPassword2FocusNode = new FocusNode();
     _oldPasswordFocusNode = new FocusNode();
+    obscureOldPassword = true;
+    obscurePassword1 = true;
+    obscurePassword2 = true;
+
   }
 
   @override
@@ -111,7 +119,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                           Border(bottom: BorderSide(color: Colors.grey[300]))),
                   child: TextFormField(
                     autofocus: true,
-                    obscureText: true,
+                    obscureText: obscureOldPassword,
                     controller: _oldPasswordController,
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,
@@ -122,7 +130,22 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                     },
                     decoration: InputDecoration(
                         border: InputBorder.none,
-                        prefixIcon: Icon(Icons.person),
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            // Based on obscureOldPassword state choose the icon
+                            obscureOldPassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                          onPressed: () {
+                            // Update the state i.e. toogle the state of obscureOldPassword variable
+                            setState(() {
+                              obscureOldPassword = !obscureOldPassword;
+                            });
+                          },
+                        ),
                         hintStyle:
                             TextStyle(color: Colors.grey.withOpacity(.8)),
                         hintText: AppLocalizations.of(context)
@@ -141,7 +164,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                       border:
                           Border(bottom: BorderSide(color: Colors.grey[300]))),
                   child: TextFormField(
-                    obscureText: true,
+                    obscureText: obscurePassword1,
                     controller: _newPassword1Controller,
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,
@@ -153,6 +176,21 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       prefixIcon: Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on obscurePassword1 state choose the icon
+                          obscurePassword1
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of obscurePassword1 variable
+                          setState(() {
+                            obscurePassword1 = !obscurePassword1;
+                          });
+                        },
+                      ),
                       hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
                       hintText: AppLocalizations.of(context)
                           .translate('new_password'),
@@ -171,7 +209,7 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                       border:
                           Border(bottom: BorderSide(color: Colors.grey[300]))),
                   child: TextFormField(
-                    obscureText: true,
+                    obscureText: obscurePassword2,
                     controller: _newPassword2Controller,
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,
@@ -182,6 +220,21 @@ class _ChangePasswordPopupState extends State<ChangePasswordPopup> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       prefixIcon: Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on obscurePassword2 state choose the icon
+                          obscurePassword2
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of obscurePassword2 variable
+                          setState(() {
+                            obscurePassword2 = !obscurePassword2;
+                          });
+                        },
+                      ),
                       hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
                       hintText: AppLocalizations.of(context)
                           .translate('confirm_new_password'),
